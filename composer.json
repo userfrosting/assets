@@ -1,0 +1,19 @@
+{
+    "name": "userfrosting/assets",
+    "type": "library",
+    "authors" : [
+        {
+            "name": "Alexander Weissman",
+            "homepage": "https://alexanderweissman.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "UserFrosting\\Assets\\": "Assets"
+        }
+    },
+    "minimum-stability" : "dev"
+}

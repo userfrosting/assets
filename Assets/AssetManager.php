@@ -179,7 +179,5 @@ class AssetManager
         } else {            
             return $base_url . $resolved_path;
         }
-        
-        return $resolved_url;
     }
 }

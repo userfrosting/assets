@@ -2,6 +2,9 @@
 
 namespace UserFrosting\Assets;
 
+use UserFrosting\Assets\Exception\FileNotFoundException;
+use UserFrosting\Assets\Exception\JsonException;
+
 /**
  * Asset bundle schema class.  An asset bundle schema contains information about one or more asset bundles.
  * This includes the raw asset file names, as well as file names for the compiled assets.
@@ -31,7 +34,7 @@ class AssetBundleSchema
         if (isset($this->bundles[$bundle]))
             return $this->bundles[$bundle];
         else
-            throw new \BadMethodCallException("Bundle '$bundle' not found in loaded bundles.");
+            throw new \OutOfBoundsException("Bundle '$bundle' not found in loaded bundles.");
     }    
     
     /**
@@ -42,12 +45,16 @@ class AssetBundleSchema
      * @see https://github.com/dowjones/gulp-bundle-assets
      * @param string $file Path to the schema file.
      * @todo See how this behaves when called multiple times on different files.  It should merge in multiple bundle schemas.
+     * @todo Support linting of JSON documents?
      */
     public function loadCompiledSchemaFile($file)
     {
-        $schema = json_decode(file_get_contents($file),true);
+        $doc = file_get_contents($file);
+        if ($doc === false)
+            throw new FileNotFoundException("The schema '$file' could not be found.");
+        $schema = json_decode($doc, true);
         if ($schema === null) {
-            throw new \BadMethodException("Either the schema '$file' could not be found, or it does not contain a valid JSON document: " . json_last_error());
+            throw new JsonException("The schema '$file' does not contain a valid JSON document.  JSON error: " . json_last_error());
         }
         
         $this->loadBundles($schema, false);
@@ -61,16 +68,20 @@ class AssetBundleSchema
      * @see https://github.com/dowjones/gulp-bundle-assets
      * @param string $file Path to the schema file.
      * @todo See how this behaves when called multiple times on different files.  It should merge in multiple bundle schemas.
+     * @todo Support linting of JSON documents?     
      */    
     public function loadRawSchemaFile($file)
     {
-        $schema = json_decode(file_get_contents($file),true);
+        $doc = file_get_contents($file);
+        if ($doc === false)
+            throw new FileNotFoundException("The schema '$file' could not be found.");
+        $schema = json_decode($doc, true);
         if ($schema === null) {
-            throw new \BadMethodException("Either the schema '$file' could not be found, or it does not contain a valid JSON document: " . json_last_error());
+            throw new JsonException("The schema '$file' does not contain a valid JSON document.  JSON error: " . json_last_error());
         }
         
         if (!isset($schema['bundle'])) 
-            throw new \BadMethodCallException("The specified JSON document does not contain a 'bundle' key.");
+            throw new \OutOfBoundsException("The specified JSON document does not contain a 'bundle' key.");
         
         $this->loadBundles($schema['bundle'], true);
     }

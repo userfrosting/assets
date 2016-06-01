@@ -1,13 +1,14 @@
 <?php
 
-namespace UserFrosting\Assets;
-
 /**
  * Represents a CSS asset.
  *
+ * @package userfrosting/assets
  * @author  Alexander Weissman
  * @license MIT
  */
+namespace UserFrosting\Assets;
+ 
 class CssAsset extends Asset
 {
 

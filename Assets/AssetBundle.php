@@ -1,16 +1,17 @@
 <?php
 
-namespace UserFrosting\Assets;
-
 /**
  * Represents an asset bundle, as defined in https://github.com/dowjones/gulp-bundle-assets
  *
  * An asset bundle can contain any number of JavascriptAssets and CssAssets.
  * Each of these can be either a raw or compiled asset.
  * @see https://github.com/dowjones/gulp-bundle-assets.
+ * @package userfrosting/assets 
  * @author  Alexander Weissman
  * @license MIT
  */
+namespace UserFrosting\Assets;
+
 class AssetBundle
 {
 

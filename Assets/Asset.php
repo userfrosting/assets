@@ -1,13 +1,14 @@
 <?php
 
-namespace UserFrosting\Assets;
-
 /**
  * Generically represents an asset (Javascript file, CSS file, etc)
  *
+ * @package userfrosting/assets 
  * @author  Alexander Weissman
  * @license MIT
  */
+namespace UserFrosting\Assets;
+
 abstract class Asset
 {
 

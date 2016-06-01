@@ -1,19 +1,20 @@
 <?php
 
-namespace UserFrosting\Assets;
-
-use UserFrosting\Assets\Exception\FileNotFoundException;
-use UserFrosting\Assets\Exception\JsonException;
-
 /**
  * Asset bundle schema class.  An asset bundle schema contains information about one or more asset bundles.
  * This includes the raw asset file names, as well as file names for the compiled assets.
  *
  * Assumes a schema format compatible with gulp-bundle-assets.
  * @see https://github.com/dowjones/gulp-bundle-assets.
+ * @package userfrosting/assets
  * @author  Alexander Weissman
  * @license MIT
  */
+namespace UserFrosting\Assets;
+
+use UserFrosting\Support\Exception\FileNotFoundException;
+use UserFrosting\Support\Exception\JsonException;
+
 class AssetBundleSchema
 {
     /**

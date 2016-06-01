@@ -1,14 +1,15 @@
 <?php
 
-namespace UserFrosting\Assets;
-
 /**
  * Asset management class.  Handles rendering of asset reference tags (<link>, <script>, etc) in HTML.
  *
  * Compatible with Twig via the UserFrostingExtension, or by simply passing in your AssetManager as a global Twig variable.
+ * @package userfrosting/assets 
  * @author  Alexander Weissman
  * @license MIT
  */
+namespace UserFrosting\Assets;
+ 
 class AssetManager
 {
 

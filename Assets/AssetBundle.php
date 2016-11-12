@@ -1,4 +1,13 @@
 <?php
+/**
+ * UserFrosting (http://www.userfrosting.com)
+ *
+ * @package   userfrosting/assets
+ * @link      https://github.com/userfrosting/assets
+ * @copyright Copyright (c) 2013-2016 Alexander Weissman
+ * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ */
+namespace UserFrosting\Assets;
 
 /**
  * Represents an asset bundle, as defined in https://github.com/dowjones/gulp-bundle-assets
@@ -6,12 +15,8 @@
  * An asset bundle can contain any number of JavascriptAssets and CssAssets.
  * Each of these can be either a raw or compiled asset.
  * @see https://github.com/dowjones/gulp-bundle-assets.
- * @package userfrosting/assets 
- * @author  Alexander Weissman
- * @license MIT
+ * @author Alex Weissman (https://alexanderweissman.com)
  */
-namespace UserFrosting\Assets;
-
 class AssetBundle
 {
 
@@ -20,28 +25,28 @@ class AssetBundle
      *
      * @var CssAsset[]
      */ 
-    protected $css_assets;
+    protected $cssAssets;
 
     /**
      * This bundle's raw CSS assets, indexed by bundle name.
      *
      * @var CssAsset[]
      */ 
-    protected $css_assets_raw;
+    protected $cssAssetsRaw;
     
     /**
      * This bundle's compiled Javascript assets, indexed by bundle name.
      *
      * @var JavascriptAsset[]
      */
-    protected $js_assets;
+    protected $jsAssets;
 
     /**
      * This bundle's raw Javascript assets, indexed by bundle name.
      *
      * @var JavascriptAsset[]
      */  
-    protected $js_assets_raw;
+    protected $jsAssetsRaw;
     
     /**
      * Adds a raw CSS asset to this bundle.
@@ -50,7 +55,7 @@ class AssetBundle
      */
     public function addRawCssAsset(CssAsset $asset)
     {
-        $this->css_assets_raw[] = $asset;
+        $this->cssAssetsRaw[] = $asset;
     }
     
     /**
@@ -60,7 +65,7 @@ class AssetBundle
      */    
     public function addCompiledCssAsset(CssAsset $asset)
     {
-        $this->css_assets[] = $asset;
+        $this->cssAssets[] = $asset;
     }   
     
     /**
@@ -70,7 +75,7 @@ class AssetBundle
      */    
     public function addRawJavascriptAsset(JavascriptAsset $asset)
     {
-        $this->js_assets_raw[] = $asset;
+        $this->jsAssetsRaw[] = $asset;
     }
     
     /**
@@ -80,7 +85,7 @@ class AssetBundle
      */        
     public function addCompiledJavascriptAsset(JavascriptAsset $asset)
     {
-        $this->js_assets[] = $asset;
+        $this->jsAssets[] = $asset;
     }    
     
     /**
@@ -94,7 +99,7 @@ class AssetBundle
      */      
     public function renderScripts($base_url, $raw = false)
     {
-        $assets = $raw ? $this->js_assets_raw : $this->js_assets;
+        $assets = $raw ? $this->jsAssetsRaw : $this->jsAssets;
         return $this->renderAssets($assets, $base_url);
     }
     
@@ -103,28 +108,28 @@ class AssetBundle
      *
      * If $raw is set to true, this will generate tags for the raw assets.
      * Otherwise, it will generate tag(s) for the compiled assets.
-     * @param string $base_url The base url of the assets, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
+     * @param string $baseUrl The base url of the assets, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
      * @param bool $raw
      * @return string The rendered tag(s), separated by newlines.     
      */        
-    public function renderStyles($base_url, $raw = false)
+    public function renderStyles($baseUrl, $raw = false)
     {
-        $assets = $raw ? $this->css_assets_raw : $this->css_assets;
-        return $this->renderAssets($assets, $base_url);
+        $assets = $raw ? $this->cssAssetsRaw : $this->cssAssets;
+        return $this->renderAssets($assets, $baseUrl);
     }
     
     /**
      * Generate appropriate tag(s) for a collection of assets.
      *
      * @param (JavascriptAsset|CssAsset)[] $assets The assets to render.
-     * @param string $base_url The base url of the assets, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
+     * @param string $baseUrl The base url of the assets, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
      * @return string The rendered tag(s), separated by newlines. 
      */       
-    protected function renderAssets($assets, $base_url)
+    protected function renderAssets($assets, $baseUrl)
     {
         $result = [];
         foreach ($assets as $asset) {
-            $result[] = $asset->render($base_url);
+            $result[] = $asset->render($baseUrl);
         }
         
         return implode("\n", $result);    

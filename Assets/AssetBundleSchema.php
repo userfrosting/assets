@@ -1,4 +1,16 @@
 <?php
+/**
+ * UserFrosting (http://www.userfrosting.com)
+ *
+ * @package   userfrosting/assets
+ * @link      https://github.com/userfrosting/assets
+ * @copyright Copyright (c) 2013-2016 Alexander Weissman
+ * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ */
+namespace UserFrosting\Assets;
+
+use UserFrosting\Support\Exception\FileNotFoundException;
+use UserFrosting\Support\Exception\JsonException;
 
 /**
  * Asset bundle schema class.  An asset bundle schema contains information about one or more asset bundles.
@@ -6,15 +18,8 @@
  *
  * Assumes a schema format compatible with gulp-bundle-assets.
  * @see https://github.com/dowjones/gulp-bundle-assets.
- * @package userfrosting/assets
- * @author  Alexander Weissman
- * @license MIT
+ * @author Alex Weissman (https://alexanderweissman.com)
  */
-namespace UserFrosting\Assets;
-
-use UserFrosting\Support\Exception\FileNotFoundException;
-use UserFrosting\Support\Exception\JsonException;
-
 class AssetBundleSchema
 {
     /**
@@ -23,7 +28,7 @@ class AssetBundleSchema
      * @var array
      */
     protected $bundles;
-    
+
     /**
      * Gets a bundle from this schema.
      *
@@ -32,12 +37,13 @@ class AssetBundleSchema
      */
     public function get($bundle)
     {
-        if (isset($this->bundles[$bundle]))
+        if (isset($this->bundles[$bundle])) {
             return $this->bundles[$bundle];
-        else
+        } else {
             throw new \OutOfBoundsException("Bundle '$bundle' not found in loaded bundles.");
+        }
     }    
-    
+
     /**
      * Load a JSON schema file that describes compiled asset bundles, populating compiled asset info for this schema's bundles.
      *
@@ -51,8 +57,10 @@ class AssetBundleSchema
     public function loadCompiledSchemaFile($file)
     {
         $doc = file_get_contents($file);
-        if ($doc === false)
+        if ($doc === false) {
             throw new FileNotFoundException("The schema '$file' could not be found.");
+        }
+
         $schema = json_decode($doc, true);
         if ($schema === null) {
             throw new JsonException("The schema '$file' does not contain a valid JSON document.  JSON error: " . json_last_error());
@@ -60,7 +68,7 @@ class AssetBundleSchema
         
         $this->loadBundles($schema, false);
     }    
-    
+
     /**
      * Load a JSON schema file that describes raw asset bundles, populating raw asset info for this schema's bundles.
      *
@@ -74,19 +82,22 @@ class AssetBundleSchema
     public function loadRawSchemaFile($file)
     {
         $doc = file_get_contents($file);
-        if ($doc === false)
+        if ($doc === false) {
             throw new FileNotFoundException("The schema '$file' could not be found.");
+        }
+
         $schema = json_decode($doc, true);
         if ($schema === null) {
             throw new JsonException("The schema '$file' does not contain a valid JSON document.  JSON error: " . json_last_error());
         }
-        
-        if (!isset($schema['bundle'])) 
+
+        if (!isset($schema['bundle'])) {
             throw new \OutOfBoundsException("The specified JSON document does not contain a 'bundle' key.");
-        
+        }
+
         $this->loadBundles($schema['bundle'], true);
     }
-    
+
     /**
      * Load a JSON object (as an associative array) that describes asset bundles, populating info for this schema's bundles.
      *
@@ -98,37 +109,40 @@ class AssetBundleSchema
      */ 
     protected function loadBundles($schema, $raw = false)
     {
-        foreach ($schema as $bundle_name => $bundle_schema){
-            if (!isset($this->bundles[$bundle_name]))
-                $this->bundles[$bundle_name] = new AssetBundle();
+        foreach ($schema as $bundleName => $bundleSchema) {
+            if (!isset($this->bundles[$bundleName])) {
+                $this->bundles[$bundleName] = new AssetBundle();
+            }
             
             // TODO: can a bundle be defined as a string instead of an object/array?
             
             // Load scripts
-            if (isset($bundle_schema['scripts'])){
-                if (is_array($bundle_schema['scripts']))
-                    foreach ($bundle_schema['scripts'] as $script){
-                        $this->addBundleScript($this->bundles[$bundle_name], $script, $raw);
+            if (isset($bundleSchema['scripts'])) {
+                if (is_array($bundleSchema['scripts'])) {
+                    foreach ($bundleSchema['scripts'] as $script) {
+                        $this->addBundleScript($this->bundles[$bundleName], $script, $raw);
                     }
-                else if (is_string($bundle_schema['scripts']))
-                    $this->addBundleScript($this->bundles[$bundle_name], $bundle_schema['scripts'], $raw);
-            }            
-            
+                } elseif (is_string($bundleSchema['scripts'])) {
+                    $this->addBundleScript($this->bundles[$bundleName], $bundleSchema['scripts'], $raw);
+                }
+            }
+
             // Load styles
-            if (isset($bundle_schema['styles'])){
-                if (is_array($bundle_schema['styles']))
-                    foreach ($bundle_schema['styles'] as $style){
-                        $this->addBundleStyle($this->bundles[$bundle_name], $style, $raw);
+            if (isset($bundleSchema['styles'])) {
+                if (is_array($bundleSchema['styles'])) {
+                    foreach ($bundleSchema['styles'] as $style) {
+                        $this->addBundleStyle($this->bundles[$bundleName], $style, $raw);
                     }
-                else if (is_string($bundle_schema['styles']))
-                    $this->addBundleStyle($this->bundles[$bundle_name], $bundle_schema['styles'], $raw);
-            }           
+                } elseif (is_string($bundleSchema['styles'])) {
+                    $this->addBundleStyle($this->bundles[$bundleName], $bundleSchema['styles'], $raw);
+                }
+            }
             
             // TODO: load options
             
         } 
     }
-    
+
     /**
      * Add a Javascript asset element to a bundle.
      *
@@ -138,18 +152,21 @@ class AssetBundleSchema
      */
     protected function addBundleScript(&$bundle, $schema, $raw)
     {
-        if (is_array($schema) and isset($schema['src']))
-            $js_asset = new JavascriptAsset($schema['src']);
-        else if (is_string($schema))
-            $js_asset = new JavascriptAsset($schema);
-        else
+        if (is_array($schema) and isset($schema['src'])) {
+            $asset = new JavascriptAsset($schema['src']);
+        } elseif (is_string($schema)) {
+            $asset = new JavascriptAsset($schema);
+        } else {
             return;
-        if ($raw)
-            $bundle->addRawJavascriptAsset($js_asset);
-        else
-            $bundle->addCompiledJavascriptAsset($js_asset);
+        }
+
+        if ($raw) {
+            $bundle->addRawJavascriptAsset($asset);
+        } else {
+            $bundle->addCompiledJavascriptAsset($asset);
+        }
     }
-    
+
     /**
      * Add a CSS asset element to a bundle.
      *
@@ -159,15 +176,18 @@ class AssetBundleSchema
      */    
     protected function addBundleStyle(&$bundle, $schema, $raw)
     {
-        if (is_array($schema) and isset($schema['src']))
+        if (is_array($schema) and isset($schema['src'])) {
             $asset = new CssAsset($schema['src']);
-        else if (is_string($schema))
+        } elseif (is_string($schema)) {
             $asset = new CssAsset($schema);
-        else
+        } else {
             return;
-        if ($raw)
+        }
+
+        if ($raw) {
             $bundle->addRawCssAsset($asset);
-        else
+        } else {
             $bundle->addCompiledCssAsset($asset);
+        }
     }
 }

@@ -180,7 +180,7 @@ class AssetManager
             throw new \BadMethodCallException('Invalid stream path given.');
         }
         
-        if ($resolvedScheme == "http" || $resolvedScheme == "https"){
+        if ($resolvedScheme == "http" || $resolvedScheme == "https") {
             return $streamPath;
         } else {            
             return $baseUrl . $resolvedPath;

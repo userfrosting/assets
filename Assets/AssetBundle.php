@@ -25,29 +25,41 @@ class AssetBundle
      *
      * @var CssAsset[]
      */ 
-    protected $cssAssets = [];
+    protected $cssAssets;
 
     /**
      * This bundle's raw CSS assets, indexed by bundle name.
      *
      * @var CssAsset[]
      */ 
-    protected $cssAssetsRaw = [];
+    protected $cssAssetsRaw;
     
     /**
      * This bundle's compiled Javascript assets, indexed by bundle name.
      *
      * @var JavascriptAsset[]
      */
-    protected $jsAssets = [];
+    protected $jsAssets;
 
     /**
      * This bundle's raw Javascript assets, indexed by bundle name.
      *
      * @var JavascriptAsset[]
      */  
-    protected $jsAssetsRaw = [];
+    protected $jsAssetsRaw;
     
+    /**
+     * AssetBundle constructor.
+     *
+     */
+    public function __construct()
+    {
+        $this->cssAssets = [];
+        $this->cssAssetsRaw = [];
+        $this->jsAssets = [];
+        $this->jsAssetsRaw = [];
+    }
+
     /**
      * Adds a raw CSS asset to this bundle.
      *

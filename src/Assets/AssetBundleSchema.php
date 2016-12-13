@@ -14,7 +14,6 @@ use UserFrosting\Support\Exception\JsonException;
 
 /**
  * Asset bundle schema class.  An asset bundle schema contains information about one or more asset bundles.
- * This includes the raw asset file names, as well as file names for the compiled assets.
  *
  * Assumes a schema format compatible with gulp-bundle-assets.
  * @see https://github.com/dowjones/gulp-bundle-assets.
@@ -42,7 +41,7 @@ class AssetBundleSchema
         } else {
             throw new \OutOfBoundsException("Bundle '$bundle' not found in loaded bundles.");
         }
-    }    
+    }
 
     /**
      * Load a JSON schema file that describes compiled asset bundles, populating compiled asset info for this schema's bundles.
@@ -56,18 +55,9 @@ class AssetBundleSchema
      */
     public function loadCompiledSchemaFile($file)
     {
-        $doc = file_get_contents($file);
-        if ($doc === false) {
-            throw new FileNotFoundException("The schema '$file' could not be found.");
-        }
-
-        $schema = json_decode($doc, true);
-        if ($schema === null) {
-            throw new JsonException("The schema '$file' does not contain a valid JSON document.  JSON error: " . json_last_error());
-        }
-        
-        $this->loadBundles($schema, false);
-    }    
+        $schema = $this->readSchema($file);
+        $this->loadBundles($schema);
+    }
 
     /**
      * Load a JSON schema file that describes raw asset bundles, populating raw asset info for this schema's bundles.
@@ -77,9 +67,102 @@ class AssetBundleSchema
      * @see https://github.com/dowjones/gulp-bundle-assets
      * @param string $file Path to the schema file.
      * @todo See how this behaves when called multiple times on different files.  It should merge in multiple bundle schemas.
-     * @todo Support linting of JSON documents?     
-     */    
+     * @todo Support linting of JSON documents?
+     */
     public function loadRawSchemaFile($file)
+    {
+        $schema = $this->readSchema($file);
+
+        if (!isset($schema['bundle'])) {
+            throw new \OutOfBoundsException("The specified JSON document does not contain a 'bundle' key.");
+        }
+
+        $this->loadBundles($schema['bundle']);
+    }
+
+    /**
+     * Load a JSON object (as an associative array) that describes asset bundles, populating info for this schema's bundles.
+     *
+     * The format of this object should match the formats described for bundles in gulp-bundle-assets
+     * @see https://github.com/dowjones/gulp-bundle-assets
+     * @param array $schema An associative array (usually converted from a JSON object)
+     * @todo See how this behaves when called multiple times on different schema.  It should merge in multiple bundle schemas.
+     */
+    protected function loadBundles($schema)
+    {
+        foreach ($schema as $bundleName => $bundleSchema) {
+            if (!isset($this->bundles[$bundleName])) {
+                $this->bundles[$bundleName] = new AssetBundle();
+            }
+
+            // TODO: can a bundle be defined as a string instead of an object/array?
+
+            // Load scripts
+            if (isset($bundleSchema['scripts'])) {
+                if (is_array($bundleSchema['scripts'])) {
+                    foreach ($bundleSchema['scripts'] as $script) {
+                        $this->addBundleScript($this->bundles[$bundleName], $script);
+                    }
+                } elseif (is_string($bundleSchema['scripts'])) {
+                    $this->addBundleScript($this->bundles[$bundleName], $bundleSchema['scripts']);
+                }
+            }
+
+            // Load styles
+            if (isset($bundleSchema['styles'])) {
+                if (is_array($bundleSchema['styles'])) {
+                    foreach ($bundleSchema['styles'] as $style) {
+                        $this->addBundleStyle($this->bundles[$bundleName], $style);
+                    }
+                } elseif (is_string($bundleSchema['styles'])) {
+                    $this->addBundleStyle($this->bundles[$bundleName], $bundleSchema['styles']);
+                }
+            }
+
+            // TODO: load options
+
+        }
+    }
+
+    /**
+     * Add a Javascript asset element to a bundle.
+     *
+     * @param AssetBundle $bundle A reference to the target bundle.
+     * @param array|string $schema A string or associative array containing this asset's info (usually converted from a JSON object)
+     */
+    protected function addBundleScript(&$bundle, $schema)
+    {
+        if (is_array($schema) and isset($schema['src'])) {
+            $asset = new Asset($schema['src']);
+        } elseif (is_string($schema)) {
+            $asset = new Asset($schema);
+        } else {
+            return;
+        }
+
+        $bundle->addJavascriptAsset($asset);
+    }
+
+    /**
+     * Add a CSS asset element to a bundle.
+     *
+     * @param AssetBundle $bundle A reference to the target bundle.
+     * @param array|string $schema A string or associative array containing this asset's info (usually converted from a JSON object)
+     */
+    protected function addBundleStyle(&$bundle, $schema)
+    {
+        if (is_array($schema) and isset($schema['src'])) {
+            $asset = new Asset($schema['src']);
+        } elseif (is_string($schema)) {
+            $asset = new Asset($schema);
+        } else {
+            return;
+        }
+
+        $bundle->addCssAsset($asset);
+    }
+
+    protected function readSchema($file)
     {
         $doc = file_get_contents($file);
         if ($doc === false) {
@@ -91,103 +174,6 @@ class AssetBundleSchema
             throw new JsonException("The schema '$file' does not contain a valid JSON document.  JSON error: " . json_last_error());
         }
 
-        if (!isset($schema['bundle'])) {
-            throw new \OutOfBoundsException("The specified JSON document does not contain a 'bundle' key.");
-        }
-
-        $this->loadBundles($schema['bundle'], true);
-    }
-
-    /**
-     * Load a JSON object (as an associative array) that describes asset bundles, populating info for this schema's bundles.
-     *
-     * The format of this object should match the formats described for bundles in gulp-bundle-assets
-     * @see https://github.com/dowjones/gulp-bundle-assets
-     * @param array $schema An associative array (usually converted from a JSON object)
-     * @param bool $raw True if this schema represents raw info for bundles, false if it represents compiled info.
-     * @todo See how this behaves when called multiple times on different schema.  It should merge in multiple bundle schemas.
-     */ 
-    protected function loadBundles($schema, $raw = false)
-    {
-        foreach ($schema as $bundleName => $bundleSchema) {
-            if (!isset($this->bundles[$bundleName])) {
-                $this->bundles[$bundleName] = new AssetBundle();
-            }
-            
-            // TODO: can a bundle be defined as a string instead of an object/array?
-            
-            // Load scripts
-            if (isset($bundleSchema['scripts'])) {
-                if (is_array($bundleSchema['scripts'])) {
-                    foreach ($bundleSchema['scripts'] as $script) {
-                        $this->addBundleScript($this->bundles[$bundleName], $script, $raw);
-                    }
-                } elseif (is_string($bundleSchema['scripts'])) {
-                    $this->addBundleScript($this->bundles[$bundleName], $bundleSchema['scripts'], $raw);
-                }
-            }
-
-            // Load styles
-            if (isset($bundleSchema['styles'])) {
-                if (is_array($bundleSchema['styles'])) {
-                    foreach ($bundleSchema['styles'] as $style) {
-                        $this->addBundleStyle($this->bundles[$bundleName], $style, $raw);
-                    }
-                } elseif (is_string($bundleSchema['styles'])) {
-                    $this->addBundleStyle($this->bundles[$bundleName], $bundleSchema['styles'], $raw);
-                }
-            }
-            
-            // TODO: load options
-            
-        } 
-    }
-
-    /**
-     * Add a Javascript asset element to a bundle.
-     *
-     * @param AssetBundle $bundle A reference to the target bundle.
-     * @param array|string $schema A string or associative array containing this asset's info (usually converted from a JSON object)
-     * @param bool $raw True if the schema represents raw info for this asset, false if it represents compiled info.
-     */
-    protected function addBundleScript(&$bundle, $schema, $raw)
-    {
-        if (is_array($schema) and isset($schema['src'])) {
-            $asset = new JavascriptAsset($schema['src']);
-        } elseif (is_string($schema)) {
-            $asset = new JavascriptAsset($schema);
-        } else {
-            return;
-        }
-
-        if ($raw) {
-            $bundle->addRawJavascriptAsset($asset);
-        } else {
-            $bundle->addCompiledJavascriptAsset($asset);
-        }
-    }
-
-    /**
-     * Add a CSS asset element to a bundle.
-     *
-     * @param AssetBundle $bundle A reference to the target bundle.
-     * @param array|string $schema A string or associative array containing this asset's info (usually converted from a JSON object)
-     * @param bool $raw True if the schema represents raw info for this asset, false if it represents compiled info.
-     */    
-    protected function addBundleStyle(&$bundle, $schema, $raw)
-    {
-        if (is_array($schema) and isset($schema['src'])) {
-            $asset = new CssAsset($schema['src']);
-        } elseif (is_string($schema)) {
-            $asset = new CssAsset($schema);
-        } else {
-            return;
-        }
-
-        if ($raw) {
-            $bundle->addRawCssAsset($asset);
-        } else {
-            $bundle->addCompiledCssAsset($asset);
-        }
+        return $schema;
     }
 }

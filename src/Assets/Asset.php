@@ -14,7 +14,7 @@ namespace UserFrosting\Assets;
  *
  * @author Alex Weissman (https://alexanderweissman.com)
  */
-abstract class Asset
+class Asset
 {
 
     /**
@@ -23,7 +23,7 @@ abstract class Asset
      * @var string
      */
     protected $path;
-    
+
     /**
      * Any additional HTML attributes, as key->value pairs, to render in the asset's tag.
      *
@@ -40,12 +40,14 @@ abstract class Asset
     {
         $this->path = ltrim($path, "/\\");
     }
-    
-    /**
-     * Render this asset, using the specified base url.
-     *
-     * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
-     * @return string The rendered asset tag.
-     */    
-    abstract public function render($baseUrl);
+
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
 }

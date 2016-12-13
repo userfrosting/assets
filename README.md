@@ -151,3 +151,9 @@ gulp.task('bundle', function() {
     return fb;
 });
 ```
+
+## Testing
+
+```
+phpunit --bootstrap tests/bootstrap.php tests
+```

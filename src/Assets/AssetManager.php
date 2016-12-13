@@ -57,16 +57,6 @@ class AssetManager
     {
         $this->bundleSchema = $bundleSchema;
     }
-    
-    /**
-     * Set the desired url path for assets, relative to the baseUrl.  For example, "assets".
-     *
-     * @param string $assetsPath
-     */
-    public function setAssetsPath($assetsPath)
-    {
-        $this->assetsPath = rtrim($assetsPath, '/') . '/';
-    }
 
     /**
      * Generate <script> tag(s) for Javascript assets in an asset bundle.

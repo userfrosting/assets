@@ -9,6 +9,7 @@
  */
 namespace UserFrosting\Assets;
 
+use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 use UserFrosting\Support\Exception\FileNotFoundException;
 use UserFrosting\Support\Exception\JsonException;
 
@@ -28,6 +29,24 @@ class AssetBundleSchema
      */
     protected $bundles;
 
+    protected $locator;
+
+    protected $baseUrl;
+
+    protected $scheme;
+
+    /**
+     * AssetBundleSchema constructor.
+     *
+     * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
+     */
+    public function __construct(UniformResourceLocator $locator, $baseUrl, $scheme = 'assets')
+    {
+        $this->locator = $locator;
+        $this->baseUrl = $baseUrl;
+        $this->scheme = $scheme;
+    }
+    
     /**
      * Gets a bundle from this schema.
      *
@@ -92,7 +111,7 @@ class AssetBundleSchema
     {
         foreach ($schema as $bundleName => $bundleSchema) {
             if (!isset($this->bundles[$bundleName])) {
-                $this->bundles[$bundleName] = new AssetBundle();
+                $this->bundles[$bundleName] = new AssetBundle($this->locator, $this->baseUrl, $this->scheme);
             }
 
             // TODO: can a bundle be defined as a string instead of an object/array?

@@ -19,16 +19,8 @@ use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
  */
 class AssetManager
 {
+    protected $assetUrlBuilder;
 
-    /**
-     *  The base url for your assets, for example https://example.com/assets-raw/
-     *
-     * @param string
-     */
-    protected $baseUrl;
-
-    protected $locator;
-    
     /**
      * The bundle schema to use for rendering calls to `js()` and `css()`.
      *
@@ -39,13 +31,12 @@ class AssetManager
     /**
      * AssetManager constructor.
      *
-     * @param string $baseUrl The base url of the site, for example https://example.com, or http://localhost/myproject/public
+     * @param AssetUrlBuilder $assetUrlBuilder
      */
-    public function __construct(UniformResourceLocator $locator, $baseUrl)
+    public function __construct(AssetUrlBuilder $assetUrlBuilder, AssetBundleSchema $bundleSchema)
     {
-        $this->locator = $locator;
-
-        $this->baseUrl = rtrim($baseUrl, "/\\") . '/';
+        $this->assetUrlBuilder = $assetUrlBuilder;
+        $this->setBundleSchema($bundleSchema);
     }
     
     /**
@@ -122,15 +113,7 @@ class AssetManager
             return $streamPath;
         } else {
             // Use the relative path to the resource as the URL
-            $relativeUrl = $this->locator->findResource($streamPath, false);
-    
-            if ($relativeUrl) {
-                $absoluteUrl = $this->baseUrl . $relativeUrl;
-            } else {
-                $absoluteUrl = '';
-            }
-    
-            return $absoluteUrl;
+            return $this->assetUrlBuilder->getAssetUrl($resolvedPath);
         }
     }
 }

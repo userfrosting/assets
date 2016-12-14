@@ -29,25 +29,16 @@ class AssetBundleSchema
      */
     protected $bundles;
 
-    protected $locator;
-
-    protected $baseUrl;
-
-    protected $scheme;
-
-    protected $removePrefix;
+    protected $assetUrlBuilder;
     
     /**
      * AssetBundleSchema constructor.
      *
      * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
      */
-    public function __construct(UniformResourceLocator $locator, $baseUrl, $removePrefix = '', $scheme = 'assets')
+    public function __construct(AssetUrlBuilder $assetUrlBuilder)
     {
-        $this->locator = $locator;
-        $this->baseUrl = $baseUrl;
-        $this->removePrefix = $removePrefix;
-        $this->scheme = $scheme;
+        $this->assetUrlBuilder = $assetUrlBuilder;
     }
     
     /**
@@ -114,7 +105,7 @@ class AssetBundleSchema
     {
         foreach ($schema as $bundleName => $bundleSchema) {
             if (!isset($this->bundles[$bundleName])) {
-                $this->bundles[$bundleName] = new AssetBundle($this->locator, $this->baseUrl, $this->removePrefix, $this->scheme);
+                $this->bundles[$bundleName] = new AssetBundle($this->assetUrlBuilder);
             }
 
             // TODO: can a bundle be defined as a string instead of an object/array?

@@ -9,21 +9,11 @@ use UserFrosting\Assets\AssetLoader;
 class AssetLoaderTest extends TestCase
 {
     protected $basePath = __DIR__ . '/data';
-    protected $baseUrl = 'http://example.com/assets-raw';
     protected $loader;
-    protected $locator;
 
     public function setUp()
-    {
-        // Arrange
-        $this->locator = new UniformResourceLocator($this->basePath);
-        $this->locator->addPath('assets', '', [
-            'owls/assets',
-            'hawks/assets'
-        ]);
-        
+    {        
         $this->loader = new AssetLoader($this->basePath, "/^[A-Za-z0-9_\-]+\/assets\//");
-        
     }
 
     public function testFindSuccess()

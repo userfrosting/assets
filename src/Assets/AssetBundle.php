@@ -21,6 +21,7 @@ use UserFrosting\Assets\Util;
  */
 class AssetBundle
 {
+    protected $assetUrlBuilder;
 
     /**
      * This bundle's CSS assets, indexed by bundle name.
@@ -36,31 +37,16 @@ class AssetBundle
      */
     protected $jsAssets;
 
-    protected $locator;
-
-    protected $baseUrl;
-
-    protected $removePrefix;
-
-    protected $scheme;
-
     /**
      * AssetBundle constructor.
      *
      * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
      */
-    public function __construct(UniformResourceLocator $locator, $baseUrl, $removePrefix = '', $scheme = 'assets')
+    public function __construct(AssetUrlBuilder $assetUrlBuilder)
     {
+        $this->assetUrlBuilder = $assetUrlBuilder;
         $this->cssAssets = [];
         $this->jsAssets = [];
-
-        $this->locator = $locator;
-
-        $this->baseUrl = rtrim($baseUrl, '/') . '/';
-
-        $this->removePrefix = $removePrefix ? rtrim($removePrefix, "/\\") . '/' : '';
-
-        $this->scheme = $scheme;
     }
 
     /**
@@ -84,24 +70,6 @@ class AssetBundle
     }
 
     /**
-     * Generate an absolute URL for an asset, based on the asset path and the bundle's baseUrl.
-     */
-    public function getAssetUrl($path)
-    {
-        $relativeUrl = $this->locator->findResource($this->scheme . '://' . $path, false);
-
-        if ($relativeUrl) {
-            error_log("Stripping {$this->removePrefix} from $relativeUrl");
-            $relativeUrl = Util::stripPrefix($relativeUrl, $this->removePrefix);
-            $absoluteUrl = $this->baseUrl . $relativeUrl;
-        } else {
-            $absoluteUrl = '';
-        }
-
-        return $absoluteUrl;
-    }
-
-    /**
      * Render an asset as a JS `script` tag.
      *
      * @return string The rendered asset tag.
@@ -109,7 +77,7 @@ class AssetBundle
     public function renderScript($asset)
     {
         $path = $asset->getPath();
-        $absoluteUrl = $this->getAssetUrl($path);
+        $absoluteUrl = $this->assetUrlBuilder->getAssetUrl($path);
 
         $options = $asset->getOptions();
 
@@ -158,7 +126,7 @@ class AssetBundle
     public function renderStyle($asset)
     {
         $path = $asset->getPath();
-        $absoluteUrl = $this->getAssetUrl($path);
+        $absoluteUrl = $this->assetUrlBuilder->getAssetUrl($path);
 
         $options = $asset->getOptions();
 

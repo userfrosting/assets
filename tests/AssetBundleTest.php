@@ -43,6 +43,20 @@ class AssetBundleTest extends TestCase
         $this->assertEquals('', $url);
     }
     
+    public function testGetUrlRemovePrefix()
+    {
+        $bundle = new AssetBundle($this->locator, $this->baseUrl, 'owls/');
+
+        $bundle->addCssAsset($this->cssAsset);
+        $bundle->addJavascriptAsset($this->jsAsset);
+        
+        $path = $this->cssAsset->getPath();
+        
+        $url = $bundle->getAssetUrl($path);
+        
+        $this->assertEquals('http://example.com/assets-raw/assets/vendor/bootstrap-3.3.6/css/bootstrap.css', $url);
+    }
+    
     public function testRenderStyle()
     {
         $tag = $this->bundle->renderStyle($this->cssAsset);

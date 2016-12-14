@@ -10,6 +10,7 @@
 namespace UserFrosting\Assets;
 
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use UserFrosting\Assets\Util;
 
 /**
  * Represents an asset bundle, as defined in https://github.com/dowjones/gulp-bundle-assets
@@ -39,6 +40,8 @@ class AssetBundle
 
     protected $baseUrl;
 
+    protected $removePrefix;
+
     protected $scheme;
 
     /**
@@ -46,7 +49,7 @@ class AssetBundle
      *
      * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
      */
-    public function __construct(UniformResourceLocator $locator, $baseUrl, $scheme = 'assets')
+    public function __construct(UniformResourceLocator $locator, $baseUrl, $removePrefix = '', $scheme = 'assets')
     {
         $this->cssAssets = [];
         $this->jsAssets = [];
@@ -54,6 +57,8 @@ class AssetBundle
         $this->locator = $locator;
 
         $this->baseUrl = rtrim($baseUrl, '/') . '/';
+
+        $this->removePrefix = $removePrefix ? rtrim($removePrefix, "/\\") . '/' : '';
 
         $this->scheme = $scheme;
     }
@@ -86,6 +91,8 @@ class AssetBundle
         $relativeUrl = $this->locator->findResource($this->scheme . '://' . $path, false);
 
         if ($relativeUrl) {
+            error_log("Stripping {$this->removePrefix} from $relativeUrl");
+            $relativeUrl = Util::stripPrefix($relativeUrl, $this->removePrefix);
             $absoluteUrl = $this->baseUrl . $relativeUrl;
         } else {
             $absoluteUrl = '';

@@ -6,10 +6,10 @@
  * @link      https://github.com/userfrosting/assets
  * @copyright Copyright (c) 2013-2016 Alexander Weissman
  * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
- */ 
+ */
 namespace UserFrosting\Assets;
 
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use UserFrosting\Assets\UrlBuilder\AssetUrlBuilderInterface;
 
 /**
  * Asset management class.  Handles rendering of asset reference tags (<link>, <script>, etc) in HTML.
@@ -19,30 +19,32 @@ use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
  */
 class AssetManager
 {
+    /**
+     * @var AssetUrlBuilderInterface Url builder for constructing absolute URLs for each asset in this bundle.
+     */
     protected $assetUrlBuilder;
 
     /**
-     * The bundle schema to use for rendering calls to `js()` and `css()`.
-     *
-     * @var AssetBundleSchema
+     * @var AssetBundleSchema The bundle schema to use for rendering calls to `js()` and `css()`.
      */
     protected $bundleSchema;
-    
+
     /**
      * AssetManager constructor.
      *
-     * @param AssetUrlBuilder $assetUrlBuilder
+     * @param AssetUrlBuilderInterface $assetUrlBuilder
+     * @param AssetBundleSchema $bundleSchema
      */
     public function __construct(AssetUrlBuilderInterface $assetUrlBuilder, AssetBundleSchema $bundleSchema)
     {
         $this->assetUrlBuilder = $assetUrlBuilder;
         $this->setBundleSchema($bundleSchema);
     }
-    
+
     /**
      * Set the bundle schema to be used for rendering calls to `js()`, `css()`, `url()`, etc.
      *
-     * @param AssetBundleSchema
+     * @param AssetBundleSchema $bundleSchema
      */
     public function setBundleSchema($bundleSchema)
     {
@@ -54,42 +56,41 @@ class AssetManager
      *
      * @param string $bundleName
      * @return string The rendered HTML tag(s).
-     */     
+     */
     public function js($bundleName = 'js/main')
     {
         return $this->bundleSchema->get($bundleName)->renderScripts();
     }
-      
+
     /**
      * Generate <link> tag(s) for CSS assets in an asset bundle.
      *
      * @param string $bundleName
-     * @return string The rendered HTML tag(s).     
-     */         
+     * @return string The rendered HTML tag(s).
+     */
     public function css($bundleName = 'css/main')
     {
         return $this->bundleSchema->get($bundleName)->renderStyles();
     }
-      
+
     /**
      * Get the absolute url for an asset as specified by a stream path (e.g. "assets://css/bootstrap.css").
      *
      * @param string $streamPath
      * @return string The absolute URL.
-     */    
+     */
     public function url($streamPath)
     {
         return $this->getAbsoluteUrl($streamPath);
     }
-    
+
     /**
      * Get the absolute url for an asset as specified by a stream path (e.g. "assets://css/bootstrap.css"), relative to a base URL.
      *
      * If the stream is `http` or `https`, this simply returns the full URL.
-     * @param string $baseUrl The base url to use when constructing the full URL.
      * @param string $streamPath The stream path to resolve.
      * @return string The absolute URL.
-     */    
+     */
     protected function getAbsoluteUrl($streamPath)
     {
         // Resolve the asset URL (either a stream or absolute URL)
@@ -108,7 +109,7 @@ class AssetManager
         } else {
             throw new \BadMethodCallException('Invalid stream path given.');
         }
-        
+
         if ($resolvedScheme == "http" || $resolvedScheme == "https") {
             return $streamPath;
         } else {

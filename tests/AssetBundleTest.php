@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 use UserFrosting\Assets\Asset;
 use UserFrosting\Assets\AssetBundle;
-use UserFrosting\Assets\AssetUrlBuilder;
+use UserFrosting\Assets\UrlBuilder\AssetUrlBuilder;
 
 class AssetBundleTest extends TestCase
 {
@@ -30,19 +30,19 @@ class AssetBundleTest extends TestCase
     }
 
 
-    
+
     public function testRenderStyle()
     {
         $bundle = new AssetBundle($this->assetUrlBuilder);
 
         $bundle->addCssAsset($this->cssAsset);
-        
+
         $tag = $bundle->renderStyle($this->cssAsset);
 
         // Assert
         $this->assertEquals('<link rel="stylesheet" type="text/css" href="http://example.com/assets-raw/owls/assets/vendor/bootstrap-3.3.6/css/bootstrap.css" >', $tag);
     }
-    
+
     public function testRenderScript()
     {
         $bundle = new AssetBundle($this->assetUrlBuilder);

@@ -9,8 +9,7 @@
  */
 namespace UserFrosting\Assets;
 
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
-use UserFrosting\Assets\Util;
+use UserFrosting\Assets\UrlBuilder\AssetUrlBuilderInterface;
 
 /**
  * Represents an asset bundle, as defined in https://github.com/dowjones/gulp-bundle-assets
@@ -21,26 +20,25 @@ use UserFrosting\Assets\Util;
  */
 class AssetBundle
 {
+    /**
+     * @var AssetUrlBuilderInterface Url builder for constructing absolute URLs for each asset in this bundle.
+     */
     protected $assetUrlBuilder;
 
     /**
-     * This bundle's CSS assets, indexed by bundle name.
-     *
-     * @var CssAsset[]
+     * @var CssAsset[] This bundle's CSS assets, indexed by bundle name.
      */
     protected $cssAssets;
 
     /**
-     * This bundle's Javascript assets, indexed by bundle name.
-     *
-     * @var JavascriptAsset[]
+     * @var JavascriptAsset[] This bundle's Javascript assets, indexed by bundle name.
      */
     protected $jsAssets;
 
     /**
      * AssetBundle constructor.
      *
-     * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
+     * @param AssetUrlBuilderInterface $assetUrlBuilder
      */
     public function __construct(AssetUrlBuilderInterface $assetUrlBuilder)
     {

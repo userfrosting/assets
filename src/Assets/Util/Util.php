@@ -3,11 +3,11 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @package   userfrosting/assets
- * @link      https://github.com/userfrosting/UserFrosting
+ * @link      https://github.com/userfrosting/assets
  * @copyright Copyright (c) 2013-2016 Alexander Weissman
  * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
  */
-namespace UserFrosting\Assets;
+namespace UserFrosting\Assets\Util;
 
 /**
  * Util Class
@@ -79,6 +79,13 @@ class Util
         return $splitStream ? [$scheme, $path] : ($scheme !== 'file' ? "{$scheme}://{$path}" : $path);
     }
 
+    /**
+     * Removes a prefix from the beginning of a string, if a match is found.
+     *
+     * @param string $str The string to process.
+     * @param string $prefix The prefix to find and remove.
+     * @return string
+     */
     static public function stripPrefix($str, $prefix = '')
     {
         if (substr($str, 0, strlen($prefix)) == $prefix) {

@@ -41,11 +41,17 @@ class Asset
         $this->path = ltrim($path, "/\\");
     }
 
+    /**
+     * @return string[]
+     */
     public function getOptions()
     {
         return $this->options;
     }
 
+    /**
+     * @return string
+     */
     public function getPath()
     {
         return $this->path;

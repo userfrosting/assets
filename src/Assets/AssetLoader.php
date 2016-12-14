@@ -3,13 +3,14 @@
  * UserFrosting (http://www.userfrosting.com)
  *
  * @package   userfrosting/assets
- * @link      https://github.com/userfrosting/UserFrosting
+ * @link      https://github.com/userfrosting/assets
  * @copyright Copyright (c) 2013-2016 Alexander Weissman
  * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
  */
 namespace UserFrosting\Assets;
 
-use UserFrosting\Assets\Util;
+use UserFrosting\Assets\Util\MimeType;
+use UserFrosting\Assets\Util\Util;
 
 /**
  * Asset loader class.
@@ -29,13 +30,16 @@ class AssetLoader
      */
     protected $fullPath;
 
+    /**
+     * @var string A regex pattern to represent the allowed subset of paths under basePath which are accessible.
+     */
     protected $pattern;
-    
+
     /**
      * Create a new AssetLoader object.
      *
-     * @param string $basePath The base absolute file path to use for retrieving the asset.
-     * @param string $startPattern A regex pattern to represent the allowed subset of paths under basePath which are accessible.
+     * @param string $basePath
+     * @param string $pattern
      */
     public function __construct($basePath, $pattern)
     {
@@ -106,6 +110,4 @@ class AssetLoader
     {
         return MimeType::detectByFilename($this->fullPath);
     }
-
-
 }

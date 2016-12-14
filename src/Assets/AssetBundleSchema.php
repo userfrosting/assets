@@ -9,7 +9,7 @@
  */
 namespace UserFrosting\Assets;
 
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use UserFrosting\Assets\UrlBuilder\AssetUrlBuilderInterface;
 use UserFrosting\Support\Exception\FileNotFoundException;
 use UserFrosting\Support\Exception\JsonException;
 
@@ -23,24 +23,25 @@ use UserFrosting\Support\Exception\JsonException;
 class AssetBundleSchema
 {
     /**
-     * The array of AssetBundle items that this schema represents.
-     *
-     * @var array
+     * @var AssetBundle[] The array of AssetBundle items that this schema represents.
      */
     protected $bundles;
 
+    /**
+     * @var AssetUrlBuilderInterface Url builder for constructing absolute URLs for each asset in this schema.
+     */
     protected $assetUrlBuilder;
-    
+
     /**
      * AssetBundleSchema constructor.
      *
-     * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
+     * @param AssetUrlBuilderInterface $assetUrlBuilder
      */
     public function __construct(AssetUrlBuilderInterface $assetUrlBuilder)
     {
         $this->assetUrlBuilder = $assetUrlBuilder;
     }
-    
+
     /**
      * Gets a bundle from this schema.
      *
@@ -98,7 +99,7 @@ class AssetBundleSchema
      *
      * The format of this object should match the formats described for bundles in gulp-bundle-assets
      * @see https://github.com/dowjones/gulp-bundle-assets
-     * @param array $schema An associative array (usually converted from a JSON object)
+     * @param mixed[] $schema An associative array (usually converted from a JSON object)
      * @todo See how this behaves when called multiple times on different schema.  It should merge in multiple bundle schemas.
      */
     protected function loadBundles($schema)
@@ -141,7 +142,7 @@ class AssetBundleSchema
      * Add a Javascript asset element to a bundle.
      *
      * @param AssetBundle $bundle A reference to the target bundle.
-     * @param array|string $schema A string or associative array containing this asset's info (usually converted from a JSON object)
+     * @param mixed[]|string $schema A string or associative array containing this asset's info (usually converted from a JSON object)
      */
     protected function addBundleScript(&$bundle, $schema)
     {
@@ -160,7 +161,7 @@ class AssetBundleSchema
      * Add a CSS asset element to a bundle.
      *
      * @param AssetBundle $bundle A reference to the target bundle.
-     * @param array|string $schema A string or associative array containing this asset's info (usually converted from a JSON object)
+     * @param mixed[]|string $schema A string or associative array containing this asset's info (usually converted from a JSON object)
      */
     protected function addBundleStyle(&$bundle, $schema)
     {
@@ -175,6 +176,12 @@ class AssetBundleSchema
         $bundle->addCssAsset($asset);
     }
 
+    /**
+     * Load a JSON schema file that describes asset bundles.
+     *
+     * @param string $file Path to the schema file.
+     * @return mixed[]
+     */
     protected function readSchema($file)
     {
         $doc = file_get_contents($file);

@@ -24,8 +24,6 @@ class LocatorTest extends TestCase
         $path = $this->locator->getBase();
 
         // Assert
-        echo "\nChecking base path against: " . $this->basePath . "\n";
-
         $this->assertEquals($this->basePath, $path);
     }
 
@@ -54,11 +52,11 @@ class LocatorTest extends TestCase
         $path = $this->locator->findResource('assets://vendor/bootstrap-3.3.6/js/bootstrap.js', false);
 
         $this->assertEquals('owls/assets/vendor/bootstrap-3.3.6/js/bootstrap.js', $path);
-        
+
         $path = $this->locator->findResource('assets://vendor/bootstrap-3.3.6/css/bootstrap-theme.css', false);
 
         $this->assertEquals('hawks/assets/vendor/bootstrap-3.3.6/css/bootstrap-theme.css', $path);
-        
+
         $path = $this->locator->findResource('assets://vendor/bootstrap-3.3.6/css/bootstrap.css', false);
 
         $this->assertEquals('owls/assets/vendor/bootstrap-3.3.6/css/bootstrap.css', $path);

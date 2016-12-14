@@ -7,37 +7,45 @@
  * @copyright Copyright (c) 2013-2016 Alexander Weissman
  * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
  */
-namespace UserFrosting\Assets;
+namespace UserFrosting\Assets\UrlBuilder;
 
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
-use UserFrosting\Assets\Util;
+use UserFrosting\Assets\Util\Util;
 
 /**
- * Represents an asset bundle, as defined in https://github.com/dowjones/gulp-bundle-assets
+ * Builds a URL for an asset by finding the highest-priority instance in the assets:// stream, and prefixing with a base url.
  *
- * An asset bundle can contain any number of JavascriptAssets and CssAssets, and represent either raw or compiled assets.
- * @see https://github.com/dowjones/gulp-bundle-assets.
  * @author Alex Weissman (https://alexanderweissman.com)
  */
 class AssetUrlBuilder implements AssetUrlBuilderInterface
 {
-    protected $locator;
-
     /**
-     *  The base url for your assets, for example https://example.com/assets-raw/
-     *
-     * @param string
+     * @var string The base url for your assets, for example https://example.com/assets-raw/
      */
     protected $baseUrl;
 
+    /**
+     * @var UniformResourceLocator Locator service to use when searching for asset files.
+     */
+    protected $locator;
+
+    /**
+     * @var string A prefix to find and remove from the matched file path, before constructing the url.
+     */
     protected $removePrefix;
 
+    /**
+     * @var string Stream wrapper scheme to use when searching for the asset.
+     */
     protected $scheme;
 
     /**
-     * AssetBundle constructor.
+     * AssetUrlBuilder constructor.
      *
-     * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
+     * @param UniformResourceLocator $locator
+     * @param string $baseUrl
+     * @param string $removePrefix
+     * @param string $scheme
      */
     public function __construct(UniformResourceLocator $locator, $baseUrl, $removePrefix = '', $scheme = 'assets')
     {
@@ -52,6 +60,9 @@ class AssetUrlBuilder implements AssetUrlBuilderInterface
 
     /**
      * Generate an absolute URL for an asset, based on the asset path and the bundle's baseUrl.
+     *
+     * @param string $path Path to search for in the stream.
+     * @return string Fully qualified http(s) url for the asset.
      */
     public function getAssetUrl($path)
     {

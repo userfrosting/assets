@@ -9,7 +9,6 @@
  */
 namespace UserFrosting\Assets;
 
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 use UserFrosting\Assets\Util;
 
 /**
@@ -19,10 +18,8 @@ use UserFrosting\Assets\Util;
  * @see https://github.com/dowjones/gulp-bundle-assets.
  * @author Alex Weissman (https://alexanderweissman.com)
  */
-class AssetUrlBuilder implements AssetUrlBuilderInterface
+class CompiledAssetUrlBuilder implements AssetUrlBuilderInterface
 {
-    protected $locator;
-
     /**
      *  The base url for your assets, for example https://example.com/assets-raw/
      *
@@ -30,39 +27,22 @@ class AssetUrlBuilder implements AssetUrlBuilderInterface
      */
     protected $baseUrl;
 
-    protected $removePrefix;
-
-    protected $scheme;
-
     /**
      * AssetBundle constructor.
      *
      * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
      */
-    public function __construct(UniformResourceLocator $locator, $baseUrl, $removePrefix = '', $scheme = 'assets')
+    public function __construct($baseUrl)
     {
-        $this->locator = $locator;
-
         $this->baseUrl = rtrim($baseUrl, '/') . '/';
-
-        $this->removePrefix = $removePrefix ? rtrim($removePrefix, "/\\") . '/' : '';
-
-        $this->scheme = $scheme;
     }
 
     /**
-     * Generate an absolute URL for an asset, based on the asset path and the bundle's baseUrl.
+     * Generate an absolute URL for an asset, by simply concatenating the baseUrl and the specified path.
      */
     public function getAssetUrl($path)
     {
-        $relativeUrl = $this->locator->findResource($this->scheme . '://' . $path, false);
-
-        if ($relativeUrl) {
-            $relativeUrl = Util::stripPrefix($relativeUrl, $this->removePrefix);
-            $absoluteUrl = $this->baseUrl . $relativeUrl;
-        } else {
-            $absoluteUrl = '';
-        }
+        $absoluteUrl = $this->baseUrl . $path;
 
         return $absoluteUrl;
     }

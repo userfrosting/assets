@@ -33,7 +33,7 @@ class AssetManager
      *
      * @param AssetUrlBuilder $assetUrlBuilder
      */
-    public function __construct(AssetUrlBuilder $assetUrlBuilder, AssetBundleSchema $bundleSchema)
+    public function __construct(AssetUrlBuilderInterface $assetUrlBuilder, AssetBundleSchema $bundleSchema)
     {
         $this->assetUrlBuilder = $assetUrlBuilder;
         $this->setBundleSchema($bundleSchema);

@@ -36,7 +36,7 @@ class AssetBundleSchema
      *
      * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
      */
-    public function __construct(AssetUrlBuilder $assetUrlBuilder)
+    public function __construct(AssetUrlBuilderInterface $assetUrlBuilder)
     {
         $this->assetUrlBuilder = $assetUrlBuilder;
     }

@@ -100,14 +100,35 @@ class AssetBundleSchema
      * The format of this object should match the formats described for bundles in gulp-bundle-assets
      * @see https://github.com/dowjones/gulp-bundle-assets
      * @param mixed[] $schema An associative array (usually converted from a JSON object)
-     * @todo See how this behaves when called multiple times on different schema.  It should merge in multiple bundle schemas.
      */
     protected function loadBundles($schema)
     {
         foreach ($schema as $bundleName => $bundleSchema) {
             if (!isset($this->bundles[$bundleName])) {
                 $this->bundles[$bundleName] = new AssetBundle($this->assetUrlBuilder);
+            } else {
+                // Bundle already defined, handle as per collision rules.
+                $collisionRule = (isset($bundleSchema['options']['sprinkle']['onCollision']) ? $bundleSchema['options']['sprinkle']['onCollision'] : 'replace');
+                switch ($collisionRule) {
+                    case 'replace':
+                        $this->bundles[$bundleName] = new AssetBundle($this->assetUrlBuilder);
+                        break;
+                    case 'merge':
+                        // Nothing extra needs to be done.
+                        // This simply exists to prevent falling through to default.
+                        break;
+                    case 'ignore':
+                        unset($bundleSchema);
+                        break;
+                    case 'error':
+                        throw new \ErrorException("The bundle '$bundleName' is already defined.");
+                        break;
+                    default:
+                        throw new \OutOfBoundsException("Invalid value '$collisionRule' provided for 'onCollision' key in bundle '$bundleName'.");
+                        break;
+                }
             }
+            
 
             // TODO: can a bundle be defined as a string instead of an object/array?
 

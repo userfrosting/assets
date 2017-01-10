@@ -106,8 +106,7 @@ class AssetBundleSchema
         foreach ($schema as $bundleName => $bundleSchema) {
             if (!isset($this->bundles[$bundleName])) {
                 $this->bundles[$bundleName] = new AssetBundle($this->assetUrlBuilder);
-            }
-            else {
+            } else {
                 // Bundle already defined, handle as per collision rules.
                 $collisionRule = (isset($bundleSchema['options']['sprinkle']['onCollision']) ? $bundleSchema['options']['sprinkle']['onCollision'] : 'replace');
                 switch ($collisionRule) {

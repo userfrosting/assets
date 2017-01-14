@@ -3,6 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 use UserFrosting\Assets\UrlBuilder\AssetUrlBuilder;
+use UserFrosting\Support\Exception\FileNotFoundException;
 
 class AssetUrlBuilderTest extends TestCase
 {
@@ -30,10 +31,6 @@ class AssetUrlBuilderTest extends TestCase
         $url = $assetUrlBuilder->getAssetUrl($path);
 
         $this->assertEquals('http://example.com/assets-raw/owls/assets/vendor/bootstrap-3.3.6/css/bootstrap.css', $url);
-
-        $url = $assetUrlBuilder->getAssetUrl('/fake/path/file.css');
-
-        $this->assertEquals('', $url);
     }
 
     public function testGetUrlRemovePrefix()
@@ -45,5 +42,15 @@ class AssetUrlBuilderTest extends TestCase
         $url = $assetUrlBuilder->getAssetUrl($path);
 
         $this->assertEquals('http://example.com/assets-raw/assets/vendor/bootstrap-3.3.6/css/bootstrap.css', $url);
+    }
+
+    public function testBadFilePathException()
+    {
+        $assetUrlBuilder = new AssetUrlBuilder($this->locator, $this->baseUrl);
+
+        $path = 'some/bad/path.txt';
+
+        $this->expectException(FileNotFoundException::class);
+        $url = $assetUrlBuilder->getAssetUrl($path);
     }
 }

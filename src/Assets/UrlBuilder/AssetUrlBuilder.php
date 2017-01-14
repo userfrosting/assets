@@ -11,6 +11,7 @@ namespace UserFrosting\Assets\UrlBuilder;
 
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 use UserFrosting\Assets\Util\Util;
+use UserFrosting\Support\Exception\FileNotFoundException;
 
 /**
  * Builds a URL for an asset by finding the highest-priority instance in the assets:// stream, and prefixing with a base url.
@@ -72,7 +73,7 @@ class AssetUrlBuilder implements AssetUrlBuilderInterface
             $relativeUrl = Util::stripPrefix($relativeUrl, $this->removePrefix);
             $absoluteUrl = $this->baseUrl . $relativeUrl;
         } else {
-            $absoluteUrl = '';
+            throw new FileNotFoundException("The asset '$path' could not be found.");
         }
 
         return $absoluteUrl;

@@ -128,7 +128,7 @@ class AssetBundleSchema
                         break;
                 }
             }
-            
+
 
             // TODO: can a bundle be defined as a string instead of an object/array?
 

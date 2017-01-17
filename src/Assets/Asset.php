@@ -42,14 +42,6 @@ class Asset
     }
 
     /**
-     * @return string[]
-     */
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-    /**
      * @return string
      */
     public function getPath()

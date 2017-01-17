@@ -72,12 +72,10 @@ class AssetBundle
      *
      * @return string The rendered asset tag.
      */
-    public function renderScript($asset)
+    public function renderScript($asset, $options = null)
     {
         $path = $asset->getPath();
         $absoluteUrl = $this->assetUrlBuilder->getAssetUrl($path);
-
-        $options = $asset->getOptions();
 
         $attributes = [];
 
@@ -106,11 +104,11 @@ class AssetBundle
      * @param string $baseUrl The base url of the assets, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
      * @return string The rendered tag(s), separated by newlines.
      */
-    public function renderScripts()
+    public function renderScripts($options = null)
     {
         $result = [];
         foreach ($this->jsAssets as $asset) {
-            $result[] = $this->renderScript($asset);
+            $result[] = $this->renderScript($asset, $options);
         }
 
         return implode("\n", $result);
@@ -121,12 +119,10 @@ class AssetBundle
      *
      * @return string The rendered asset tag.
      */
-    public function renderStyle($asset)
+    public function renderStyle($asset, $options = null)
     {
         $path = $asset->getPath();
         $absoluteUrl = $this->assetUrlBuilder->getAssetUrl($path);
-
-        $options = $asset->getOptions();
 
         $attributes = [];
 
@@ -149,11 +145,11 @@ class AssetBundle
      *
      * @return string The rendered tag(s), separated by newlines.
      */
-    public function renderStyles()
+    public function renderStyles($options = null)
     {
         $result = [];
         foreach ($this->cssAssets as $asset) {
-            $result[] = $this->renderStyle($asset);
+            $result[] = $this->renderStyle($asset, $options);
         }
 
         return implode("\n", $result);

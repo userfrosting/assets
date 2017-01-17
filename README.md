@@ -141,6 +141,18 @@ If you are using Twig, you can pass your `AssetManager` as a global variable to 
 
 `{{ am.js('js/mybundle') | raw }}`
 
+### Advanced Usage
+
+For all *script* and *style* methods, options can be provided to modify the produced tag.
+
+`async` for instance can be applied to a Javascript tag:
+
+_In PHP_
+`echo $am.js('js/mybundle', [ 'async' => true ])`
+
+_In TWIG_
+`{{ am.js('js/bundle', { 'async': true })}}`
+
 ## Sample Gulp file
 
 Assuming you have `npm` and `gulp-bundle-assets` installed, you can use the following Gulp file and run the `gulp bundle` task to compile your assets:

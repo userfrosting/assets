@@ -43,6 +43,17 @@ class AssetBundleTest extends TestCase
         $this->assertEquals('<link rel="stylesheet" type="text/css" href="http://example.com/assets-raw/owls/assets/vendor/bootstrap-3.3.6/css/bootstrap.css" >', $tag);
     }
 
+    public function testRenderStyleOptions() {
+        $bundle = new AssetBundle($this->assetUrlBuilder);
+
+        $bundle->addCssAsset($this->cssAsset);
+
+        $tag = $bundle->renderStyle($this->cssAsset, ['id' => 'value']);
+
+        // Assert
+        $this->assertEquals('<link rel="stylesheet" type="text/css" href="http://example.com/assets-raw/owls/assets/vendor/bootstrap-3.3.6/css/bootstrap.css" id="value">', $tag);
+    }
+
     public function testRenderScript()
     {
         $bundle = new AssetBundle($this->assetUrlBuilder);
@@ -53,5 +64,17 @@ class AssetBundleTest extends TestCase
 
         // Assert
         $this->assertEquals('<script src="http://example.com/assets-raw/owls/assets/vendor/bootstrap-3.3.6/js/bootstrap.js" ></script>', $tag);
+    }
+
+    public function testRenderScriptOptions()
+    {
+        $bundle = new AssetBundle($this->assetUrlBuilder);
+
+        $bundle->addJavascriptAsset($this->jsAsset);
+
+        $tag = $bundle->renderScript($this->jsAsset, ['defer' => true]);
+
+        // Assert
+        $this->assertEquals('<script src="http://example.com/assets-raw/owls/assets/vendor/bootstrap-3.3.6/js/bootstrap.js" defer></script>', $tag);
     }
 }

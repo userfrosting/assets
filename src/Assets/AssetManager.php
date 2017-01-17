@@ -55,22 +55,24 @@ class AssetManager
      * Generate <script> tag(s) for Javascript assets in an asset bundle.
      *
      * @param string $bundleName
+     * @param mixed[] $options
      * @return string The rendered HTML tag(s).
      */
-    public function js($bundleName = 'js/main')
+    public function js($bundleName = 'js/main', $options = null)
     {
-        return $this->bundleSchema->get($bundleName)->renderScripts();
+        return $this->bundleSchema->get($bundleName)->renderScripts($options);
     }
 
     /**
      * Generate <link> tag(s) for CSS assets in an asset bundle.
      *
      * @param string $bundleName
+     * @param mixed[] $options
      * @return string The rendered HTML tag(s).
      */
-    public function css($bundleName = 'css/main')
+    public function css($bundleName = 'css/main', $options = null)
     {
-        return $this->bundleSchema->get($bundleName)->renderStyles();
+        return $this->bundleSchema->get($bundleName)->renderStyles($options);
     }
 
     /**

@@ -72,7 +72,7 @@ class AssetBundle
      *
      * @return string The rendered asset tag.
      */
-    public function renderScript($asset, $options = null)
+    public function renderScript($asset, $options = [])
     {
         $path = $asset->getPath();
         $absoluteUrl = $this->assetUrlBuilder->getAssetUrl($path);
@@ -104,7 +104,7 @@ class AssetBundle
      * @param string $baseUrl The base url of the assets, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
      * @return string The rendered tag(s), separated by newlines.
      */
-    public function renderScripts($options = null)
+    public function renderScripts($options = [])
     {
         $result = [];
         foreach ($this->jsAssets as $asset) {
@@ -119,7 +119,7 @@ class AssetBundle
      *
      * @return string The rendered asset tag.
      */
-    public function renderStyle($asset, $options = null)
+    public function renderStyle($asset, $options = [])
     {
         $path = $asset->getPath();
         $absoluteUrl = $this->assetUrlBuilder->getAssetUrl($path);
@@ -145,7 +145,7 @@ class AssetBundle
      *
      * @return string The rendered tag(s), separated by newlines.
      */
-    public function renderStyles($options = null)
+    public function renderStyles($options = [])
     {
         $result = [];
         foreach ($this->cssAssets as $asset) {

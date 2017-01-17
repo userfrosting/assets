@@ -58,7 +58,7 @@ class AssetManager
      * @param mixed[] $options
      * @return string The rendered HTML tag(s).
      */
-    public function js($bundleName = 'js/main', $options = null)
+    public function js($bundleName = 'js/main', $options = [])
     {
         return $this->bundleSchema->get($bundleName)->renderScripts($options);
     }
@@ -70,7 +70,7 @@ class AssetManager
      * @param mixed[] $options
      * @return string The rendered HTML tag(s).
      */
-    public function css($bundleName = 'css/main', $options = null)
+    public function css($bundleName = 'css/main', $options = [])
     {
         return $this->bundleSchema->get($bundleName)->renderStyles($options);
     }

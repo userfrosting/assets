@@ -26,25 +26,32 @@ class AssetBundle
     protected $assetUrlBuilder;
 
     /**
-     * @var CssAsset[] This bundle's CSS assets, indexed by bundle name.
+     * @var Asset[] This bundle's CSS assets, indexed by bundle name.
      */
     protected $cssAssets;
 
     /**
-     * @var JavascriptAsset[] This bundle's Javascript assets, indexed by bundle name.
+     * @var Asset[] This bundle's Javascript assets, indexed by bundle name.
      */
     protected $jsAssets;
+
+    /**
+     * @var string
+     */
+    protected $name;
 
     /**
      * AssetBundle constructor.
      *
      * @param AssetUrlBuilderInterface $assetUrlBuilder
+     * @param string $name
      */
-    public function __construct(AssetUrlBuilderInterface $assetUrlBuilder)
+    public function __construct(AssetUrlBuilderInterface $assetUrlBuilder, $name = "")
     {
         $this->assetUrlBuilder = $assetUrlBuilder;
         $this->cssAssets = [];
         $this->jsAssets = [];
+        $this->name = $name;
     }
 
     /**
@@ -55,6 +62,7 @@ class AssetBundle
     public function addCssAsset(Asset $asset)
     {
         $this->cssAssets[] = $asset;
+        return $this;
     }
 
     /**
@@ -65,17 +73,21 @@ class AssetBundle
     public function addJavascriptAsset(Asset $asset)
     {
         $this->jsAssets[] = $asset;
+        return $this;
     }
 
     /**
      * Render an asset as a JS `script` tag.
      *
+     * @param Asset $asset
+     * @param mixed[] $options additional attributes to be inserted in the tag.
      * @return string The rendered asset tag.
      */
     public function renderScript($asset, $options = [])
     {
         $path = $asset->getPath();
-        $absoluteUrl = $this->assetUrlBuilder->getAssetUrl($path);
+        $declarationSource = $asset->getDeclarationSource();
+        $absoluteUrl = $this->assetUrlBuilder->getAssetUrl($path, $declarationSource);
 
         $attributes = [];
 
@@ -101,7 +113,7 @@ class AssetBundle
     /**
      * Generate <script> tag(s) for Javascript assets in this asset bundle.
      *
-     * @param string $baseUrl The base url of the assets, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
+     * @param mixed[] $options additional attributes to be inserted in the tag.
      * @return string The rendered tag(s), separated by newlines.
      */
     public function renderScripts($options = [])
@@ -117,12 +129,15 @@ class AssetBundle
     /**
      * Render an asset as a CSS `link` tag.
      *
+     * @param Asset $asset
+     * @param mixed[] $options additional attributes to be inserted in the tag.
      * @return string The rendered asset tag.
      */
     public function renderStyle($asset, $options = [])
     {
         $path = $asset->getPath();
-        $absoluteUrl = $this->assetUrlBuilder->getAssetUrl($path);
+        $declarationSource = $asset->getDeclarationSource();
+        $absoluteUrl = $this->assetUrlBuilder->getAssetUrl($path, $declarationSource);
 
         $attributes = [];
 
@@ -143,6 +158,7 @@ class AssetBundle
     /**
      * Generate <link> tag(s) for CSS assets in this asset bundle.
      *
+     * @param mixed[] $options additional attributes to be inserted in the tag.
      * @return string The rendered tag(s), separated by newlines.
      */
     public function renderStyles($options = [])

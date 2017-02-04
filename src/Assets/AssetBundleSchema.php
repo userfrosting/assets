@@ -64,7 +64,6 @@ class AssetBundleSchema
      * The format of this file should match the output of gulp-bundle-assets
      * @see https://github.com/dowjones/gulp-bundle-assets
      * @param string $file Path to the schema file.
-     * @todo See how this behaves when called multiple times on different files.  It should merge in multiple bundle schemas.
      * @todo Support linting of JSON documents?
      */
     public function loadCompiledSchemaFile($file)
@@ -80,7 +79,6 @@ class AssetBundleSchema
      * The format of this file should match the input format of gulp-bundle-assets
      * @see https://github.com/dowjones/gulp-bundle-assets
      * @param string $file Path to the schema file.
-     * @todo See how this behaves when called multiple times on different files.  It should merge in multiple bundle schemas.
      * @todo Support linting of JSON documents?
      */
     public function loadRawSchemaFile($file)
@@ -91,7 +89,7 @@ class AssetBundleSchema
             throw new \OutOfBoundsException("The specified JSON document does not contain a 'bundle' key.");
         }
 
-        $this->loadBundles($schema['bundle']);
+        $this->loadBundles($schema['bundle'], $file);
     }
 
     /**
@@ -100,18 +98,23 @@ class AssetBundleSchema
      * The format of this object should match the formats described for bundles in gulp-bundle-assets
      * @see https://github.com/dowjones/gulp-bundle-assets
      * @param mixed[] $schema An associative array (usually converted from a JSON object)
+     * @param string $fileName The config file in which this bundle is defined.
+     * @todo can a bundle be defined as a string instead of an object/array?
      */
-    protected function loadBundles($schema)
+    protected function loadBundles($schema, $fileName = '')
     {
         foreach ($schema as $bundleName => $bundleSchema) {
+            // Construct full declaration source
+            $declarationSource = $fileName . " [$bundleName]";
+
             if (!isset($this->bundles[$bundleName])) {
-                $this->bundles[$bundleName] = new AssetBundle($this->assetUrlBuilder);
+                $this->bundles[$bundleName] = new AssetBundle($this->assetUrlBuilder, $bundleName);
             } else {
                 // Bundle already defined, handle as per collision rules.
                 $collisionRule = (isset($bundleSchema['options']['sprinkle']['onCollision']) ? $bundleSchema['options']['sprinkle']['onCollision'] : 'replace');
                 switch ($collisionRule) {
                     case 'replace':
-                        $this->bundles[$bundleName] = new AssetBundle($this->assetUrlBuilder);
+                        $this->bundles[$bundleName] = new AssetBundle($this->assetUrlBuilder, $bundleName);
                         break;
                     case 'merge':
                         // Nothing extra needs to be done.
@@ -129,17 +132,14 @@ class AssetBundleSchema
                 }
             }
 
-
-            // TODO: can a bundle be defined as a string instead of an object/array?
-
             // Load scripts
             if (isset($bundleSchema['scripts'])) {
                 if (is_array($bundleSchema['scripts'])) {
                     foreach ($bundleSchema['scripts'] as $script) {
-                        $this->addBundleScript($this->bundles[$bundleName], $script);
+                        $this->addBundleScript($this->bundles[$bundleName], $script, $declarationSource);
                     }
                 } elseif (is_string($bundleSchema['scripts'])) {
-                    $this->addBundleScript($this->bundles[$bundleName], $bundleSchema['scripts']);
+                    $this->addBundleScript($this->bundles[$bundleName], $bundleSchema['scripts'], $declarationSource);
                 }
             }
 
@@ -147,15 +147,12 @@ class AssetBundleSchema
             if (isset($bundleSchema['styles'])) {
                 if (is_array($bundleSchema['styles'])) {
                     foreach ($bundleSchema['styles'] as $style) {
-                        $this->addBundleStyle($this->bundles[$bundleName], $style);
+                        $this->addBundleStyle($this->bundles[$bundleName], $style, $declarationSource);
                     }
                 } elseif (is_string($bundleSchema['styles'])) {
-                    $this->addBundleStyle($this->bundles[$bundleName], $bundleSchema['styles']);
+                    $this->addBundleStyle($this->bundles[$bundleName], $bundleSchema['styles'], $declarationSource);
                 }
             }
-
-            // TODO: load options
-
         }
     }
 
@@ -164,13 +161,14 @@ class AssetBundleSchema
      *
      * @param AssetBundle $bundle A reference to the target bundle.
      * @param mixed[]|string $schema A string or associative array containing this asset's info (usually converted from a JSON object)
+     * @param string $declarationSource A string describing the config file and bundle in which this asset was referenced.
      */
-    protected function addBundleScript(&$bundle, $schema)
+    protected function addBundleScript(&$bundle, $schema, $declarationSource = '')
     {
-        if (is_array($schema) and isset($schema['src'])) {
-            $asset = new Asset($schema['src']);
+        if (is_array($schema) && isset($schema['src'])) {
+            $asset = new Asset($schema['src'], $declarationSource);
         } elseif (is_string($schema)) {
-            $asset = new Asset($schema);
+            $asset = new Asset($schema, $declarationSource);
         } else {
             return;
         }
@@ -183,13 +181,14 @@ class AssetBundleSchema
      *
      * @param AssetBundle $bundle A reference to the target bundle.
      * @param mixed[]|string $schema A string or associative array containing this asset's info (usually converted from a JSON object)
+     * @param string $declarationSource A string describing the config file and bundle in which this asset was referenced.
      */
-    protected function addBundleStyle(&$bundle, $schema)
+    protected function addBundleStyle(&$bundle, $schema, $declarationSource = '')
     {
-        if (is_array($schema) and isset($schema['src'])) {
-            $asset = new Asset($schema['src']);
+        if (is_array($schema) && isset($schema['src'])) {
+            $asset = new Asset($schema['src'], $declarationSource);
         } elseif (is_string($schema)) {
-            $asset = new Asset($schema);
+            $asset = new Asset($schema, $declarationSource);
         } else {
             return;
         }

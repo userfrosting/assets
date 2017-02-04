@@ -63,9 +63,10 @@ class AssetUrlBuilder implements AssetUrlBuilderInterface
      * Generate an absolute URL for an asset, based on the asset path and the bundle's baseUrl.
      *
      * @param string $path Path to search for in the stream.
+     * @param string|null $declarationSource A string describing the config file and bundle in which this asset was referenced.
      * @return string Fully qualified http(s) url for the asset.
      */
-    public function getAssetUrl($path)
+    public function getAssetUrl($path, $declarationSource = null)
     {
         $relativeUrl = $this->locator->findResource($this->scheme . '://' . $path, false);
 
@@ -73,7 +74,8 @@ class AssetUrlBuilder implements AssetUrlBuilderInterface
             $relativeUrl = Util::stripPrefix($relativeUrl, $this->removePrefix);
             $absoluteUrl = $this->baseUrl . $relativeUrl;
         } else {
-            throw new FileNotFoundException("The asset '$path' could not be found.");
+            $message = "The asset '$path' could not be found." . ($declarationSource ? " Referenced in '$declarationSource'." : '');
+            throw new FileNotFoundException($message);
         }
 
         return $absoluteUrl;

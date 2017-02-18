@@ -14,16 +14,14 @@ namespace UserFrosting\Assets;
  *
  * @author Alex Weissman (https://alexanderweissman.com)
  */
-abstract class Asset
+class Asset
 {
 
     /**
-     * Url subpath and file name for the asset, relative to the base url specified when rendering.
-     *
-     * @var string
+     * @var string A string describing the config file and bundle in which this asset was referenced.
      */
-    protected $path;
-    
+    protected $declarationSource;
+
     /**
      * Any additional HTML attributes, as key->value pairs, to render in the asset's tag.
      *
@@ -32,20 +30,37 @@ abstract class Asset
     protected $options;
 
     /**
+     * Url subpath and file name for the asset, relative to the base url specified when rendering.
+     *
+     * @var string
+     */
+    protected $path;
+
+    /**
      * Create a new asset with the specified subpath.
      *
      * @param string $path The url subpath and file name for this asset (e.g. "vendor/bootstrap/js/bootstrap.js")
+     * @param string $declarationSource A string describing the config file and bundle in which this asset was referenced.
      */
-    public function __construct($path)
+    public function __construct($path, $declarationSource = '')
     {
         $this->path = ltrim($path, "/\\");
+        $this->declarationSource = $declarationSource;
     }
-    
+
     /**
-     * Render this asset, using the specified base url.
-     *
-     * @param string $baseUrl The base url to use, for example https://example.com/assets/, or http://localhost/myproject/public/assets/
-     * @return string The rendered asset tag.
-     */    
-    abstract public function render($baseUrl);
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeclarationSource()
+    {
+        return $this->declarationSource;
+    }
 }

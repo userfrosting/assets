@@ -75,43 +75,63 @@ Also note the setting of `options -> result -> type -> styles/scripts` for each 
 
 Notice that each bundle is processed into a single Javascript or CSS file.  You may have bundles that contain both Javascript and CSS, but we recommend you split them into separate bundles and use the `js/` and `css/` prefixes to distinguish them.
 
-In your PHP application, you can now load this file into an `AssetBundleSchema`:
+To find raw asset files, you will also need to create an instance of `AssetUrlBuilder`.  This in turn requires an instance of `UniformResourceLocator`, where you can add your desired search paths:
 
 ```
 <?php
-    
+
+use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 use UserFrosting\Assets\AssetManager;
-use UserFrosting\Assets\AssetBundleSchema;    
+use UserFrosting\Assets\AssetBundleSchema;
+use UserFrosting\Assets\UrlBuilder\AssetUrlBuilder;
 
-$as = new AssetBundleSchema();
+$basePath = __DIR__;
+$locator = new UniformResourceLocator($basePath);
+$locator->addPath('assets', '', [
+    'owls/assets',
+    'hawks/assets'
+]);
+
+$baseUrl = 'http://example.com/public/assets';
+$aub = new AssetUrlBuilder($locator, $baseUrl);
+```
+
+Once you have an instance of `AssetUrlBuilder`, you can create an instance of an `AssetBundleSchema` for a raw schema:
+
+```
+$as = new AssetBundleSchema($aub);
 $as->loadRawSchemaFile('/path/to/bundle.config.json');
-$as->loadCompiledSchemaFile('/path/to/bundle.result.json');
 ```
 
-By creating an `AssetManager`, you can easily render any bundle defined in the schema, in raw or compiled mode.
+By creating an `AssetManager`, you can easily render any bundle defined in your schema, in raw or compiled mode.
 
 ```
-// Setting the second parameter to 'true' will tell our AssetManager to render all asset bundles in raw mode.
-$am = new AssetManager('http://localhost/myproject/', true);
-$am->setRawAssetsPath('assets-raw');
-$am->setCompiledAssetsPath('assets');
-$am->setBundleSchema($as);
+$am = new AssetManager($aub, $as);
 ```
 
 You can now render the Javascript or CSS assets for any bundle:
 
 `echo $am->css('css/main');`
 
-In raw mode, this will output:
+In raw mode, this will output (assuming that all the assets were found in (`owls/assets/`):
 
 ```
-<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/vendor/font-awesome-4.5.0/css/font-awesome.css" >
-<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/css/bootstrap-3.3.1.css" >
-<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/css/bootstrap-custom.css" >
-<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/css/paper.css" >   
+<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/owls/assets/vendor/font-awesome-4.5.0/css/font-awesome.css" >
+<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/owls/assets/css/bootstrap-3.3.1.css" >
+<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/owls/assets/css/bootstrap-custom.css" >
+<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/owls/assets/css/paper.css" >   
 ```
 
-In compiled mode, this will instead output:
+To load and render compiled assets, you create an instance of `CompiledAssetUrlBuilder` instead:
+
+```
+$aub = new CompiledAssetUrlBuilder($baseUrl);
+$as = new AssetBundleSchema($aub);
+// Notice we use the compiled schema file here instead
+$as->loadCompiledSchemaFile('/path/to/bundle.result.json');
+```
+
+This outputs:
 
 ```
 <link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets/css/main-c72ce38fba.css" >
@@ -120,6 +140,18 @@ In compiled mode, this will instead output:
 If you are using Twig, you can pass your `AssetManager` as a global variable to Twig.  You can then use any of its rendering methods to automatically insert the tags into your template:
 
 `{{ am.js('js/mybundle') | raw }}`
+
+### Advanced Usage
+
+For all *script* and *style* methods, options can be provided to modify the produced tag.
+
+`async` for instance can be applied to a Javascript tag:
+
+_In PHP_
+`echo $am.js('js/mybundle', [ 'async' => true ])`
+
+_In TWIG_
+`{{ am.js('js/bundle', { 'async': true })}}`
 
 ## Sample Gulp file
 
@@ -150,4 +182,10 @@ gulp.task('bundle', function() {
         .pipe(gulp.dest(destDirectory));
     return fb;
 });
+```
+
+## Testing
+
+```
+phpunit --bootstrap tests/bootstrap.php tests
 ```

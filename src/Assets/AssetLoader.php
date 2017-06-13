@@ -9,7 +9,7 @@
 namespace UserFrosting\Assets;
 
 use UserFrosting\Assets\Util\MimeType;
-use UserFrosting\Assets\Util\Util;
+use UserFrosting\Support\Util\Util;
 
 /**
  * Asset loader class.

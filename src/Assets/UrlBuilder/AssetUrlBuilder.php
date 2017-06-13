@@ -9,7 +9,7 @@
 namespace UserFrosting\Assets\UrlBuilder;
 
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
-use UserFrosting\Assets\Util\Util;
+use UserFrosting\Support\Util\Util;
 use UserFrosting\Support\Exception\FileNotFoundException;
 
 /**

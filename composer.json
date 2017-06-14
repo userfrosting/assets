@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "UserFrosting\\Assets\\": "src/Assets"
+            "UserFrosting\\Assets\\": "src"
         }
     },
     "extra": {

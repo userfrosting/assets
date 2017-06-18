@@ -7,7 +7,7 @@ This module works in tandem with [gulp-bundle-assets](https://github.com/dowjone
 To get started, define a bundle configuration file as defined in [gulp-bundle-assets](https://github.com/dowjones/gulp-bundle-assets#basic-usage):
 
 
-*bundle.config.json*
+*asset-bundles.json*
 
 ```
 {
@@ -100,7 +100,7 @@ Once you have an instance of `AssetUrlBuilder`, you can create an instance of an
 
 ```
 $as = new AssetBundleSchema($aub);
-$as->loadRawSchemaFile('/path/to/bundle.config.json');
+$as->loadRawSchemaFile('/path/to/asset-bundles.json');
 ```
 
 By creating an `AssetManager`, you can easily render any bundle defined in your schema, in raw or compiled mode.
@@ -164,7 +164,7 @@ var gulp = require('gulp');
 var gulpLoadPlugins = require('gulp-load-plugins');
 var plugins = gulpLoadPlugins();
 
-// The directory where the bundle task should look for the raw assets, as specified in bundle.config.json
+// The directory where the bundle task should look for the raw assets, as specified in asset-bundles.json
 var sourceDirectory = '../public/assets-raw/';
 
 // The directory where the bundle task should place compiled assets.  The names of assets in bundle.result.json
@@ -172,7 +172,7 @@ var sourceDirectory = '../public/assets-raw/';
 var destDirectory = '../public/assets/';
 
 gulp.task('bundle', function() {
-    fb = gulp.src('./bundle.config.json')
+    fb = gulp.src('./asset-bundles.json')
         .pipe(plugins.bundleAssets({
             base: sourceDirectory
         }))

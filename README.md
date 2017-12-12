@@ -1,22 +1,78 @@
-# Assets module for UserFrosting
+# UserFrosting/Assets
+
+[![Build status](https://ci.appveyor.com/api/projects/status/fmt0253je6spwq7y?svg=true)](https://ci.appveyor.com/project/Silic0nS0ldier/assets)
+[![Build Status](https://travis-ci.org/userfrosting/assets.svg)](https://travis-ci.org/userfrosting/assets)
+
+**Assets** is a library originally created for UserFrosting 4 to make it much easier to reference frontend assets in both production and development contexts.
+
+Out of the box it can:
+
+- Provide an easy way to generate an absolute url to an asset via a locator.
+- Provide a basic level of integration with *gulp-bundle-assets*, making it easy to reference asset bundles.
+- Integrate via a common interface with virtually any bundling system.
+- Integrate with Slim to serve assets that are inaccessible from the public folder, in the development context.
+- Perform url-to-path transformations. Useful for making debuggable URLs that can be reverted back to the path to be used by the Slim asset server.
+- Integrate with your preferred (and extendable) templating engine to provide easy access to asset bundles (that get wrapped with the appropriate tags) and individual assets.
+
+## Installation
+
+```bash
+composer require userfrosting/assets
+```
 
 ## Usage
 
-This module works in tandem with [gulp-bundle-assets](https://github.com/dowjones/gulp-bundle-assets) as a PHP solution for automagically rendering asset tags (`<script>`, `<link>`, etc) for assets managed through Gulp.  `UserFrosting\Assets` can read both the input and output files used by `gulp-bundle-assets` to render appropriate tags for raw or compiled assets.
+To use Assets, you will need:
 
-To get started, define a bundle configuration file as defined in [gulp-bundle-assets](https://github.com/dowjones/gulp-bundle-assets#basic-usage):
+- An instance of `UniformResourceLocator`, where you can add your desired search paths.
+- The locator scheme (if it exists) you wish to look for assets in.
+- The base url (used in generating URLs to assets).
+- The base path (used in trimming the absolute path returned by the locator).
 
+```php
+<?php
 
-*asset-bundles.json*
+use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use UserFrosting\Assets\Assets;
+
+$basePath = __DIR__;
+$baseUrl = 'https://assets.userfrosting.com/';
+$locator = new UniformResourceLocator($basePath);
+$locator->addPath('assets', '', [
+    'owls/assets',
+    'hawks/assets'
+]);
+
+$assets = new Assets($locator, 'assets', $baseUrl);
+```
+
+> Optionally 1 more argument can be passed into the `Assets` constructor.
+> - An instance of `PrefixTransformer`.
+> Have a look at UserFrosting in dev mode to see this in action!
+
+### Asset Bundles
+
+To access asset bundles from an `Assets` instance, it must first be passed an instance of `AssetBundlesInterface` via `addAssetBundles`. An example of this follows:
+
+*Directory Tree*
+
+```txt
+/
+├build/
+│ └asset-bundles.json
+└public/
+  └index.php
 
 ```
+
+*build/asset-bundles.json*
+
+```json
 {
   "bundle": {
     "js/main": {
         "scripts": [
-            {
-                "src": "js/bootstrap-3.3.1.js"
-            },
+            "js/bootstrap-3.3.1.js",
             "js/crud.js"
         ],
         "options": {
@@ -56,13 +112,31 @@ To get started, define a bundle configuration file as defined in [gulp-bundle-as
 }
 ```
 
-Notice a small difference between this example and the example provided in gulp-bundle-assets: We define **only** the JSON object, rather than using the `module.exports=` syntax, in our configuration file.  This is fine and `gulp-bundle-assets` will be able to process it in the same way.
+*public/index.php*
+
+```php
+use UserFrosting\Assets\GulpBundleAssetsRawBundles;
+
+// Load asset bundles.
+$assetBundles = new GulpBundleAssetsRawBundles("../build/asset-bundles.json");
+
+// Send loaded asset bundles to Assets instance.
+$assets->addAssetBundles($assetBundles);
+
+// Grab an asset bundle.
+$assets->getJsBundleAssets("js/main");
+// Outputs ["js/bootstrap-3.3.1.js", "js/crud.js"]
+```
+
+See [gulp-bundle-assets](https://github.com/dowjones/gulp-bundle-assets) for how to use the bundler this example demonstrates integration with.
+
+Just keep in mind that this integration can only work when the gulp-bundle-assets configuration is stored in a separate JSON file, not a JavaScript file.
 
 Also note the setting of `options -> result -> type -> styles/scripts` for each bundle to `plain`.  This is important to do, so that `Assets` can parse the output of `gulp-bundle-assets` and correctly render tags for compiled assets.  The output of your Gulp task should look something like:
 
 *bundle.result.json*
 
-```
+```json
 {
   "js/main": {
     "scripts": "js/main-8881456f8e.js"
@@ -73,119 +147,40 @@ Also note the setting of `options -> result -> type -> styles/scripts` for each 
 }
 ```
 
-Notice that each bundle is processed into a single Javascript or CSS file.  You may have bundles that contain both Javascript and CSS, but we recommend you split them into separate bundles and use the `js/` and `css/` prefixes to distinguish them.
+Using this results file would be done with the `GulpBundleAssetsCompiledBundles` class.
 
-To find raw asset files, you will also need to create an instance of `AssetUrlBuilder`.  This in turn requires an instance of `UniformResourceLocator`, where you can add your desired search paths:
+### The Template Plugin
 
-```
-<?php
+The template plugin is easy initialized by giving it the `Assets` instance, and simply gets passed into the templating engine environment of your choice to be used.
 
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
-use UserFrosting\Assets\AssetManager;
-use UserFrosting\Assets\AssetBundleSchema;
-use UserFrosting\Assets\UrlBuilder\AssetUrlBuilder;
+```php
+use UserFrosting\Assets\AssetsTemplatePlugin;
 
-$basePath = __DIR__;
-$locator = new UniformResourceLocator($basePath);
-$locator->addPath('assets', '', [
-    'owls/assets',
-    'hawks/assets'
-]);
+$assetsPlugin = new AssetsTemplatePlugin($assets);
 
-$baseUrl = 'http://example.com/public/assets';
-$aub = new AssetUrlBuilder($locator, $baseUrl);
+// Some code that passes it to Twig rendering environment.
 ```
 
-Once you have an instance of `AssetUrlBuilder`, you can create an instance of an `AssetBundleSchema` for a raw schema:
-
-```
-$as = new AssetBundleSchema($aub);
-$as->loadRawSchemaFile('/path/to/asset-bundles.json');
+```twig
+{# Gets replaced at runtime with the following. Additional argument is optional. #}
+{{assets.js("js/main", { defer: true })}}
 ```
 
-By creating an `AssetManager`, you can easily render any bundle defined in your schema, in raw or compiled mode.
-
-```
-$am = new AssetManager($aub, $as);
-```
-
-You can now render the Javascript or CSS assets for any bundle:
-
-`echo $am->css('css/main');`
-
-In raw mode, this will output (assuming that all the assets were found in (`owls/assets/`):
-
-```
-<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/owls/assets/vendor/font-awesome-4.5.0/css/font-awesome.css" >
-<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/owls/assets/css/bootstrap-3.3.1.css" >
-<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/owls/assets/css/bootstrap-custom.css" >
-<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets-raw/owls/assets/css/paper.css" >   
-```
-
-To load and render compiled assets, you create an instance of `CompiledAssetUrlBuilder` instead:
-
-```
-$aub = new CompiledAssetUrlBuilder($baseUrl);
-$as = new AssetBundleSchema($aub);
-// Notice we use the compiled schema file here instead
-$as->loadCompiledSchemaFile('/path/to/bundle.result.json');
-```
-
-This outputs:
-
-```
-<link rel="stylesheet" type="text/css" href="http://localhost/myproject/assets/css/main-c72ce38fba.css" >
-```
-
-If you are using Twig, you can pass your `AssetManager` as a global variable to Twig.  You can then use any of its rendering methods to automatically insert the tags into your template:
-
-`{{ am.js('js/mybundle') | raw }}`
-
-### Advanced Usage
-
-For all *script* and *style* methods, options can be provided to modify the produced tag.
-
-`async` for instance can be applied to a Javascript tag:
-
-_In PHP_
-`echo $am.js('js/mybundle', [ 'async' => true ])`
-
-_In TWIG_
-`{{ am.js('js/bundle', { 'async': true })}}`
-
-## Sample Gulp file
-
-Assuming you have `npm` and `gulp-bundle-assets` installed, you can use the following Gulp file and run the `gulp bundle` task to compile your assets:
-
-*build/gulpfile.js*
-
-```
-var gulp = require('gulp');
-var gulpLoadPlugins = require('gulp-load-plugins');
-var plugins = gulpLoadPlugins();
-
-// The directory where the bundle task should look for the raw assets, as specified in asset-bundles.json
-var sourceDirectory = '../public/assets-raw/';
-
-// The directory where the bundle task should place compiled assets.  The names of assets in bundle.result.json
-// will be specified relative to this path.
-var destDirectory = '../public/assets/';
-
-gulp.task('bundle', function() {
-    fb = gulp.src('./asset-bundles.json')
-        .pipe(plugins.bundleAssets({
-            base: sourceDirectory
-        }))
-        .pipe(plugins.bundleAssets.results({
-            dest: './'  // destination of bundle.result.json
-        })) 
-        .pipe(gulp.dest(destDirectory));
-    return fb;
-});
+```html
+<script src="https://assets.userfrosting.com/assets/bootstrap/js/bootstrap.js" defer="true"></script>
+<script src="https://assets.userfrosting.com/assets/bootstrap/js/npm.js" defer="true"></script>
 ```
 
 ## Testing
 
-```
+If PHPUnit is mapped in `PATH`:
+
+```shell
 phpunit --bootstrap tests/bootstrap.php tests
+```
+
+If instead using local version retrieved by composer (recommended):
+
+```shell
+vendor/bin/phpunit --bootstrap tests/bootstrap.php tests
 ```

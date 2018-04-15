@@ -8,7 +8,7 @@
  */
 namespace UserFrosting\Assets;
 
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use RocketTheme\Toolbox\ResourceLocator\ResourceLocatorInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use UserFrosting\Support\Util\Util;
@@ -19,9 +19,9 @@ use UserFrosting\Assets\PathTransformer\PathTransformerInterface;
 /**
  * Facilitates convenient access to assets and asset bundles within PHP code.
  * Useful for production and development scenarios.
- * 
+ *
  * @see AssetsTemplatePlugin for template engine integration.
- * 
+ *
  * @author Alex Weissman (https://alexanderweissman.com)
  * @author Jordan Mele
  */
@@ -54,9 +54,9 @@ class Assets
      * @param UniformResourceLocator $locator Resource locator used to find assets.
      * @param string $locatorScheme Scheme to use in locator.
      * @param string $baseUrl Sites base URL and optionally assets directory to later use when generating absolute path to an asset.
-     * @param string $pathTransformer 
+     * @param string $pathTransformer
      */
-    public function __construct(UniformResourceLocator $locator, $locatorScheme, $baseUrl, PathTransformerInterface $pathTransformer = null)
+    public function __construct(ResourceLocatorInterface $locator, $locatorScheme, $baseUrl, PathTransformerInterface $pathTransformer = null)
     {
         // Set locator
         $this->locator = $locator;
@@ -148,7 +148,7 @@ class Assets
      *
      * @param string $bundleName Bundle name.
      * @return string[]
-     * 
+     *
      * @throws \OutOfRangeException if specified JS asset bundle is not found.
      */
     public function getJsBundleAssets($bundleName)
@@ -182,7 +182,7 @@ class Assets
      *
      * @param string $bundleName Bundle name.
      * @return string[]
-     * 
+     *
      * @throws \OutOfRangeException if specified CSS asset bundle is not found.
      */
     public function getCssBundleAssets($bundleName)
@@ -263,7 +263,7 @@ class Assets
      *
      * @param string $uncleanRelativePath Potentially dangerous relative path.
      * @return null|string
-     * 
+     *
      * @todo Better unit test coverage
      */
     public function urlPathToAbsolutePath($uncleanRelativePath)
@@ -287,7 +287,7 @@ class Assets
                 break;
             }
         }
-        
+
         if (!$allowed) {
             return null;
         }

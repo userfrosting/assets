@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use UserFrosting\UniformResourceLocator\ResourceLocator;
 use UserFrosting\Assets\ServeAsset\SlimServeAsset;
 use UserFrosting\Assets\Assets;
 use Slim\Container;
@@ -27,12 +27,12 @@ class SlimServeAssetTest extends TestCase
         $basePath = __DIR__ . '/../data';
         $baseUrl = "https://assets.userfrosting.com/";
         $locatorScheme = "assets";
-        $locator = new UniformResourceLocator($basePath);
-        $locator->addPath($locatorScheme, '', [
+        $locator = new ResourceLocator($basePath);
+        $locator->registerStream($locatorScheme, [
             'sprinkles/hawks/assets',
             'sprinkles/owls/assets'
         ]);
-        $locator->addPath($locatorScheme, 'vendor', 'assets');
+        //$locator->registerStream($locatorScheme, 'vendor', 'assets');
 
         // Initialize Assets
         $assets = new Assets($locator, $locatorScheme, $baseUrl);
@@ -62,7 +62,7 @@ class SlimServeAssetTest extends TestCase
      * Test with non-existent asset.
      *
      * @return void
-     * 
+     *
      * @depends testConstructor
      */
     public function testInaccessibleAsset(SlimServeAsset $controller)
@@ -90,7 +90,7 @@ class SlimServeAssetTest extends TestCase
      * Test with existent asset.
      *
      * @return void
-     * 
+     *
      * @depends testConstructor
      */
     public function testAssetMatchesExpectations($controller)

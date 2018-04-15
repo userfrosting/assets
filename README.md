@@ -24,7 +24,7 @@ composer require userfrosting/assets
 
 To use Assets, you will need:
 
-- An instance of `UniformResourceLocator`, where you can add your desired search paths.
+- An instance of `ResourceLocator`, where you can add your desired search paths.
 - The locator scheme (if it exists) you wish to look for assets in.
 - The base url (used in generating URLs to assets).
 - The base path (used in trimming the absolute path returned by the locator).
@@ -32,13 +32,13 @@ To use Assets, you will need:
 ```php
 <?php
 
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use UserFrosting\UniformResourceLocator\ResourceLocator;
 use UserFrosting\Assets\Assets;
 
 $basePath = __DIR__;
 $baseUrl = 'https://assets.userfrosting.com/';
-$locator = new UniformResourceLocator($basePath);
-$locator->addPath('assets', '', [
+$locator = new ResourceLocator($basePath);
+$locator->registerStream('assets', '', [
     'owls/assets',
     'hawks/assets'
 ]);

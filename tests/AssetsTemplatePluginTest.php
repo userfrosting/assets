@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use UserFrosting\UniformResourceLocator\ResourceLocator;
 use UserFrosting\Assets\Assets;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsRawBundles;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsCompiledBundles;
@@ -9,7 +9,7 @@ use UserFrosting\Assets\AssetsTemplatePlugin;
 
 /**
  * Tests AssetsForTemplates class.
- * 
+ *
  * @todo Test serveAsset, will require Slim::mock (apparently), and IS possible. Just difficult to set up.
  */
 class AssetsTemplatePluginTest extends TestCase
@@ -32,12 +32,12 @@ class AssetsTemplatePluginTest extends TestCase
         $this->basePath = __DIR__ . '/data';
         $this->baseUrl = "https://assets.userfrosting.com/";
         $this->locatorScheme = "assets";
-        $this->locator = new UniformResourceLocator($this->basePath);
-        $this->locator->addPath($this->locatorScheme, '', [
+        $this->locator = new ResourceLocator($this->basePath);
+        $this->locator->registerStream($this->locatorScheme, [
             'sprinkles/hawks/assets',
             'sprinkles/owls/assets'
         ]);
-        $this->locator->addPath($this->locatorScheme, 'vendor', 'assets');
+        //$this->locator->registerStream($this->locatorScheme, 'vendor', 'assets');
         $this->assets = new Assets($this->locator, $this->locatorScheme, $this->baseUrl);
         $this->assets->addAssetBundles(new GulpBundleAssetsRawBundles(__DIR__ . "/data/bundle.config.json"));
     }
@@ -60,7 +60,7 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      * @return void
-     * 
+     *
      * @depends testConstructAssetsTemplatePlugin
      */
     public function testJsBundle(AssetsTemplatePlugin $plugin)
@@ -73,7 +73,7 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      * @return void
-     * 
+     *
      * @depends testConstructAssetsTemplatePlugin
      */
     public function testJsBundleWithAttributes(AssetsTemplatePlugin $plugin)
@@ -86,7 +86,7 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      * @return void
-     * 
+     *
      * @depends testConstructAssetsTemplatePlugin
      */
     public function testCssBundle(AssetsTemplatePlugin $plugin)
@@ -99,7 +99,7 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      * @return void
-     * 
+     *
      * @depends testConstructAssetsTemplatePlugin
      */
     public function testCssBundleWithAttributes(AssetsTemplatePlugin $plugin)
@@ -112,7 +112,7 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      * @return void
-     * 
+     *
      * @depends testConstructAssetsTemplatePlugin
      */
     public function testUrl(AssetsTemplatePlugin $plugin)

@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use UserFrosting\UniformResourceLocator\ResourceLocator;
 use UserFrosting\Assets\Assets;
 use UserFrosting\Assets\PathTransformer\PrefixTransformer;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsRawBundles;
@@ -9,7 +9,7 @@ use UserFrosting\Assets\AssetBundles\GulpBundleAssetsCompiledBundles;
 
 /**
  * Tests Assets class.
- * 
+ *
  * @todo Test serveAsset, will require Slim::mock (apparently), and IS possible. Just difficult to set up.
  */
 class AssetsTest extends TestCase
@@ -32,12 +32,12 @@ class AssetsTest extends TestCase
         $this->basePath = __DIR__ . '/data';
         $this->baseUrl = "https://assets.userfrosting.com/";
         $this->locatorScheme = "assets";
-        $this->locator = new UniformResourceLocator($this->basePath);
-        $this->locator->addPath($this->locatorScheme, '', [
+        $this->locator = new ResourceLocator($this->basePath);
+        $this->locator->registerStream($this->locatorScheme, [
             'sprinkles/hawks/assets',
             'sprinkles/owls/assets'
         ]);
-        $this->locator->addPath($this->locatorScheme, 'vendor', 'assets');
+        //$this->locator->registerStream($this->locatorScheme, 'vendor', 'assets');
     }
 
     /**
@@ -75,7 +75,7 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      * @return void
-     * 
+     *
      * @depends testConstructAssets
      */
     public function testGetAbsoluteUrlWithString(Assets $assets)
@@ -88,7 +88,7 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      * @return void
-     * 
+     *
      * @depends testConstructAssets
      * @depends testGetAbsoluteUrlWithString
      */
@@ -97,7 +97,7 @@ class AssetsTest extends TestCase
         $assets->overrideBasePath(__DIR__ . '/data/assets');
 
         $this->assertEquals($assets->getAbsoluteUrl('assets://vendor/bootstrap/js/bootstrap.js'), $this->baseUrl . 'bootstrap/js/bootstrap.js');
-        
+
         // Undo changes because PHPUnit likes to recycle dependencies.
         $assets->overrideBasePath(__DIR__ . '/data');
     }
@@ -107,7 +107,7 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      * @return void
-     * 
+     *
      * @depends testConstructAssetsWithPathTransformations
      */
     public function testGetAbsoluteUrlWithPathTransformations(Assets $assets)
@@ -124,13 +124,13 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      * @return void
-     * 
+     *
      * @depends testConstructAssets
      */
     public function testGetAbsoluteUrlWithStringArray(Assets $assets)
     {
         $this->assertEquals($assets->getAbsoluteUrl([
-            'assets', 
+            'assets',
             'vendor/bootstrap/js/bootstrap.js'
             ]), $this->baseUrl . 'assets/bootstrap/js/bootstrap.js');
     }
@@ -140,7 +140,7 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      * @return void
-     * 
+     *
      * @depends testConstructAssets
      */
     public function testGetAbsoluteUrlWithNonExistentFile(Assets $assets)
@@ -153,7 +153,7 @@ class AssetsTest extends TestCase
      * Tests addition of bundles to Assets instance.
      *
      * @return Assets
-     * 
+     *
      * @depends testConstructAssetsWithPathTransformations
      */
     public function testAddAssetBundles(Assets $assets)
@@ -168,7 +168,7 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      * @return void
-     * 
+     *
      * @depends testAddAssetBundles
      */
     public function testGetJsBundleAssets(Assets $assets)
@@ -184,7 +184,7 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      * @return void
-     * 
+     *
      * @depends testAddAssetBundles
      */
     public function testGetCssBundleAssets(Assets $assets)

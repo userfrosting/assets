@@ -72,11 +72,13 @@ class Assets
         // Set locator paths
         $this->locatorPaths = [];
         // Normalize and add paths
-        foreach ($locator->getPaths($locatorScheme) as $pathSet) {
+        // NOTE : getPaths doesn't exist anymore in locator since paths depends on stream and location.
+        //        Could be added to locator or fixed in another way. This doesn't seams necesarry later on...
+        /*foreach ($locator->getPaths($locatorScheme) as $pathSet) {
             foreach ($pathSet as $path) {
                 $this->locatorPaths[] = $path;
             }
-        }
+        }*/
 
         // Set base URL
         if (!is_string($baseUrl)) {
@@ -87,6 +89,7 @@ class Assets
         $this->baseUrl = $baseUrl;
 
         // Set base path
+        // NOTE : NO. This class doesn't need to know this. IT should ask the locator to find stuff.
         $this->basePath = $locator->getBasePath();
 
         // Initialize asset bundles
@@ -99,7 +102,7 @@ class Assets
     /**
      * Overrides the current base path.
      *
-     * @param string $basePath A valid directory to replace the current base path. Default is determined by provided UniformResourceLocator.
+     * @param string $basePath A valid directory to replace the current base path. Default is determined by provided ResourceLocator.
      * @return void
      */
     public function overrideBasePath($basePath)
@@ -109,6 +112,7 @@ class Assets
         }
 
         // Normalize base path using same method as locator.
+        // TODO : Use locator normalize ? Paass to locator
         $this->basePath = rtrim(str_replace('\\', '/', $basePath ?: getcwd()), '/');
     }
 
@@ -235,7 +239,7 @@ class Assets
         unset($schemeEndPos);
 
         // Get asset path from locator
-        $assetPath = $this->locator->__invoke($streamPath);
+        $assetPath = $this->locator->__invoke($streamPath); // NOTE : NO. No no no no
         if ($assetPath === false) {
             throw new FileNotFoundException("No file could be resolved for the stream path '$streamPath'.");
         }
@@ -249,6 +253,7 @@ class Assets
             $assetPath = $this->pathTransformer->pathToUrl($assetPath);
         }
 
+        // NOTE : Why is this done twice ??
         $assetPath = Util::stripPrefix($assetPath, '/'); // Remove directory separator
 
         // Attach baseURL.
@@ -268,6 +273,9 @@ class Assets
      */
     public function urlPathToAbsolutePath($uncleanRelativePath)
     {
+        // NOTE :: Not sure this is the right way to do it. Locator is there
+        // for a reason and as the right method to do this.
+
         // Normalize path to prevent directory traversal.
         $relativePath = Util::normalizePath($uncleanRelativePath);
 

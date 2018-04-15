@@ -51,7 +51,7 @@ class Assets
     /**
      * Constructor
      *
-     * @param UniformResourceLocator $locator Resource locator used to find assets.
+     * @param ResourceLocatorInterface $locator Resource locator used to find assets.
      * @param string $locatorScheme Scheme to use in locator.
      * @param string $baseUrl Sites base URL and optionally assets directory to later use when generating absolute path to an asset.
      * @param string $pathTransformer
@@ -87,7 +87,7 @@ class Assets
         $this->baseUrl = $baseUrl;
 
         // Set base path
-        $this->basePath = $locator->getBase();
+        $this->basePath = $locator->getBasePath();
 
         // Initialize asset bundles
         $this->assetBundles = null;

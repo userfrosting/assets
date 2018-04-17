@@ -33,11 +33,10 @@ class AssetsTest extends TestCase
         $this->baseUrl = "https://assets.userfrosting.com/";
         $this->locatorScheme = "assets";
         $this->locator = new ResourceLocator($this->basePath);
-        $this->locator->registerStream($this->locatorScheme, [
-            'sprinkles/hawks/assets',
-            'sprinkles/owls/assets'
-        ]);
-        //$this->locator->registerStream($this->locatorScheme, 'vendor', 'assets');
+        $this->locator->registerStream($this->locatorScheme, '', 'assets');
+        $this->locator->registerStream($this->locatorScheme, 'vendor', 'assets', true);
+        $this->locator->registerLocation('hawks', 'sprinkles/hawks/');
+        $this->locator->registerLocation('owls', 'sprinkles/owls/');
     }
 
     /**

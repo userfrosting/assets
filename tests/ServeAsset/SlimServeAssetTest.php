@@ -28,11 +28,10 @@ class SlimServeAssetTest extends TestCase
         $baseUrl = "https://assets.userfrosting.com/";
         $locatorScheme = "assets";
         $locator = new ResourceLocator($basePath);
-        $locator->registerStream($locatorScheme, [
-            'sprinkles/hawks/assets',
-            'sprinkles/owls/assets'
-        ]);
-        //$locator->registerStream($locatorScheme, 'vendor', 'assets');
+        $locator->registerStream($locatorScheme, '', 'assets');
+        $locator->registerStream($locatorScheme, 'vendor', 'assets', true);
+        $locator->registerLocation('hawks', 'sprinkles/hawks/');
+        $locator->registerLocation('owls', 'sprinkles/owls/');
 
         // Initialize Assets
         $assets = new Assets($locator, $locatorScheme, $baseUrl);

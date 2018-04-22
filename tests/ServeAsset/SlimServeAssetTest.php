@@ -53,13 +53,14 @@ class SlimServeAssetTest extends TestCase
     public function testConstructor()
     {
         $server = new SlimServeAsset($this->container);
-        $this->addToAssertionCount(1);// Emulate expectNoException assertion.
+        $this->assertInstanceOf(SlimServeAsset::class, $server);
         return $server;
     }
 
     /**
      * Test with non-existent asset.
      *
+     * @param SlimServeAsset $controller
      * @return void
      *
      * @depends testConstructor
@@ -75,7 +76,7 @@ class SlimServeAssetTest extends TestCase
 
         // Invoke controller method.
         $response = $controller->serveAsset($request, $response, [
-            'url' => 'sprinkles/hawks/forbidden.txt'
+            'url' => 'assets/forbidden.txt'
         ]);
 
         // Assert 404 response
@@ -88,11 +89,12 @@ class SlimServeAssetTest extends TestCase
     /**
      * Test with existent asset.
      *
+     * @param SlimServeAsset $controller
      * @return void
      *
      * @depends testConstructor
      */
-    public function testAssetMatchesExpectations($controller)
+    public function testAssetMatchesExpectations(SlimServeAsset $controller)
     {
         // Create environment.
         $environment = Environment::mock([]);
@@ -103,7 +105,7 @@ class SlimServeAssetTest extends TestCase
 
         // Invoke controller method.
         $response = $controller->serveAsset($request, $response, [
-            'url' => 'sprinkles/hawks/assets/allowed.txt'
+            'url' => 'assets/allowed.txt'
         ]);
 
         // Assert 200 response

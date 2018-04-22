@@ -3,9 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use UserFrosting\UniformResourceLocator\ResourceLocator;
 use UserFrosting\Assets\Assets;
-use UserFrosting\Assets\PathTransformer\PrefixTransformer;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsRawBundles;
-use UserFrosting\Assets\AssetBundles\GulpBundleAssetsCompiledBundles;
 
 /**
  * Tests Assets class.
@@ -48,24 +46,7 @@ class AssetsTest extends TestCase
     public function testConstructAssets()
     {
         $assets = new Assets($this->locator, $this->locatorScheme, $this->baseUrl);
-        $this->addToAssertionCount(1);// Emulate expectNoException assertion.
-        return $assets;
-    }
-
-    /**
-     * Tests Assets constructor with prefix transformations.
-     * Returns the created Assets instance for use by dependent tests.
-     *
-     * @return Assets
-     */
-    public function testConstructAssetsWithPathTransformations()
-    {
-        $pathTransformer = new PrefixTransformer();
-        $pathTransformer->define('assets', 'vendor');
-        $pathTransformer->define('sprinkles/hawks/assets', 'sprinkles/hawks');
-        $pathTransformer->define('sprinkles/owls/assets', 'sprinkles/owls');
-        $assets = new Assets($this->locator, $this->locatorScheme, $this->baseUrl, $pathTransformer);
-        $this->addToAssertionCount(1);// Emulate expectNoException assertion.
+        $this->assertInstanceOf(Assets::class, $assets);
         return $assets;
     }
 
@@ -79,43 +60,12 @@ class AssetsTest extends TestCase
      */
     public function testGetAbsoluteUrlWithString(Assets $assets)
     {
-        $this->assertEquals($assets->getAbsoluteUrl('assets://vendor/bootstrap/js/bootstrap.js'), $this->baseUrl . 'assets/bootstrap/js/bootstrap.js');
-    }
+        $url = $assets->getAbsoluteUrl('assets://vendor/bootstrap/js/bootstrap.js');
+        $this->assertEquals($this->baseUrl . 'assets/vendor/bootstrap/js/bootstrap.js', $url);
 
-    /**
-     * Test overrideBasePath to ensure override is used.
-     *
-     * @param Assets $assets
-     * @return void
-     *
-     * @depends testConstructAssets
-     * @depends testGetAbsoluteUrlWithString
-     */
-    public function testOverrideBasePath(Assets $assets)
-    {
-        $assets->overrideBasePath(__DIR__ . '/data/assets');
-
-        $this->assertEquals($assets->getAbsoluteUrl('assets://vendor/bootstrap/js/bootstrap.js'), $this->baseUrl . 'bootstrap/js/bootstrap.js');
-
-        // Undo changes because PHPUnit likes to recycle dependencies.
-        $assets->overrideBasePath(__DIR__ . '/data');
-    }
-
-    /**
-     * Test getAbsoluteUrl while prefix transformations have been specified/
-     *
-     * @param Assets $assets
-     * @return void
-     *
-     * @depends testConstructAssetsWithPathTransformations
-     */
-    public function testGetAbsoluteUrlWithPathTransformations(Assets $assets)
-    {
-        // 'assets' to 'vendor' prefix transformation
-        $this->assertEquals($assets->getAbsoluteUrl('assets://vendor/bootstrap/js/bootstrap.js'), $this->baseUrl . 'vendor/bootstrap/js/bootstrap.js');
-
-        // 'sprinkles' to '' prefix transformation
-        $this->assertEquals($assets->getAbsoluteUrl('assets://allowed.txt'), $this->baseUrl . 'sprinkles/hawks/allowed.txt');
+        // Translate it back
+        $this->assertEquals('assets://vendor/bootstrap/js/bootstrap.js', $assets->urlPathToStreamUri($url));
+        $this->assertEquals(__DIR__ . '/data/assets/bootstrap/js/bootstrap.js', $assets->urlPathToAbsolutePath($url));
     }
 
     /**
@@ -131,7 +81,7 @@ class AssetsTest extends TestCase
         $this->assertEquals($assets->getAbsoluteUrl([
             'assets',
             'vendor/bootstrap/js/bootstrap.js'
-            ]), $this->baseUrl . 'assets/bootstrap/js/bootstrap.js');
+        ]), $this->baseUrl . 'assets/vendor/bootstrap/js/bootstrap.js');
     }
 
     /**
@@ -151,14 +101,15 @@ class AssetsTest extends TestCase
     /**
      * Tests addition of bundles to Assets instance.
      *
+     * @param Assets $assets
      * @return Assets
      *
-     * @depends testConstructAssetsWithPathTransformations
+     * @depends testConstructAssets
      */
     public function testAddAssetBundles(Assets $assets)
     {
         $assets->addAssetBundles(new GulpBundleAssetsRawBundles(__DIR__ . "/data/bundle.config.json"));
-        $this->addToAssertionCount(1);// Emulate expectNoException assertion.
+        $this->assertInternalType('array', $assets->getAssetBundles());
         return $assets;
     }
 
@@ -173,8 +124,8 @@ class AssetsTest extends TestCase
     public function testGetJsBundleAssets(Assets $assets)
     {
         $this->assertEquals($assets->getJsBundleAssets("test"), [
-            $this->baseUrl . 'vendor/bootstrap/js/bootstrap.js',
-            $this->baseUrl . 'vendor/bootstrap/js/npm.js'
+            $this->baseUrl . 'assets/vendor/bootstrap/js/bootstrap.js',
+            $this->baseUrl . 'assets/vendor/bootstrap/js/npm.js'
         ]);
     }
 
@@ -189,7 +140,7 @@ class AssetsTest extends TestCase
     public function testGetCssBundleAssets(Assets $assets)
     {
         $this->assertEquals($assets->getCssBundleAssets("test"), [
-            $this->baseUrl . 'vendor/bootstrap/css/bootstrap.css'
+            $this->baseUrl . 'assets/vendor/bootstrap/css/bootstrap.css'
         ]);
     }
 }

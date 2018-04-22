@@ -9,8 +9,6 @@
 namespace UserFrosting\Assets\AssetBundles;
 
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsBundles;
-use UserFrosting\Support\Exception\FileNotFoundException;
-use UserFrosting\Support\Exception\JsonException;
 use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**

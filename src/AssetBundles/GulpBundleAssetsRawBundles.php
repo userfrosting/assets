@@ -9,16 +9,14 @@
 namespace UserFrosting\Assets\AssetBundles;
 
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsBundles;
-use UserFrosting\Support\Exception\FileNotFoundException;
-use UserFrosting\Support\Exception\JsonException;
 use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**
  * Represents a collection of asset bundles, loaded from a gulp-bundle-assets configuration file.
- * 
+ *
  * @author Alex Weissman (https://alexanderweissman.com)
  * @author Jordan Mele
- * 
+ *
  * @todo Many of the more advanced features available in gulp-bundle-assets configuration are not supported. (EG: Specifying the pre-minified versions of assets)
  */
 class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
@@ -58,11 +56,10 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
         }
     }
 
-    
     /**
      * Validates bundle data and returns standardised data.
      *
-     * @param string|string[] $data
+     * @param string|string[] $bundle
      * @return string[]
      */
     protected function standardiseBundle($bundle)

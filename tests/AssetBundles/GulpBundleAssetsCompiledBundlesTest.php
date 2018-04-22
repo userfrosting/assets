@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use UserFrosting\Assets\Assets;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsCompiledBundles;
 
 /**
@@ -17,7 +18,7 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
     public function testConstructGulpBundleAssetsCompiledBundles()
     {
         $bundles = new GulpBundleAssetsCompiledBundles(__DIR__ . "/../data/bundle.result.json");
-        $this->addToAssertionCount(1);// Emulate expectNoException assertion.
+        $this->assertInstanceOf(GulpBundleAssetsCompiledBundles::class, $bundles);
         return $bundles;
     }
 
@@ -26,7 +27,7 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
      * @return void
-     * 
+     *
      * @depends testConstructGulpBundleAssetsCompiledBundles
      */
     public function testGetCssBundleAssets(GulpBundleAssetsCompiledBundles $bundles)
@@ -41,7 +42,7 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
      * @return void
-     * 
+     *
      * @depends testConstructGulpBundleAssetsCompiledBundles
      */
     public function testGetCssBundleAssetsOutOfRange(GulpBundleAssetsCompiledBundles $bundles)
@@ -55,7 +56,7 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
      * @return void
-     * 
+     *
      * @depends testConstructGulpBundleAssetsCompiledBundles
      */
     public function testGetJsBundleAssets(GulpBundleAssetsCompiledBundles $bundles)
@@ -70,7 +71,7 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
      * @return void
-     * 
+     *
      * @depends testConstructGulpBundleAssetsCompiledBundles
      */
     public function testGetJsBundleAssetsOutOfRange(GulpBundleAssetsCompiledBundles $bundles)

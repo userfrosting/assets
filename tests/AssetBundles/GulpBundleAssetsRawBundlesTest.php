@@ -1,6 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
+use UserFrosting\Assets\Assets;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsRawBundles;
 
 /**
@@ -17,7 +18,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
     public function testConstructGulpBundleAssetsRawBundles()
     {
         $bundles = new GulpBundleAssetsRawBundles(__DIR__ . "/../data/bundle.config.json");
-        $this->addToAssertionCount(1);// Emulate expectNoException assertion.
+        $this->assertInstanceOf(GulpBundleAssetsRawBundles::class, $bundles);
         return $bundles;
     }
 
@@ -26,7 +27,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsRawBundles $bundles
      * @return void
-     * 
+     *
      * @depends testConstructGulpBundleAssetsRawBundles
      */
     public function testGetCssBundleAssets(GulpBundleAssetsRawBundles $bundles)
@@ -41,7 +42,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsRawBundles $bundles
      * @return void
-     * 
+     *
      * @depends testConstructGulpBundleAssetsRawBundles
      */
     public function testGetCssBundleAssetsOutOfRange(GulpBundleAssetsRawBundles $bundles)
@@ -55,7 +56,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsRawBundles $bundles
      * @return void
-     * 
+     *
      * @depends testConstructGulpBundleAssetsRawBundles
      */
     public function testGetJsBundleAssets(GulpBundleAssetsRawBundles $bundles)
@@ -71,7 +72,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsRawBundles $bundles
      * @return void
-     * 
+     *
      * @depends testConstructGulpBundleAssetsRawBundles
      */
     public function testGetJsBundleAssetsOutOfRange(GulpBundleAssetsRawBundles $bundles)

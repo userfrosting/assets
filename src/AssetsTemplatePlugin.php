@@ -10,10 +10,10 @@ namespace UserFrosting\Assets;
 
 /**
  * Generic plugin for template systems. Provides several convenience methods for linking assets within templates.
- * 
+ *
  * @author Alex Weissman (https://alexanderweissman.com)
  * @author Jordan Mele
- * 
+ *
  * @todo JS and CSS convenience methods. (not bundles)
  */
 class AssetsTemplatePlugin
@@ -23,8 +23,8 @@ class AssetsTemplatePlugin
 
     /**
      * Constructor
-     * 
-     * @param Assets $assets 
+     *
+     * @param Assets $assets
      */
     public function __construct(Assets $assets)
     {
@@ -109,7 +109,7 @@ class AssetsTemplatePlugin
      *
      * @param string $tagName Tag name.
      * @param bool $closingSlash If a closing slash should be included. Defaults to true.
-     * @param mixed[] $attributes Attributes to add to tag. Optional.
+     * @param mixed[]|null $attributes Attributes to add to tag. Optional.
      * @return string
      */
     private function makeSelfClosingTag($tagName, $closingSlash = true, array $attributes = null)
@@ -138,7 +138,7 @@ class AssetsTemplatePlugin
      * Generates a tag pair.
      *
      * @param string $tagName Tag name.
-     * @param mixed[] $attributes Attributes to add to tag. Optional.
+     * @param mixed[]|null $attributes Attributes to add to tag. Optional.
      * @param string $content Content generated tags will wrap around.
      * @return string
      */

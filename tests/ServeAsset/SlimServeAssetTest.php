@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use UserFrosting\UniformResourceLocator\ResourceLocator;
 use UserFrosting\Assets\ServeAsset\SlimServeAsset;
 use UserFrosting\Assets\Assets;
+use UserFrosting\Assets\AssetLoader;
 use Slim\Container;
 use Slim\Http\Environment;
 use Slim\Http\Request;
@@ -15,7 +16,7 @@ use Slim\Http\Response;
 class SlimServeAssetTest extends TestCase
 {
     /** @var Container */
-    private $container;
+    private $assetLoader;
 
     /**
      * Initializes test environment.
@@ -37,12 +38,7 @@ class SlimServeAssetTest extends TestCase
         $assets = new Assets($locator, $locatorScheme, $baseUrl);
 
         // Initialize container
-        $this->container = new Container();
-
-        // Add Assets
-        $this->container['assets'] = function ($ci) use ($assets) {
-            return $assets;
-        };
+        $this->assetLoader = new AssetLoader($assets);
     }
 
     /**
@@ -52,7 +48,7 @@ class SlimServeAssetTest extends TestCase
      */
     public function testConstructor()
     {
-        $server = new SlimServeAsset($this->container);
+        $server = new SlimServeAsset($this->assetLoader);
         $this->assertInstanceOf(SlimServeAsset::class, $server);
         return $server;
     }

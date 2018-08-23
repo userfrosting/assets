@@ -10,7 +10,7 @@ namespace UserFrosting\Assets\AssetBundles;
 
 /**
  * Represents a collection of asset bundles.
- * 
+ *
  * @author Alex Weissman (https://alexanderweissman.com)
  * @author Jordan Mele
  */
@@ -21,8 +21,8 @@ interface AssetBundlesInterface
      *
      * @param string $bundleName Name of bundle.
      * @return string[]
-     * 
-     * @throws OutOfRangeException if requested bundle does not exist.
+     *
+     * @throws \OutOfRangeException if requested bundle does not exist.
      */
     public function getCssBundleAssets($bundleName = '');
 
@@ -31,8 +31,8 @@ interface AssetBundlesInterface
      *
      * @param string $bundleName Name of bundle.
      * @return string[]
-     * 
-     * @throws OutOfRangeException if requested bundle does not exist.
+     *
+     * @throws \OutOfRangeException if requested bundle does not exist.
      */
     public function getJsBundleAssets($bundleName = '');
 }

@@ -10,30 +10,30 @@ namespace UserFrosting\Assets\ServeAsset;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use UserFrosting\Assets\Util\MimeType;
+use UserFrosting\Assets\AssetLoader;
 
 /**
  * Asset server for applications using Slim. Intended for development scenarios.
- * Assumes Assets is added to CI as 'assets'.
- * 
+ * Requires an instance of AssetLoader to handle loading assets from filesystem or remote source
+ *
  * @author Alex Weissman (https://alexanderweissman.com)
  * @author Jordan Mele
  */
 class SlimServeAsset
 {
     /**
-     * @var Slim\Container The global container object, which holds all your services.
+     * @var \UserFrosting\Assets\AssetLoader The asset loader instance
      */
-    protected $ci;
+    protected $assetLoader;
 
     /**
      * Constructor.
      *
-     * @param Slim\Container $ci The global container object, which holds all your services.
+     * @param \UserFrosting\Assets\AssetLoader $assetLoader The asset loader instance
      */
-    public function __construct($ci)
+    public function __construct(AssetLoader $assetLoader)
     {
-        $this->ci = $ci;
+        $this->assetLoader = $assetLoader;
     }
 
     /**
@@ -49,17 +49,17 @@ class SlimServeAsset
      */
     public function serveAsset(RequestInterface $request, ResponseInterface $response, $args)
     {
-        // Get full path.
-        $fullPath = $this->ci->assets->urlPathToAbsolutePath($args['url']);
+        /** @var \UserFrosting\Assets\AssetLoader $assetLoader */
+        $assetLoader = $this->assetLoader;
 
-        // If path not set, return 404.
-        if (!$fullPath) {
+        // Return 404 response if asset can't be loaded
+        if (!$assetLoader->loadAsset($args['url'])) {
             return $response->withStatus(404);
         }
 
-        // Send back asset data.
-        return $response->withHeader('Content-Type', MimeType::detectByFilename($fullPath))
-                 ->withHeader('Content-Length', filesize($fullPath))
-                 ->write(file_get_contents($fullPath));
+        return $response
+            ->withHeader('Content-Type', $assetLoader->getType())
+            ->withHeader('Content-Length', $assetLoader->getLength())
+            ->write($assetLoader->getContent());
     }
 }

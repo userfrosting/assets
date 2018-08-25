@@ -284,7 +284,7 @@ class Assets
      * @throws \InvalidArgumentException
      * @return $this
      */
-    public function setLocatorScheme(string $locatorScheme)
+    public function setLocatorScheme($locatorScheme)
     {
         // Make sure it's a string, until php 7.1
         if (!is_string($locatorScheme)) {

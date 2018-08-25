@@ -110,7 +110,7 @@ class Assets
 
         // Resolve to url
         foreach ($assets as &$asset) {
-            $asset = $this->getAbsoluteUrl($this->locatorScheme . $asset);
+            $asset = $this->getAbsoluteUrl($this->getLocatorScheme() . $asset);
         }
 
         return $assets;
@@ -140,7 +140,7 @@ class Assets
 
         // Resolve to url
         foreach ($assets as &$asset) {
-            $asset = $this->getAbsoluteUrl($this->locatorScheme . $asset);
+            $asset = $this->getAbsoluteUrl($this->getLocatorScheme() . $asset);
         }
 
         return $assets;
@@ -150,7 +150,8 @@ class Assets
      * Get Asset url.
      * Transform a locator uri to a url accessible to a browser
      * In other words, transform `assets://vendor/bootstrap/js/bootstrap.js` to
-     * `assets/vendor/bootstrap/js/bootstrap.js`, replacing the `://` with `/`
+     * `http://example.com/vendor/bootstrap/js/bootstrap.js`, replacing the `://` with the base url
+     * Make sure the ressource exist in the process
      *
      * @param string|array $streamPath The asset uri
      * @throws \BadMethodCallException
@@ -172,12 +173,11 @@ class Assets
         if ($assetResource === false) {
             throw new FileNotFoundException("No file could be resolved for the stream path '$streamPath'.");
         }
-        $stream = $assetResource->getStream();
 
         // Need to dissociate the scheme from the search query in the stream path
-        $streamPathQuery = Util::stripPrefix($streamPath, $stream->getScheme() . '://');
+        $streamPathQuery = Util::stripPrefix($streamPath, $this->getLocatorScheme());
 
-        return $this->baseUrl . $stream->getScheme() . '/' . $streamPathQuery;
+        return $this->baseUrl . $streamPathQuery;
     }
 
     /**
@@ -226,9 +226,7 @@ class Assets
         $urlPath = Util::stripPrefix($urlPath, $this->baseUrl);
 
         // Add back the stream scheme
-        $parts = explode('/', $urlPath);
-        $scheme = array_shift($parts);
-        $uri = $scheme . '://' . implode('/', $parts);
+        $uri = $this->getLocatorScheme() . $urlPath;
 
         // Make sure ressource path exist
         if (!$this->locator->getResource($uri)) {
@@ -276,7 +274,7 @@ class Assets
      */
     public function getLocatorScheme()
     {
-        return $this->locatorScheme;
+        return $this->locatorScheme . "://";
     }
 
     /**
@@ -294,7 +292,7 @@ class Assets
         } elseif ($locatorScheme == "") {
             throw new \InvalidArgumentException('$locatorScheme must not be an empty string.');
         }
-        $this->locatorScheme = $locatorScheme . "://";
+        $this->locatorScheme = $locatorScheme;
 
         return $this;
     }

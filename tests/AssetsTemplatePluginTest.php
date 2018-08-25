@@ -29,7 +29,7 @@ class AssetsTemplatePluginTest extends TestCase
     public function setUp()
     {
         $this->basePath = __DIR__ . '/data';
-        $this->baseUrl = "https://assets.userfrosting.com/";
+        $this->baseUrl = "https://assets.userfrosting.com/assets/";
         $this->locatorScheme = "assets";
         $this->locator = new ResourceLocator($this->basePath);
         $this->locator->registerStream($this->locatorScheme, '', 'assets');

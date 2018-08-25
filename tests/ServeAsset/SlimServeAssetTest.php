@@ -26,7 +26,7 @@ class SlimServeAssetTest extends TestCase
     public function setUp()
     {
         $basePath = __DIR__ . '/../data';
-        $baseUrl = "https://assets.userfrosting.com/";
+        $baseUrl = "https://assets.userfrosting.com/assets/";
         $locatorScheme = "assets";
         $locator = new ResourceLocator($basePath);
         $locator->registerStream($locatorScheme, '', 'assets');
@@ -72,7 +72,7 @@ class SlimServeAssetTest extends TestCase
 
         // Invoke controller method.
         $response = $controller->serveAsset($request, $response, [
-            'url' => 'assets/forbidden.txt'
+            'url' => 'forbidden.txt'
         ]);
 
         // Assert 404 response
@@ -101,7 +101,7 @@ class SlimServeAssetTest extends TestCase
 
         // Invoke controller method.
         $response = $controller->serveAsset($request, $response, [
-            'url' => 'assets/allowed.txt'
+            'url' => 'allowed.txt'
         ]);
 
         // Assert 200 response

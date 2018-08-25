@@ -61,7 +61,7 @@ class AssetsTest extends TestCase
     public function testGetAbsoluteUrlWithString(Assets $assets)
     {
         $url = $assets->getAbsoluteUrl('assets://vendor/bootstrap/js/bootstrap.js');
-        $this->assertEquals($this->baseUrl . 'assets/vendor/bootstrap/js/bootstrap.js', $url);
+        $this->assertEquals($this->baseUrl . 'vendor/bootstrap/js/bootstrap.js', $url);
 
         // Translate it back
         $this->assertEquals('assets://vendor/bootstrap/js/bootstrap.js', $assets->urlPathToStreamUri($url));
@@ -81,7 +81,7 @@ class AssetsTest extends TestCase
         $this->assertEquals($assets->getAbsoluteUrl([
             'assets',
             'vendor/bootstrap/js/bootstrap.js'
-        ]), $this->baseUrl . 'assets/vendor/bootstrap/js/bootstrap.js');
+        ]), $this->baseUrl . 'vendor/bootstrap/js/bootstrap.js');
     }
 
     /**
@@ -124,8 +124,8 @@ class AssetsTest extends TestCase
     public function testGetJsBundleAssets(Assets $assets)
     {
         $this->assertEquals($assets->getJsBundleAssets("test"), [
-            $this->baseUrl . 'assets/vendor/bootstrap/js/bootstrap.js',
-            $this->baseUrl . 'assets/vendor/bootstrap/js/npm.js'
+            $this->baseUrl . 'vendor/bootstrap/js/bootstrap.js',
+            $this->baseUrl . 'vendor/bootstrap/js/npm.js'
         ]);
     }
 
@@ -140,7 +140,7 @@ class AssetsTest extends TestCase
     public function testGetCssBundleAssets(Assets $assets)
     {
         $this->assertEquals($assets->getCssBundleAssets("test"), [
-            $this->baseUrl . 'assets/vendor/bootstrap/css/bootstrap.css'
+            $this->baseUrl . 'vendor/bootstrap/css/bootstrap.css'
         ]);
     }
 }

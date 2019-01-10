@@ -175,13 +175,7 @@ $assetsPlugin = new AssetsTemplatePlugin($assets);
 
 ## Testing
 
-If PHPUnit is mapped in `PATH`:
-
-```shell
-phpunit --bootstrap tests/bootstrap.php tests
-```
-
-If instead using local version retrieved by composer (recommended):
+Testing can be done using the local version retrieved by composer :
 
 ```shell
 vendor/bin/phpunit

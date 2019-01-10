@@ -1,8 +1,7 @@
 # Change Log
 
-## 4.2.0
-
-Replace most logic to better use the locator power
+## [4.2.0]
+Replace most logic to better use the locator power :
 - Removed `PathTransformer`.
 - Absolutes URL returns a locator friendly path that can be converted back to a locator uri. For example, the `assets://vendor/bootstrap/js/bootstrap.js` uri will now returns `http://example.com/assets/vendor/bootstrap/js/bootstrap.js` instead of `http://example.com/vendor/bootstrap/js/bootstrap.js`. This means multiple stream scheme can be used at once, for example `assets://` scheme can be used as well as `images://` scheme. This also means the sprinkle location is not required anymore in URL. The locator stream location will abstract the sprinkle. The only drawback is it may be harder to debug which asset is loaded (actually, from which sprinkle) in case of sprinkle collision.
 - Removed `overwriteBasePath`. This should be done in the locator if necessary.
@@ -15,10 +14,15 @@ Replace most logic to better use the locator power
 - Implemented unit testing and continuous integration via AppVeyor and Travis
 - Support for alternate bundling systems
 
-## 4.1.0
-
+## [4.1.0]
 - Bump dependencies, factor out Util
 
-## 4.0.1
-
+## [4.0.1]
 - Update composer dependencies
+
+## 4.0.0
+ - Initial 4.x release
+
+[4.2.0]: https://github.com/userfrosting/assets/compare/4.1.0...4.2.0
+[4.1.0]: https://github.com/userfrosting/assets/compare/4.0.1...4.1.0
+[4.0.1]: https://github.com/userfrosting/assets/compare/4.0.0...4.0.1

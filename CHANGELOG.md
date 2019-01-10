@@ -1,6 +1,6 @@
 # Change Log
 
-## Feature-locator
+## 4.2.0
 
 Replace most logic to better use the locator power
 - Removed `PathTransformer`.
@@ -11,12 +11,13 @@ Replace most logic to better use the locator power
 - Separated `urlPathToAbsolutePath` into `urlPathToStreamUri` so it's possible to do a `uri` <-> `url` conversion in addition to `uri` -> `url` -> `absolute path`.
 - Added getter/setter pairs for `locatorScheme` & `baseUrl` properties.
 - Removed unneeded class use and fixed some doc blocks
-
-## 5.0.0-rc.0
-
 - Integrated development asset server from main UserFrosting project
 - Implemented unit testing and continuous integration via AppVeyor and Travis
 - Support for alternate bundling systems
+
+## 4.1.0
+
+- Bump dependencies, factor out Util
 
 ## 4.0.1
 

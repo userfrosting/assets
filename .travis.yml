@@ -1,11 +1,23 @@
+sudo: false
+dist: trusty
 language: php
-php:
-  # Minimum
-  - '5.6'
-  # Most common
-  - '7.0'
-  - '7.1'
-  # Edge
-  - nightly
 
-script: composer update ; phpunit --bootstrap tests/bootstrap.php tests
+php:
+  - 5.6
+  - 7
+  - 7.1
+  - 7.2
+  - 7.3
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+before_script:
+  - composer install
+
+script:
+  - vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

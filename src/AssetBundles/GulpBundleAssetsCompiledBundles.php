@@ -2,13 +2,12 @@
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
- * @package   userfrosting/assets
  * @link      https://github.com/userfrosting/assets
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Assets\AssetBundles;
 
-use UserFrosting\Assets\AssetBundles\GulpBundleAssetsBundles;
 use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**
@@ -20,7 +19,7 @@ use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 class GulpBundleAssetsCompiledBundles extends GulpBundleAssetsBundles
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function __construct($filePath)
     {

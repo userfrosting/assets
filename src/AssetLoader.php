@@ -2,13 +2,12 @@
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
- * @package   userfrosting/assets
  * @link      https://github.com/userfrosting/assets
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
- namespace UserFrosting\Assets;
 
-use UserFrosting\Assets\Assets;
+namespace UserFrosting\Assets;
+
 use UserFrosting\Assets\Util\MimeType;
 
 /**
@@ -43,8 +42,8 @@ class AssetLoader
      * Compute the full filesystem path for the specified relative path (usually extracted from a URL).
      *
      * Also checks to make sure that the file actually exists.
-     * @param string $relativePath
-     * @return bool True if the file exists, false otherwise
+     * @param  string $relativePath
+     * @return bool   True if the file exists, false otherwise
      */
     public function loadAsset($relativePath)
     {

@@ -2,10 +2,10 @@
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
- * @package   userfrosting/assets
  * @link      https://github.com/userfrosting/assets
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Assets;
 
 /**
@@ -34,8 +34,8 @@ class AssetsTemplatePlugin
     /**
      * Returns HTML ready tags for all assets in the requested JS bundle.
      *
-     * @param string $bundleName Bundle name.
-     * @param array $attributes Attributes generated tags should include.
+     * @param  string $bundleName Bundle name.
+     * @param  array  $attributes Attributes generated tags should include.
      * @return string
      */
     public function js($bundleName = 'js/main', $attributes = [])
@@ -53,8 +53,8 @@ class AssetsTemplatePlugin
     /**
      * Returns HTML ready tags for all assets in the requested CSS bundle.
      *
-     * @param string $bundleName Bundle name.
-     * @param array $attributes Attributes generated tags should include.
+     * @param  string $bundleName Bundle name.
+     * @param  array  $attributes Attributes generated tags should include.
      * @return string
      */
     public function css($bundleName = 'css/main', $attributes = [])
@@ -75,17 +75,16 @@ class AssetsTemplatePlugin
      * Returns URL to asset specified by stream.
      *
      * @param string|string[] $streamPath A valid stream. EG: 'assets://path.to' or ['assets', 'path.to']
-     * @return void
      */
     public function url($streamPath)
     {
         return $this->assets->getAbsoluteUrl($streamPath);
     }
 
-        /**
+    /**
      * Converts an array of attributes into a form readily usable within XML.
      *
-     * @param mixed[] $attributes Attributes to convert.
+     * @param  mixed[] $attributes Attributes to convert.
      * @return string
      */
     private function convertAttributes(array $attributes)
@@ -107,18 +106,18 @@ class AssetsTemplatePlugin
     /**
      * Generates a self closing tag.
      *
-     * @param string $tagName Tag name.
-     * @param bool $closingSlash If a closing slash should be included. Defaults to true.
-     * @param mixed[]|null $attributes Attributes to add to tag. Optional.
+     * @param  string       $tagName      Tag name.
+     * @param  bool         $closingSlash If a closing slash should be included. Defaults to true.
+     * @param  mixed[]|null $attributes   Attributes to add to tag. Optional.
      * @return string
      */
     private function makeSelfClosingTag($tagName, $closingSlash = true, array $attributes = null)
     {
         if (!is_string($tagName)) {
-            throw new \InvalidArgumentException("Expected \$tagName to be type string but was " . gettype($tagName) . '.');
+            throw new \InvalidArgumentException('Expected $tagName to be type string but was ' . gettype($tagName) . '.');
         }
         if (!is_bool($closingSlash)) {
-            throw new \InvalidArgumentException("Expected \$closingSlash to be type bool but was " . gettype($closingSlash) . '.');
+            throw new \InvalidArgumentException('Expected $closingSlash to be type bool but was ' . gettype($closingSlash) . '.');
         }
 
         $output = "<$tagName";
@@ -126,9 +125,9 @@ class AssetsTemplatePlugin
             $output .= ' ' . $this->convertAttributes($attributes);
         }
         if ($closingSlash) {
-            $output .= " />";
+            $output .= ' />';
         } else {
-            $output .= ">";
+            $output .= '>';
         }
 
         return $output;
@@ -137,14 +136,13 @@ class AssetsTemplatePlugin
     /**
      * Generates a tag pair.
      *
-     * @param string $tagName Tag name.
-     * @param mixed[]|null $attributes Attributes to add to tag. Optional.
-     * @param string $content Content generated tags will wrap around.
+     * @param  string       $tagName    Tag name.
+     * @param  mixed[]|null $attributes Attributes to add to tag. Optional.
+     * @param  string       $content    Content generated tags will wrap around.
      * @return string
      */
     private function makeRegularTag($tagName, array $attributes = null, $content = '')
     {
-
         $output = "<$tagName";
         if ($attributes !== null) {
             $output .= ' ' . $this->convertAttributes($attributes);

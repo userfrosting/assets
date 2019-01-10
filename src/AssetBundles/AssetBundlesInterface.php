@@ -2,10 +2,10 @@
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
- * @package   userfrosting/assets
  * @link      https://github.com/userfrosting/assets
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Assets\AssetBundles;
 
 /**
@@ -19,20 +19,18 @@ interface AssetBundlesInterface
     /**
      * Gets assets in specified CSS bundle.
      *
-     * @param string $bundleName Name of bundle.
-     * @return string[]
-     *
+     * @param  string               $bundleName Name of bundle.
      * @throws \OutOfRangeException if requested bundle does not exist.
+     * @return string[]
      */
     public function getCssBundleAssets($bundleName = '');
 
     /**
      * Gets assets in specified JS bundle.
      *
-     * @param string $bundleName Name of bundle.
-     * @return string[]
-     *
+     * @param  string               $bundleName Name of bundle.
      * @throws \OutOfRangeException if requested bundle does not exist.
+     * @return string[]
      */
     public function getJsBundleAssets($bundleName = '');
 }

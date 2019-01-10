@@ -2,10 +2,10 @@
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
- * @package   userfrosting/assets
  * @link      https://github.com/userfrosting/assets
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Assets\AssetBundles;
 
 use UserFrosting\Support\Exception\FileNotFoundException;
@@ -31,14 +31,14 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
      *
      * @param string $filePath Path to gulp-bundle-assets file.
      *
-     * @throws FileNotFoundException if file cannot be found.
-     * @throws JsonException if file cannot be parsed as JSON.
+     * @throws FileNotFoundException       if file cannot be found.
+     * @throws JsonException               if file cannot be parsed as JSON.
      * @throws InvalidBundlesFileException if unexpected value encountered.
      */
     public function __construct($filePath)
     {
         if (!is_string($filePath)) {
-            throw new \InvalidArgumentException("\$filePath must of type string but was " . gettype($filePath));
+            throw new \InvalidArgumentException('$filePath must of type string but was ' . gettype($filePath));
         }
 
         // Initalise bundles.
@@ -47,7 +47,7 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getCssBundleAssets($bundleName = '')
     {
@@ -59,7 +59,7 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function getJsBundleAssets($bundleName = '')
     {
@@ -73,11 +73,10 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
     /**
      * Attempts to read the schema file from provided path.
      *
-     * @param string $filePath
-     * @return object
-     * 
+     * @param  string                $filePath
      * @throws FileNotFoundException if file cannot be found.
-     * @throws JsonException if file cannot be parsed as JSON.
+     * @throws JsonException         if file cannot be parsed as JSON.
+     * @return object
      */
     protected function readSchema($filePath)
     {

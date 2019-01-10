@@ -2,10 +2,10 @@
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
- * @package   userfrosting/assets
  * @link      https://github.com/userfrosting/assets
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Assets\ServeAsset;
 
 use Psr\Http\Message\RequestInterface;
@@ -42,10 +42,9 @@ class SlimServeAsset
      * To use, simply hook up to routing with the necessary relative url passed through at 'url'.
      * NOTE: PHP is very inefficent when it comes to serving static assets, and as such this is only recommended for testing purposes.
      *
-     * @param RequestInterface $request
+     * @param RequestInterface  $request
      * @param ResponseInterface $response
-     * @param array $args
-     * @return void
+     * @param array             $args
      */
     public function serveAsset(RequestInterface $request, ResponseInterface $response, $args)
     {

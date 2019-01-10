@@ -2,10 +2,10 @@
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
- * @package   userfrosting/assets
  * @link      https://github.com/userfrosting/assets
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Assets;
 
 use RocketTheme\Toolbox\ResourceLocator\ResourceLocatorInterface;
@@ -39,9 +39,9 @@ class Assets
     /**
      * Constructor
      *
-     * @param ResourceLocatorInterface $locator Resource locator used to find assets.
-     * @param string $locatorScheme Scheme to use in locator.
-     * @param string $baseUrl Sites base URL and optionally assets directory to later use when generating absolute path to an asset.
+     * @param ResourceLocatorInterface $locator       Resource locator used to find assets.
+     * @param string                   $locatorScheme Scheme to use in locator.
+     * @param string                   $baseUrl       Sites base URL and optionally assets directory to later use when generating absolute path to an asset.
      */
     public function __construct(ResourceLocatorInterface $locator, $locatorScheme, $baseUrl)
     {
@@ -59,7 +59,6 @@ class Assets
      * Add asset bundles.
      *
      * @param AssetBundlesInterface $assetBundles
-     * @return void
      */
     public function addAssetBundles(AssetBundlesInterface $assetBundles)
     {
@@ -68,8 +67,6 @@ class Assets
 
     /**
      * Reset asset bundles, removing all registered assetBundles
-     *
-     * @return void
      */
     public function resetAssetBundles()
     {
@@ -89,10 +86,9 @@ class Assets
     /**
      * Get asset paths within specified JS bundle.
      *
-     * @param string $bundleName Bundle name.
-     * @return string[]
-     *
+     * @param  string               $bundleName Bundle name.
      * @throws \OutOfRangeException if specified JS asset bundle is not found.
+     * @return string[]
      */
     public function getJsBundleAssets($bundleName)
     {
@@ -101,7 +97,8 @@ class Assets
         foreach ($this->assetBundles as $assetBundles) {
             try {
                 $assets = array_merge($assets, $assetBundles->getJsBundleAssets($bundleName));
-            } catch (\OutOfRangeException $e) {}
+            } catch (\OutOfRangeException $e) {
+            }
         }
 
         if (count($assets) === 0) {
@@ -119,10 +116,9 @@ class Assets
     /**
      * Get asset paths within specified CSS bundle.
      *
-     * @param string $bundleName Bundle name.
-     * @return string[]
-     *
+     * @param  string               $bundleName Bundle name.
      * @throws \OutOfRangeException if specified CSS asset bundle is not found.
+     * @return string[]
      */
     public function getCssBundleAssets($bundleName)
     {
@@ -131,7 +127,8 @@ class Assets
         foreach ($this->assetBundles as $assetBundles) {
             try {
                 $assets = array_merge($assets, $assetBundles->getCssBundleAssets($bundleName));
-            } catch (\OutOfRangeException $e) {}
+            } catch (\OutOfRangeException $e) {
+            }
         }
 
         if (count($assets) === 0) {
@@ -153,7 +150,7 @@ class Assets
      * `http://example.com/vendor/bootstrap/js/bootstrap.js`, replacing the `://` with the base url
      * Make sure the ressource exist in the process
      *
-     * @param string|array $streamPath The asset uri
+     * @param  string|array            $streamPath The asset uri
      * @throws \BadMethodCallException
      * @throws FileNotFoundException
      */
@@ -184,13 +181,13 @@ class Assets
      * Processes a relative path from a URL to an absolute path. Returns null if no file exists at the generated path.
      * Applies protections against attempts to access restricted files.
      *
-     * @param string $uncleanRelativePath Potentially dangerous relative path.
+     * @param  string      $uncleanRelativePath Potentially dangerous relative path.
      * @return null|string
      */
     public function urlPathToAbsolutePath($uncleanRelativePath)
     {
         if (!$uri = $this->urlPathToStreamUri($uncleanRelativePath)) {
-            return null;
+            return;
         }
 
         // Get resource from stream uri
@@ -203,7 +200,7 @@ class Assets
         if (file_exists($absolutePath)) {
             return $absolutePath;
         } else {
-            return null;
+            return;
         }
     }
 
@@ -230,7 +227,7 @@ class Assets
 
         // Make sure ressource path exist
         if (!$this->locator->getResource($uri)) {
-            return null;
+            return;
         }
 
         return $uri;
@@ -249,7 +246,7 @@ class Assets
     /**
      * Set Asset base Url
      *
-     * @param string $baseUrl
+     * @param  string                    $baseUrl
      * @throws \InvalidArgumentException
      * @return $this
      */
@@ -274,13 +271,13 @@ class Assets
      */
     public function getLocatorScheme()
     {
-        return $this->locatorScheme . "://";
+        return $this->locatorScheme . '://';
     }
 
     /**
      * Set Asset locator scheme
      *
-     * @param string $locatorScheme
+     * @param  string                    $locatorScheme
      * @throws \InvalidArgumentException
      * @return $this
      */
@@ -289,7 +286,7 @@ class Assets
         // Make sure it's a string, until php 7.1
         if (!is_string($locatorScheme)) {
             throw new \InvalidArgumentException('$locateScheme must be of type string but was ' . gettype($locatorScheme));
-        } elseif ($locatorScheme == "") {
+        } elseif ($locatorScheme == '') {
             throw new \InvalidArgumentException('$locatorScheme must not be an empty string.');
         }
         $this->locatorScheme = $locatorScheme;

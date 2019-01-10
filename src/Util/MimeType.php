@@ -2,10 +2,10 @@
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
- * @package   userfrosting/assets
  * @link      https://github.com/userfrosting/assets
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Assets\Util;
 
 /**
@@ -27,12 +27,13 @@ class MimeType
     public static function detectByFileExtension($extension)
     {
         static $extensionToMimeTypeMap;
-        if (! $extensionToMimeTypeMap) {
+        if (!$extensionToMimeTypeMap) {
             $extensionToMimeTypeMap = static::getExtensionToMimeTypeMap();
         }
         if (isset($extensionToMimeTypeMap[$extension])) {
             return $extensionToMimeTypeMap[$extension];
         }
+
         return 'text/plain';
     }
 
@@ -44,6 +45,7 @@ class MimeType
     public static function detectByFilename($filename)
     {
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
+
         return empty($extension) ? 'text/plain' : static::detectByFileExtension($extension);
     }
 

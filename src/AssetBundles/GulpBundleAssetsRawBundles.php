@@ -2,13 +2,12 @@
 /**
  * UserFrosting (http://www.userfrosting.com)
  *
- * @package   userfrosting/assets
  * @link      https://github.com/userfrosting/assets
- * @license   https://github.com/userfrosting/UserFrosting/blob/master/licenses/UserFrosting.md (MIT License)
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
+
 namespace UserFrosting\Assets\AssetBundles;
 
-use UserFrosting\Assets\AssetBundles\GulpBundleAssetsBundles;
 use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**
@@ -22,7 +21,7 @@ use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
 {
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function __construct($filePath)
     {
@@ -38,8 +37,7 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
                     // Attempt to add CSS bundle
                     try {
                         $this->cssBundles[$bundleName] = $this->standardiseBundle($bundle->styles);
-                    }
-                    catch (\Exception $e) {
+                    } catch (\Exception $e) {
                         throw new InvalidBundlesFileException("Encountered issue processing styles property for '$bundleName' for file '$filePath'", 0, $e);
                     }
                 }
@@ -47,8 +45,7 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
                     // Attempt to add JS bundle
                     try {
                         $this->jsBundles[$bundleName] = $this->standardiseBundle($bundle->scripts);
-                    }
-                    catch (\Exception $e) {
+                    } catch (\Exception $e) {
                         throw new InvalidBundlesFileException("Encountered issue processing scripts property for '$bundleName' for file '$filePath'", 0, $e);
                     }
                 }
@@ -59,7 +56,7 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
     /**
      * Validates bundle data and returns standardised data.
      *
-     * @param string|string[] $bundle
+     * @param  string|string[] $bundle
      * @return string[]
      */
     protected function standardiseBundle($bundle)
@@ -69,12 +66,13 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
         } elseif (is_array($bundle)) {
             foreach ($bundle as $asset) {
                 if (!is_string($asset)) {
-                    throw new \InvalidArgumentException("Input was array, so string expected but encountered " . gettype($asset));
+                    throw new \InvalidArgumentException('Input was array, so string expected but encountered ' . gettype($asset));
                 }
             }
+
             return $bundle;
         } else {
-            throw new \InvalidArgumentException("Expected string or string[] but input was " . gettype($bundle));
+            throw new \InvalidArgumentException('Expected string or string[] but input was ' . gettype($bundle));
         }
     }
 }

@@ -8,6 +8,8 @@
 
 namespace UserFrosting\Assets\AssetBundles;
 
+use UserFrosting\Support\Exception\FileNotFoundException;
+use UserFrosting\Support\Exception\JsonException;
 use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**
@@ -22,32 +24,35 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
 {
     /**
      * {@inheritdoc}
+     * @throws FileNotFoundException       if file cannot be found.
+     * @throws JsonException               if file cannot be parsed as JSON.
+     * @throws InvalidBundlesFileException if unexpected value encountered.
      */
-    public function __construct($filePath)
+    public function __construct($path)
     {
-        parent::__construct($filePath);
+        parent::__construct($path);
 
         // Read file
-        $bundlesFile = $this->readSchema($filePath);
+        $schema = $this->readSchema($path, true);
 
         // Process bundles.
-        if (isset($bundlesFile->bundle)) {
-            foreach ($bundlesFile->bundle as $bundleName => $bundle) {
-                if (isset($bundle->styles)) {
-                    // Attempt to add CSS bundle
-                    try {
-                        $this->cssBundles[$bundleName] = $this->standardiseBundle($bundle->styles);
-                    } catch (\Exception $e) {
-                        throw new InvalidBundlesFileException("Encountered issue processing styles property for '$bundleName' for file '$filePath'", 0, $e);
-                    }
+        foreach ($schema['bundle'] as $bundleName => $_) {
+            $styles = $schema["bundle.$bundleName.styles"];
+            if ($styles !== null) {
+                // Attempt to add CSS bundle
+                try {
+                    $this->cssBundles[$bundleName] = $this->standardiseBundle($styles);
+                } catch (\Exception $e) {
+                    throw new InvalidBundlesFileException("Encountered issue processing styles property for '$bundleName' for file '$path'", 0, $e);
                 }
-                if (isset($bundle->scripts)) {
-                    // Attempt to add JS bundle
-                    try {
-                        $this->jsBundles[$bundleName] = $this->standardiseBundle($bundle->scripts);
-                    } catch (\Exception $e) {
-                        throw new InvalidBundlesFileException("Encountered issue processing scripts property for '$bundleName' for file '$filePath'", 0, $e);
-                    }
+            }
+            $scripts = $schema["bundle.$bundleName.scripts"];
+            if ($scripts !== null) {
+                // Attempt to add CSS bundle
+                try {
+                    $this->jsBundles[$bundleName] = $this->standardiseBundle($scripts);
+                } catch (\Exception $e) {
+                    throw new InvalidBundlesFileException("Encountered issue processing styles property for '$bundleName' for file '$path'", 0, $e);
                 }
             }
         }
@@ -69,7 +74,6 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
                     throw new \InvalidArgumentException('Input was array, so string expected but encountered ' . gettype($asset));
                 }
             }
-
             return $bundle;
         } else {
             throw new \InvalidArgumentException('Expected string or string[] but input was ' . gettype($bundle));

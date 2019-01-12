@@ -8,6 +8,8 @@
 
 namespace UserFrosting\Assets\AssetBundles;
 
+use UserFrosting\Support\Exception\FileNotFoundException;
+use UserFrosting\Support\Exception\JsonException;
 use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**
@@ -20,29 +22,31 @@ class GulpBundleAssetsCompiledBundles extends GulpBundleAssetsBundles
 {
     /**
      * {@inheritdoc}
+     * @throws FileNotFoundException       if file cannot be found.
+     * @throws JsonException               if file cannot be parsed as JSON.
+     * @throws InvalidBundlesFileException if unexpected value encountered.
      */
-    public function __construct($filePath)
+    public function __construct($path)
     {
-        parent::__construct($filePath);
+        parent::__construct($path);
 
         // Read file
-        $bundlesFile = $this->readSchema($filePath);
+        $schema = $this->readSchema($path, true);
 
         // Process
-        foreach ($bundlesFile as $bundleName => $bundleFiles) {
-            if (isset($bundleFiles->styles)) {
-                if (is_string($bundleFiles->styles)) {
-                    $this->cssBundles[$bundleName][] = $bundleFiles->styles;
-                } else {
-                    throw new InvalidBundlesFileException("Expected styles property for '$bundleName' to be of type string but was " . gettype($bundleFiles->styles) . ". For '$filePath'");
-                }
+        foreach ($schema->all() as $bundleName => $_) {
+            $styles = $schema["$bundleName.styles"];
+            if (is_string($styles)) {
+                $this->cssBundles[$bundleName][] = $styles;
+            } else if ($styles !== null) {
+                throw new InvalidBundlesFileException("Expected styles property for '$bundleName' to be of type string but was '" . gettype($styles) . "' for '$path'");
             }
-            if (isset($bundleFiles->scripts)) {
-                if (is_string($bundleFiles->scripts)) {
-                    $this->jsBundles[$bundleName][] = $bundleFiles->scripts;
-                } else {
-                    throw new InvalidBundlesFileException("Expected scripts property for '$bundleName' to be of type string but was " . gettype($bundleFiles->scripts) . ". For '$filePath'");
-                }
+
+            $scripts = $schema["$bundleName.scripts"];
+            if (is_string($scripts)) {
+                $this->jsBundles[$bundleName][] = $scripts;
+            } else if ($scripts !== null) {
+                throw new InvalidBundlesFileException("Expected scripts property for '$bundleName' to be of type string but was '" . gettype($scripts) . "' for '$path'");
             }
         }
     }

@@ -46,6 +46,7 @@ Update composer dependencies.
 ## [4.0.0] - 2017-02-19
 Initial 4.x release.
 
+[5.0.0]: https://github.com/userfrosting/assets/compare/4.2.0...5.0.0
 [4.2.0]: https://github.com/userfrosting/assets/compare/4.1.0...4.2.0
 [4.1.0]: https://github.com/userfrosting/assets/compare/4.0.1...4.1.0
 [4.0.1]: https://github.com/userfrosting/assets/compare/4.0.0...4.0.1

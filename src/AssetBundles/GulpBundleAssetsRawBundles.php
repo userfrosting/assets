@@ -35,7 +35,12 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
         // Read file
         $schema = $this->readSchema($path, true);
 
-        // Process bundles.
+        // Abort if no bundle is specified
+        if ($schema['bundle'] === null) {
+            return;
+        }
+
+        // Process bundles
         foreach ($schema['bundle'] as $bundleName => $_) {
             $styles = $schema["bundle.$bundleName.styles"];
             if ($styles !== null) {

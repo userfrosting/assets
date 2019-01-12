@@ -5,11 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [5.0.0] - 2019-01-12
 ### Added
 - Option to recieve a `UserFrosting\Support\Repository\Repository` instance from UserFrosting\Assets\AssetBundles\GulpBundleAssetsBundles->readSchema` function by providing true for the second argument.
 
 ### Changed
 - `GulpBundleAssets*Bundles` classes simplified using ``UserFrosting\Support\Repository\Repository` returned by extended `readSchema`.
+- Bumped version to `5.0.0` to permit realignment with semantic versioning.
 
 ## [4.2.0] - 2019-01-10
 ### Added

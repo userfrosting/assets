@@ -1,14 +1,15 @@
 # Changelog
+
 All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [5.0.1] - 2019-01-13
+- Updated Dependencies
 
 ## [5.0.0] - 2019-01-12
 ### Added
-- Option to recieve a `UserFrosting\Support\Repository\Repository` instance from UserFrosting\Assets\AssetBundles\GulpBundleAssetsBundles->readSchema` function by providing true for the second argument.
+- Option to receive a `UserFrosting\Support\Repository\Repository` instance from UserFrosting\Assets\AssetBundles\GulpBundleAssetsBundles->readSchema` function by providing true for the second argument.
 
 ### Changed
 - `GulpBundleAssets*Bundles` classes simplified using ``UserFrosting\Support\Repository\Repository` returned by extended `readSchema`.
@@ -46,6 +47,7 @@ Update composer dependencies.
 ## [4.0.0] - 2017-02-19
 Initial 4.x release.
 
+[5.0.1]: https://github.com/userfrosting/assets/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/userfrosting/assets/compare/4.2.0...5.0.0
 [4.2.0]: https://github.com/userfrosting/assets/compare/4.1.0...4.2.0
 [4.1.0]: https://github.com/userfrosting/assets/compare/4.0.1...4.1.0

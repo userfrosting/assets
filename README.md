@@ -176,10 +176,6 @@ $assetsPlugin = new AssetsTemplatePlugin($assets);
 <script src="https://assets.userfrosting.com/assets/bootstrap/js/npm.js" defer="true"></script>
 ```
 
-## Testing
+## [Style Guide](STYLE-GUIDE.md)
 
-Testing can be done using the local version retrieved by composer :
-
-```shell
-vendor/bin/phpunit
-```
+## [Testing](RUNNING_TESTS.md)

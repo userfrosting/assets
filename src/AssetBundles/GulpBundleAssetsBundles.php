@@ -1,8 +1,9 @@
 <?php
 /**
- * UserFrosting (http://www.userfrosting.com)
+ * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman, Jordan Mele
  * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
 
@@ -70,11 +71,11 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
     /**
      * Attempts to read the schema file from provided path.
      *
-     * @param string $path Path to schema file.
-     * @param bool $useRepository
+     * @param  string                $path          Path to schema file.
+     * @param  bool                  $useRepository
      * @throws FileNotFoundException if file cannot be found.
-     * @throws JsonException if file cannot be parsed as JSON.
-     * @return mixed|Repository Returns file contents parsed by json_decode or a Repository if $useRepository is true.
+     * @throws JsonException         if file cannot be parsed as JSON.
+     * @return mixed|Repository      Returns file contents parsed by json_decode or a Repository if $useRepository is true.
      */
     protected function readSchema($path, $useRepository = false)
     {
@@ -82,12 +83,11 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
             // Read schmea using Repository
             try {
                 $loader = new YamlFileLoader($path);
+
                 return new Repository($loader->load());
-            }
-            catch (FileNotFoundException $e) {
+            } catch (FileNotFoundException $e) {
                 throw new FileNotFoundException('The schema file could not be found.', 0, $e);
-            }
-            catch (JsonException $e) {
+            } catch (JsonException $e) {
                 throw new JsonException('The schema file could not be found.', 0, $e);
             }
         } else {
@@ -100,12 +100,12 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
             if ($doc === false) {
                 throw new FileNotFoundException("The schema '$path' could not be found.");
             }
-    
+
             $schema = json_decode($doc);
             if ($schema === null) {
                 throw new JsonException("The schema '$path' does not contain a valid JSON document.  JSON error: " . json_last_error());
             }
-    
+
             return $schema;
         }
     }

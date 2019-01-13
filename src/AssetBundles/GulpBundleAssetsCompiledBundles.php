@@ -1,8 +1,9 @@
 <?php
 /**
- * UserFrosting (http://www.userfrosting.com)
+ * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman, Jordan Mele
  * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
 
@@ -38,14 +39,14 @@ class GulpBundleAssetsCompiledBundles extends GulpBundleAssetsBundles
             $styles = $schema["$bundleName.styles"];
             if (is_string($styles)) {
                 $this->cssBundles[$bundleName][] = $styles;
-            } else if ($styles !== null) {
+            } elseif ($styles !== null) {
                 throw new InvalidBundlesFileException("Expected styles property for '$bundleName' to be of type string but was '" . gettype($styles) . "' for '$path'");
             }
 
             $scripts = $schema["$bundleName.scripts"];
             if (is_string($scripts)) {
                 $this->jsBundles[$bundleName][] = $scripts;
-            } else if ($scripts !== null) {
+            } elseif ($scripts !== null) {
                 throw new InvalidBundlesFileException("Expected scripts property for '$bundleName' to be of type string but was '" . gettype($scripts) . "' for '$path'");
             }
         }

@@ -2,8 +2,8 @@
 
 [![Latest Version](https://img.shields.io/github/release/userfrosting/assets.svg)](https://github.com/userfrosting/assets/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
-[![Build status](https://ci.appveyor.com/api/projects/status/fmt0253je6spwq7y?svg=true)](https://ci.appveyor.com/project/Silic0nS0ldier/assets)
 [![Build Status](https://travis-ci.org/userfrosting/assets.svg?branch=master)](https://travis-ci.org/userfrosting/assets)
+[![Windows Build](https://ci.appveyor.com/api/projects/status/02gtbpena70q46q2?svg=true)](https://ci.appveyor.com/project/userfrosting/assets)
 [![codecov](https://codecov.io/gh/userfrosting/assets/branch/master/graph/badge.svg)](https://codecov.io/gh/userfrosting/assets)
 [![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support)
 [![Donate](https://img.shields.io/badge/Open%20Collective-Donate-blue.svg)](https://opencollective.com/userfrosting#backer)

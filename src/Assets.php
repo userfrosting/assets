@@ -9,10 +9,10 @@
 
 namespace UserFrosting\Assets;
 
-use RocketTheme\Toolbox\ResourceLocator\ResourceLocatorInterface;
-use UserFrosting\Support\Util\Util;
-use UserFrosting\Support\Exception\FileNotFoundException;
 use UserFrosting\Assets\AssetBundles\AssetBundlesInterface;
+use UserFrosting\Support\Exception\FileNotFoundException;
+use UserFrosting\Support\Util\Util;
+use UserFrosting\UniformResourceLocator\ResourceLocatorInterface;
 
 /**
  * Facilitates convenient access to assets and asset bundles within PHP code.
@@ -21,7 +21,7 @@ use UserFrosting\Assets\AssetBundles\AssetBundlesInterface;
  * @see AssetsTemplatePlugin for template engine integration.
  *
  * @author Alex Weissman (https://alexanderweissman.com)
- * @author Jordan Mele
+ * @author Jordan Mele (https://blog.djmm.me)
  */
 class Assets
 {
@@ -194,14 +194,14 @@ class Assets
         // Get resource from stream uri
         $resource = $this->locator->getResource($uri);
 
-        // Make path absolute.
-        $absolutePath = $resource->getAbsolutePath();
+        // Make path absolute (and normalise)
+        $absolutePath = realPath($resource->getAbsolutePath());
 
         // Return path or null depending on existence.
-        if (file_exists($absolutePath)) {
+        if ($absolutePath && is_file($absolutePath)) {
             return $absolutePath;
         } else {
-            return;
+            return null;
         }
     }
 
@@ -255,7 +255,7 @@ class Assets
     {
         // Make sure it's a string, until php 7.1
         if (!is_string($baseUrl)) {
-            throw new \InvalidArgumentException('$baseUrl must be of type string but was ' . gettype($baseUrl));
+            throw new \InvalidArgumentException('$baseUrl must be of type string but was ' . gettype($baseUrl));// @codeCoverageIgnore
         }
 
         // Make sure url ends with a slash
@@ -286,7 +286,7 @@ class Assets
     {
         // Make sure it's a string, until php 7.1
         if (!is_string($locatorScheme)) {
-            throw new \InvalidArgumentException('$locateScheme must be of type string but was ' . gettype($locatorScheme));
+            throw new \InvalidArgumentException('$locateScheme must be of type string but was ' . gettype($locatorScheme));// @codeCoverageIgnore
         } elseif ($locatorScheme == '') {
             throw new \InvalidArgumentException('$locatorScheme must not be an empty string.');
         }

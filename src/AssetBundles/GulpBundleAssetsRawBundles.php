@@ -9,9 +9,9 @@
 
 namespace UserFrosting\Assets\AssetBundles;
 
+use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 use UserFrosting\Support\Exception\FileNotFoundException;
 use UserFrosting\Support\Exception\JsonException;
-use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**
  * Represents a collection of asset bundles, loaded from a gulp-bundle-assets configuration file.
@@ -36,13 +36,18 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
         // Read file
         $schema = $this->readSchema($path, true);
 
-        // Abort if no bundle is specified
+        // No further processing is needed if bundle key is not present
         if ($schema['bundle'] === null) {
             return;
         }
 
+        // Verify bundle key is an object
+        if (!is_array($schema['bundle'])) {
+            throw new InvalidBundlesFileException("Encountered issue processing bundle property of schema from file '$path'");
+        }
+
         // Process bundles
-        foreach ($schema['bundle'] as $bundleName => $_) {
+        foreach (array_keys($schema['bundle']) as $bundleName) {
             $styles = $schema["bundle.$bundleName.styles"];
             if ($styles !== null) {
                 // Attempt to add CSS bundle

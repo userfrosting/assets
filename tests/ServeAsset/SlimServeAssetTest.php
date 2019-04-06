@@ -5,7 +5,6 @@ use UserFrosting\UniformResourceLocator\ResourceLocator;
 use UserFrosting\Assets\ServeAsset\SlimServeAsset;
 use UserFrosting\Assets\Assets;
 use UserFrosting\Assets\AssetLoader;
-use Slim\Container;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -15,7 +14,7 @@ use Slim\Http\Response;
  */
 class SlimServeAssetTest extends TestCase
 {
-    /** @var Container */
+    /** @var AssetLoader */
     private $assetLoader;
 
     /**
@@ -109,6 +108,38 @@ class SlimServeAssetTest extends TestCase
 
         // Assert response body matches file
         $this->assertSame($response->getBody()->__toString(), file_get_contents(__DIR__ . '/../data/sprinkles/hawks/assets/allowed.txt'));
+
+        // Assert correct MIME
+        $this->assertSame($response->getHeader('Content-Type'), ['text/plain']);
+    }
+
+    /**
+     * Test with existent asset.
+     *
+     * @param SlimServeAsset $controller
+     * @return void
+     *
+     * @depends testConstructor
+     */
+    public function testAssetOfUnknownType(SlimServeAsset $controller)
+    {
+        // Create environment.
+        $environment = Environment::mock([]);
+
+        // Create request and response objects.
+        $request = Request::createFromEnvironment($environment);
+        $response = new Response();
+
+        // Invoke controller method.
+        $response = $controller->serveAsset($request, $response, [
+            'url' => 'mysterious'
+        ]);
+
+        // Assert 200 response
+        $this->assertSame($response->getStatusCode(), 200);
+
+        // Assert response body matches file
+        $this->assertSame($response->getBody()->__toString(), file_get_contents(__DIR__ . '/../data/sprinkles/hawks/assets/mysterious'));
 
         // Assert correct MIME
         $this->assertSame($response->getHeader('Content-Type'), ['text/plain']);

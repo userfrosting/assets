@@ -13,7 +13,7 @@ namespace UserFrosting\Assets;
  * Generic plugin for template systems. Provides several convenience methods for linking assets within templates.
  *
  * @author Alex Weissman (https://alexanderweissman.com)
- * @author Jordan Mele
+ * @author Jordan Mele (https://blog.djmm.me)
  *
  * @todo JS and CSS convenience methods. (not bundles)
  */
@@ -66,7 +66,7 @@ class AssetsTemplatePlugin
         $assetsTagged = '';
 
         foreach ($assetPaths as $assetPath) {
-            $assetsTagged .= $this->makeSelfClosingTag('link', true, array_merge(['href' => $assetPath], $attributes));
+            $assetsTagged .= $this->makeSelfClosingTag('link', array_merge(['href' => $assetPath], $attributes));
         }
 
         return $assetsTagged;
@@ -108,28 +108,21 @@ class AssetsTemplatePlugin
      * Generates a self closing tag.
      *
      * @param  string       $tagName      Tag name.
-     * @param  bool         $closingSlash If a closing slash should be included. Defaults to true.
      * @param  mixed[]|null $attributes   Attributes to add to tag. Optional.
      * @return string
      */
-    private function makeSelfClosingTag($tagName, $closingSlash = true, array $attributes = null)
+    private function makeSelfClosingTag($tagName, array $attributes = null)
     {
         if (!is_string($tagName)) {
-            throw new \InvalidArgumentException('Expected $tagName to be type string but was ' . gettype($tagName) . '.');
-        }
-        if (!is_bool($closingSlash)) {
-            throw new \InvalidArgumentException('Expected $closingSlash to be type bool but was ' . gettype($closingSlash) . '.');
+            throw new \InvalidArgumentException('Expected $tagName to be type string but was ' . gettype($tagName) . '.'); // @codeCoverageIgnore
         }
 
         $output = "<$tagName";
         if ($attributes !== null) {
             $output .= ' ' . $this->convertAttributes($attributes);
         }
-        if ($closingSlash) {
-            $output .= ' />';
-        } else {
-            $output .= '>';
-        }
+
+        $output .= ' />';
 
         return $output;
     }

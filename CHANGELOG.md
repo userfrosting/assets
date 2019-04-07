@@ -69,7 +69,7 @@ Initial 4.x release.
 Add custom exceptions.
 
 ## [1.0] - 2016-04-05
-Initial release release.
+Initial release.
 
 [5.0.2]: https://github.com/userfrosting/assets/compare/5.0.1...5.0.2
 [5.0.1]: https://github.com/userfrosting/assets/compare/5.0.0...5.0.1

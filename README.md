@@ -13,7 +13,7 @@
 <!-- Links -->
 [codecov]: https://codecov.io/gh/userfrosting/assets
 [releases]: https://github.com/userfrosting/assets/releases
-[styleci]: https://github.styleci.io/repos/30551954
+[styleci]: https://github.styleci.io/repos/55460230
 [travis]: https://travis-ci.org/userfrosting/assets
 [appveyor]: https://ci.appveyor.com/project/userfrosting/assets
 [version-badge]: https://img.shields.io/github/release/userfrosting/assets.svg

@@ -1,0 +1,11 @@
+{
+    "bundle": {
+        "test": {
+            "scripts": [
+                "vendor/bootstrap/js/bootstrap.js"
+                'vendor/bootstrap/js/npm.js'
+            ],
+            "styles": "vendor/bootstrap/css/bootstrap.css"
+        }
+    }
+}

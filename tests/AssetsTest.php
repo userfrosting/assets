@@ -1,9 +1,18 @@
 <?php
 
+/*
+ * UserFrosting Assets (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/assets
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman, Jordan Mele
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
+ */
+
 use PHPUnit\Framework\TestCase;
-use UserFrosting\UniformResourceLocator\ResourceLocator;
-use UserFrosting\Assets\Assets;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsRawBundles;
+use UserFrosting\Assets\Assets;
+use UserFrosting\Support\Exception\FileNotFoundException;
+use UserFrosting\UniformResourceLocator\ResourceLocator;
 
 /**
  * Tests Assets class.
@@ -27,9 +36,9 @@ class AssetsTest extends TestCase
      */
     public function setUp()
     {
-        $this->basePath = __DIR__ . '/data';
-        $this->baseUrl = "https://assets.userfrosting.com/";
-        $this->locatorScheme = "assets";
+        $this->basePath = __DIR__.'/data';
+        $this->baseUrl = 'https://assets.userfrosting.com/';
+        $this->locatorScheme = 'assets';
         $this->locator = new ResourceLocator($this->basePath);
         $this->locator->registerStream($this->locatorScheme, '', 'assets');
         $this->locator->registerStream($this->locatorScheme, 'vendor', 'assets', true);
@@ -47,13 +56,15 @@ class AssetsTest extends TestCase
     {
         $assets = new Assets($this->locator, $this->locatorScheme, $this->baseUrl);
         $this->assertInstanceOf(Assets::class, $assets);
+
         return $assets;
     }
 
     /**
-     * Test string parameter for getAbsoluteUrl
+     * Test string parameter for getAbsoluteUrl.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testConstructAssets
@@ -61,17 +72,22 @@ class AssetsTest extends TestCase
     public function testGetAbsoluteUrlWithString(Assets $assets)
     {
         $url = $assets->getAbsoluteUrl('assets://vendor/bootstrap/js/bootstrap.js');
-        $this->assertEquals($this->baseUrl . 'vendor/bootstrap/js/bootstrap.js', $url);
 
-        // Translate it back
+        // URL
+        $this->assertEquals($this->baseUrl.'vendor/bootstrap/js/bootstrap.js', $url);
+
+        // Stream URI
         $this->assertEquals('assets://vendor/bootstrap/js/bootstrap.js', $assets->urlPathToStreamUri($url));
-        $this->assertEquals(__DIR__ . '/data/assets/bootstrap/js/bootstrap.js', $assets->urlPathToAbsolutePath($url));
+
+        // Absolute path
+        $this->assertEquals(realpath(__DIR__.'/data/assets/bootstrap/js/bootstrap.js'), $assets->urlPathToAbsolutePath($url));
     }
 
     /**
-     * Test string[] parameter for getAbsoluteUrl
+     * Test string[] parameter for getAbsoluteUrl.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testConstructAssets
@@ -80,21 +96,41 @@ class AssetsTest extends TestCase
     {
         $this->assertEquals($assets->getAbsoluteUrl([
             'assets',
-            'vendor/bootstrap/js/bootstrap.js'
-        ]), $this->baseUrl . 'vendor/bootstrap/js/bootstrap.js');
+            'vendor/bootstrap/js/bootstrap.js',
+        ]), $this->baseUrl.'vendor/bootstrap/js/bootstrap.js');
     }
 
     /**
-     * Test non-existent asset getAbsoluteUrl
+     * Test invalid string[] parameter for getAbsoluteUrl.
      *
      * @param Assets $assets
+     *
+     * @return void
+     *
+     * @depends testConstructAssets
+     */
+    public function testGetAbsoluteUrlWithInvalidStringArray(Assets $assets)
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $assets->getAbsoluteUrl([
+            'assets',
+            'vendor/bootstrap/js/bootstrap.js',
+            'extra-invalid-entry',
+        ]);
+    }
+
+    /**
+     * Test non-existent asset getAbsoluteUrl.
+     *
+     * @param Assets $assets
+     *
      * @return void
      *
      * @depends testConstructAssets
      */
     public function testGetAbsoluteUrlWithNonExistentFile(Assets $assets)
     {
-        $this->expectException(UserFrosting\Support\Exception\FileNotFoundException::class);
+        $this->expectException(FileNotFoundException::class);
         $assets->getAbsoluteUrl('assets://vendor/bootstrap/js/faker.js');
     }
 
@@ -102,45 +138,141 @@ class AssetsTest extends TestCase
      * Tests addition of bundles to Assets instance.
      *
      * @param Assets $assets
+     *
      * @return Assets
      *
      * @depends testConstructAssets
      */
     public function testAddAssetBundles(Assets $assets)
     {
-        $assets->addAssetBundles(new GulpBundleAssetsRawBundles(__DIR__ . "/data/bundle.config.json"));
+        $assets->addAssetBundles(new GulpBundleAssetsRawBundles(__DIR__.'/data/bundle.config.json'));
         $this->assertInternalType('array', $assets->getAssetBundles());
+
         return $assets;
     }
 
     /**
-     * Tests getJsBundleAssets
+     * Tests getJsBundleAssets.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testAddAssetBundles
      */
     public function testGetJsBundleAssets(Assets $assets)
     {
-        $this->assertEquals($assets->getJsBundleAssets("test"), [
-            $this->baseUrl . 'vendor/bootstrap/js/bootstrap.js',
-            $this->baseUrl . 'vendor/bootstrap/js/npm.js'
+        $this->assertEquals($assets->getJsBundleAssets('test'), [
+            $this->baseUrl.'vendor/bootstrap/js/bootstrap.js',
+            $this->baseUrl.'vendor/bootstrap/js/npm.js',
         ]);
     }
 
     /**
-     * Tests getCssBundleAssets
+     * Tests getJsBundleAssets with a non-existant bundle index.
      *
      * @param Assets $assets
+     *
+     * @return void
+     *
+     * @depends testAddAssetBundles
+     */
+    public function testGetJsBundleAssetsOutOfRange(Assets $assets)
+    {
+        $this->expectException(\OutOfRangeException::class);
+        $assets->getJsBundleAssets("i-don't-exist");
+    }
+
+    /**
+     * Tests getCssBundleAssets.
+     *
+     * @param Assets $assets
+     *
      * @return void
      *
      * @depends testAddAssetBundles
      */
     public function testGetCssBundleAssets(Assets $assets)
     {
-        $this->assertEquals($assets->getCssBundleAssets("test"), [
-            $this->baseUrl . 'vendor/bootstrap/css/bootstrap.css'
+        $this->assertEquals($assets->getCssBundleAssets('test'), [
+            $this->baseUrl.'vendor/bootstrap/css/bootstrap.css',
         ]);
+    }
+
+    /**
+     * Tests getCssBundleAssets with a non-existant bundle index.
+     *
+     * @param Assets $assets
+     *
+     * @return void
+     *
+     * @depends testAddAssetBundles
+     */
+    public function testGetCssBundleAssetsOutOfRange(Assets $assets)
+    {
+        $this->expectException(\OutOfRangeException::class);
+        $assets->getCssBundleAssets("i-don't-exist");
+    }
+
+    /**
+     * Tests resetAssetBundles.
+     *
+     * @param Assets $assets
+     *
+     * @return void
+     *
+     * @depends testAddAssetBundles
+     */
+    public function testResetAssetBundles(Assets $assets)
+    {
+        $this->assertNotEquals($assets->getAssetBundles(), []);
+        $assets->resetAssetBundles();
+        $this->assertEquals($assets->getAssetBundles(), []);
+    }
+
+    /**
+     * Tests urlPathToAbsolutePath.
+     *
+     * @param Assets $assets
+     *
+     * @return void
+     *
+     * @depends testAddAssetBundles
+     */
+    public function testUrlPathToAbsolutePath(Assets $assets)
+    {
+        $this->assertNull($assets->urlPathToAbsolutePath('../i/../don\'t/exist/and/cause/issues'));
+    }
+
+    /**
+     * Tests getBaseUri.
+     *
+     * @param Assets $assets
+     *
+     * @return void
+     *
+     * @depends testAddAssetBundles
+     */
+    public function testGetBaseUri(Assets $assets)
+    {
+        $this->assertEquals($assets->getBaseUrl(), 'https://assets.userfrosting.com/');
+    }
+
+    /**
+     * Tests setLocatorScheme.
+     *
+     * @param Assets $assets
+     *
+     * @return void
+     *
+     * @depends testAddAssetBundles
+     */
+    public function testSetLocatorScheme(Assets $assets)
+    {
+        $assets->setLocatorScheme('foo-bar');
+        $this->assertEquals($assets->getLocatorScheme(), 'foo-bar://');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $assets->setLocatorScheme('');
     }
 }

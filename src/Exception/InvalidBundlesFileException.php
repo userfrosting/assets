@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
@@ -10,7 +11,7 @@
 namespace UserFrosting\Assets\Exception;
 
 /**
- * JsonException
+ * JsonException.
  *
  * This exception should be thrown when there was a problem processing a bundles file.
  *

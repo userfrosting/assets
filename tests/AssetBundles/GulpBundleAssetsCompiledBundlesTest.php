@@ -1,8 +1,17 @@
 <?php
 
+/*
+ * UserFrosting Assets (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/assets
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman, Jordan Mele
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
+ */
+
 use PHPUnit\Framework\TestCase;
-use UserFrosting\Assets\Assets;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsCompiledBundles;
+use UserFrosting\Assets\Assets;
+use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**
  * Tests GulpBundleAssetsCompiledBundles class.
@@ -15,25 +24,45 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      *
      * @return Assets
      */
-    public function testConstructGulpBundleAssetsCompiledBundles()
+    public function testConstruct()
     {
-        $bundles = new GulpBundleAssetsCompiledBundles(__DIR__ . "/../data/bundle.result.json");
+        $bundles = new GulpBundleAssetsCompiledBundles(__DIR__.'/../data/bundle.result.json');
         $this->assertInstanceOf(GulpBundleAssetsCompiledBundles::class, $bundles);
+
         return $bundles;
+    }
+
+    /**
+     * Tests GulpBundleAssetsCompiledBundles constructor when a bundle contains an invalid styles property.
+     */
+    public function testConstructInvalidStylesBundle()
+    {
+        $this->expectException(InvalidBundlesFileException::class);
+        new GulpBundleAssetsCompiledBundles(__DIR__.'/../data/bundle.result.bad-styles.json');
+    }
+
+    /**
+     * Tests GulpBundleAssetsCompiledBundles constructor when a bundle contains an invalid scripts property.
+     */
+    public function testConstructInvalidJsBundle()
+    {
+        $this->expectException(InvalidBundlesFileException::class);
+        new GulpBundleAssetsCompiledBundles(__DIR__.'/../data/bundle.result.bad-scripts.json');
     }
 
     /**
      * Tests getCssBundleAssets method.
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
+     *
      * @return void
      *
-     * @depends testConstructGulpBundleAssetsCompiledBundles
+     * @depends testConstruct
      */
     public function testGetCssBundleAssets(GulpBundleAssetsCompiledBundles $bundles)
     {
         $this->assertEquals($bundles->getCssBundleAssets('test'), [
-            'test-930fa5c1ee.css'
+            'test-930fa5c1ee.css',
         ]);
     }
 
@@ -41,9 +70,10 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      * Tests that getCssBundleAssets method throws an exception when requested bundle doesn't exist.
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
+     *
      * @return void
      *
-     * @depends testConstructGulpBundleAssetsCompiledBundles
+     * @depends testConstruct
      */
     public function testGetCssBundleAssetsOutOfRange(GulpBundleAssetsCompiledBundles $bundles)
     {
@@ -55,14 +85,15 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      * Tests getJsBundleAssets method.
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
+     *
      * @return void
      *
-     * @depends testConstructGulpBundleAssetsCompiledBundles
+     * @depends testConstruct
      */
     public function testGetJsBundleAssets(GulpBundleAssetsCompiledBundles $bundles)
     {
         $this->assertEquals($bundles->getJsBundleAssets('test'), [
-            'test-930fa5c1ee.js'
+            'test-930fa5c1ee.js',
         ]);
     }
 
@@ -70,9 +101,10 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      * Tests that getJsBundleAssets method throws an exception when requested bundle doesn't exist.
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
+     *
      * @return void
      *
-     * @depends testConstructGulpBundleAssetsCompiledBundles
+     * @depends testConstruct
      */
     public function testGetJsBundleAssetsOutOfRange(GulpBundleAssetsCompiledBundles $bundles)
     {

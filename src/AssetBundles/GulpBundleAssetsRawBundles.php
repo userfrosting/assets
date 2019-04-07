@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
@@ -9,9 +10,9 @@
 
 namespace UserFrosting\Assets\AssetBundles;
 
+use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 use UserFrosting\Support\Exception\FileNotFoundException;
 use UserFrosting\Support\Exception\JsonException;
-use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**
  * Represents a collection of asset bundles, loaded from a gulp-bundle-assets configuration file.
@@ -25,6 +26,7 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
 {
     /**
      * {@inheritdoc}
+     *
      * @throws FileNotFoundException       if file cannot be found.
      * @throws JsonException               if file cannot be parsed as JSON.
      * @throws InvalidBundlesFileException if unexpected value encountered.
@@ -36,13 +38,18 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
         // Read file
         $schema = $this->readSchema($path, true);
 
-        // Abort if no bundle is specified
+        // No further processing is needed if bundle key is not present
         if ($schema['bundle'] === null) {
             return;
         }
 
+        // Verify bundle key is an object
+        if (!is_array($schema['bundle'])) {
+            throw new InvalidBundlesFileException("Encountered issue processing bundle property of schema from file '$path'");
+        }
+
         // Process bundles
-        foreach ($schema['bundle'] as $bundleName => $_) {
+        foreach (array_keys($schema['bundle']) as $bundleName) {
             $styles = $schema["bundle.$bundleName.styles"];
             if ($styles !== null) {
                 // Attempt to add CSS bundle
@@ -67,7 +74,8 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
     /**
      * Validates bundle data and returns standardised data.
      *
-     * @param  string|string[] $bundle
+     * @param string|string[] $bundle
+     *
      * @return string[]
      */
     protected function standardiseBundle($bundle)
@@ -77,13 +85,13 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
         } elseif (is_array($bundle)) {
             foreach ($bundle as $asset) {
                 if (!is_string($asset)) {
-                    throw new \InvalidArgumentException('Input was array, so string expected but encountered ' . gettype($asset));
+                    throw new \InvalidArgumentException('Input was array, so string expected but encountered '.gettype($asset));
                 }
             }
 
             return $bundle;
         } else {
-            throw new \InvalidArgumentException('Expected string or string[] but input was ' . gettype($bundle));
+            throw new \InvalidArgumentException('Expected string or string[] but input was '.gettype($bundle));
         }
     }
 }

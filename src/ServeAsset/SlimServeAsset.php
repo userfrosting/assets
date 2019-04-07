@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
@@ -15,7 +16,7 @@ use UserFrosting\Assets\AssetLoader;
 
 /**
  * Asset server for applications using Slim. Intended for development scenarios.
- * Requires an instance of AssetLoader to handle loading assets from filesystem or remote source
+ * Requires an instance of AssetLoader to handle loading assets from filesystem or remote source.
  *
  * @author Alex Weissman (https://alexanderweissman.com)
  * @author Jordan Mele

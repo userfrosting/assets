@@ -1,21 +1,28 @@
 <?php
 
+/*
+ * UserFrosting Assets (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/assets
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman, Jordan Mele
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
+ */
+
 use PHPUnit\Framework\TestCase;
-use UserFrosting\UniformResourceLocator\ResourceLocator;
-use UserFrosting\Assets\ServeAsset\SlimServeAsset;
-use UserFrosting\Assets\Assets;
-use UserFrosting\Assets\AssetLoader;
-use Slim\Container;
 use Slim\Http\Environment;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use UserFrosting\Assets\AssetLoader;
+use UserFrosting\Assets\Assets;
+use UserFrosting\Assets\ServeAsset\SlimServeAsset;
+use UserFrosting\UniformResourceLocator\ResourceLocator;
 
 /**
  * Tests SlimServeAsset class.
  */
 class SlimServeAssetTest extends TestCase
 {
-    /** @var Container */
+    /** @var AssetLoader */
     private $assetLoader;
 
     /**
@@ -25,9 +32,9 @@ class SlimServeAssetTest extends TestCase
      */
     public function setUp()
     {
-        $basePath = __DIR__ . '/../data';
-        $baseUrl = "https://assets.userfrosting.com/assets/";
-        $locatorScheme = "assets";
+        $basePath = __DIR__.'/../data';
+        $baseUrl = 'https://assets.userfrosting.com/assets/';
+        $locatorScheme = 'assets';
         $locator = new ResourceLocator($basePath);
         $locator->registerStream($locatorScheme, '', 'assets');
         $locator->registerStream($locatorScheme, 'vendor', 'assets', true);
@@ -50,6 +57,7 @@ class SlimServeAssetTest extends TestCase
     {
         $server = new SlimServeAsset($this->assetLoader);
         $this->assertInstanceOf(SlimServeAsset::class, $server);
+
         return $server;
     }
 
@@ -57,6 +65,7 @@ class SlimServeAssetTest extends TestCase
      * Test with non-existent asset.
      *
      * @param SlimServeAsset $controller
+     *
      * @return void
      *
      * @depends testConstructor
@@ -72,7 +81,7 @@ class SlimServeAssetTest extends TestCase
 
         // Invoke controller method.
         $response = $controller->serveAsset($request, $response, [
-            'url' => 'forbidden.txt'
+            'url' => 'forbidden.txt',
         ]);
 
         // Assert 404 response
@@ -86,6 +95,7 @@ class SlimServeAssetTest extends TestCase
      * Test with existent asset.
      *
      * @param SlimServeAsset $controller
+     *
      * @return void
      *
      * @depends testConstructor
@@ -101,14 +111,47 @@ class SlimServeAssetTest extends TestCase
 
         // Invoke controller method.
         $response = $controller->serveAsset($request, $response, [
-            'url' => 'allowed.txt'
+            'url' => 'allowed.txt',
         ]);
 
         // Assert 200 response
         $this->assertSame($response->getStatusCode(), 200);
 
         // Assert response body matches file
-        $this->assertSame($response->getBody()->__toString(), file_get_contents(__DIR__ . '/../data/sprinkles/hawks/assets/allowed.txt'));
+        $this->assertSame($response->getBody()->__toString(), file_get_contents(__DIR__.'/../data/sprinkles/hawks/assets/allowed.txt'));
+
+        // Assert correct MIME
+        $this->assertSame($response->getHeader('Content-Type'), ['text/plain']);
+    }
+
+    /**
+     * Test with existent asset.
+     *
+     * @param SlimServeAsset $controller
+     *
+     * @return void
+     *
+     * @depends testConstructor
+     */
+    public function testAssetOfUnknownType(SlimServeAsset $controller)
+    {
+        // Create environment.
+        $environment = Environment::mock([]);
+
+        // Create request and response objects.
+        $request = Request::createFromEnvironment($environment);
+        $response = new Response();
+
+        // Invoke controller method.
+        $response = $controller->serveAsset($request, $response, [
+            'url' => 'mysterious',
+        ]);
+
+        // Assert 200 response
+        $this->assertSame($response->getStatusCode(), 200);
+
+        // Assert response body matches file
+        $this->assertSame($response->getBody()->__toString(), file_get_contents(__DIR__.'/../data/sprinkles/hawks/assets/mysterious'));
 
         // Assert correct MIME
         $this->assertSame($response->getHeader('Content-Type'), ['text/plain']);

@@ -4,7 +4,25 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unknown]
+
+## [5.0.2] - 2019-04-07
+
+### Added
+- Test coverage for remaining untested source.
+
+### Changed
+- Stabilised absolute path returned by `Assets::urlPathToAbsolutePath` and hardened against silent failure.
+- Slightly simplified MIME resolution logic.
+- Marked usage of `Assets::readSchema` without a respository as the return value.
+- Removed various bit of dead code.
+
+### Fixed
+- Fixed silent failure in `gulp-bundle-assets` loading support.
+
 ## [5.0.1] - 2019-01-13
+
+### Changed
 - Updated Dependencies
 
 ## [5.0.0] - 2019-01-12

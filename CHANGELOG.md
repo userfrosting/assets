@@ -65,8 +65,18 @@ Update composer dependencies.
 ## [4.0.0] - 2017-02-19
 Initial 4.x release.
 
+## [1.1] - 2016-05-28
+Add custom exceptions.
+
+## [1.0] - 2016-04-05
+Initial release release.
+
+[5.0.2]: https://github.com/userfrosting/assets/compare/5.0.1...5.0.2
 [5.0.1]: https://github.com/userfrosting/assets/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/userfrosting/assets/compare/4.2.0...5.0.0
 [4.2.0]: https://github.com/userfrosting/assets/compare/4.1.0...4.2.0
 [4.1.0]: https://github.com/userfrosting/assets/compare/4.0.1...4.1.0
 [4.0.1]: https://github.com/userfrosting/assets/compare/4.0.0...4.0.1
+[4.0.0]: https://github.com/userfrosting/assets/compare/1.1...4.0.0
+[1.1]: https://github.com/userfrosting/assets/compare/1.0...1.1
+[1.0]: https://github.com/userfrosting/assets/tree/1.0

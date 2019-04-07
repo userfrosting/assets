@@ -9,9 +9,9 @@
 
 namespace UserFrosting\Assets\AssetBundles;
 
+use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 use UserFrosting\Support\Exception\FileNotFoundException;
 use UserFrosting\Support\Exception\JsonException;
-use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**
  * Represents a collection of asset bundles, loaded from a gulp-bundle-assets results file.

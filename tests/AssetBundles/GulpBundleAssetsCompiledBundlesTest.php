@@ -1,8 +1,9 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use UserFrosting\Assets\Assets;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsCompiledBundles;
+use UserFrosting\Assets\Assets;
+use UserFrosting\Assets\Exception\InvalidBundlesFileException;
 
 /**
  * Tests GulpBundleAssetsCompiledBundles class.
@@ -15,11 +16,29 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      *
      * @return Assets
      */
-    public function testConstructGulpBundleAssetsCompiledBundles()
+    public function testConstruct()
     {
         $bundles = new GulpBundleAssetsCompiledBundles(__DIR__ . "/../data/bundle.result.json");
         $this->assertInstanceOf(GulpBundleAssetsCompiledBundles::class, $bundles);
         return $bundles;
+    }
+
+    /**
+     * Tests GulpBundleAssetsCompiledBundles constructor when a bundle contains an invalid styles property.
+     */
+    public function testConstructInvalidStylesBundle()
+    {
+        $this->expectException(InvalidBundlesFileException::class);
+        new GulpBundleAssetsCompiledBundles(__DIR__ . "/../data/bundle.result.bad-styles.json");
+    }
+
+    /**
+     * Tests GulpBundleAssetsCompiledBundles constructor when a bundle contains an invalid scripts property.
+     */
+    public function testConstructInvalidJsBundle()
+    {
+        $this->expectException(InvalidBundlesFileException::class);
+        new GulpBundleAssetsCompiledBundles(__DIR__ . "/../data/bundle.result.bad-scripts.json");
     }
 
     /**
@@ -28,7 +47,7 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      * @param GulpBundleAssetsCompiledBundles $bundles
      * @return void
      *
-     * @depends testConstructGulpBundleAssetsCompiledBundles
+     * @depends testConstruct
      */
     public function testGetCssBundleAssets(GulpBundleAssetsCompiledBundles $bundles)
     {
@@ -43,7 +62,7 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      * @param GulpBundleAssetsCompiledBundles $bundles
      * @return void
      *
-     * @depends testConstructGulpBundleAssetsCompiledBundles
+     * @depends testConstruct
      */
     public function testGetCssBundleAssetsOutOfRange(GulpBundleAssetsCompiledBundles $bundles)
     {
@@ -57,7 +76,7 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      * @param GulpBundleAssetsCompiledBundles $bundles
      * @return void
      *
-     * @depends testConstructGulpBundleAssetsCompiledBundles
+     * @depends testConstruct
      */
     public function testGetJsBundleAssets(GulpBundleAssetsCompiledBundles $bundles)
     {
@@ -72,7 +91,7 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      * @param GulpBundleAssetsCompiledBundles $bundles
      * @return void
      *
-     * @depends testConstructGulpBundleAssetsCompiledBundles
+     * @depends testConstruct
      */
     public function testGetJsBundleAssetsOutOfRange(GulpBundleAssetsCompiledBundles $bundles)
     {

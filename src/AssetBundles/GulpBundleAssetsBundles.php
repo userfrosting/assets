@@ -36,7 +36,7 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
     public function __construct($filePath)
     {
         if (!is_string($filePath)) {
-            throw new \InvalidArgumentException('$filePath must of type string but was ' . gettype($filePath));
+            throw new \InvalidArgumentException('$filePath must of type string but was ' . gettype($filePath));// @codeCoverageIgnore
         }
 
         // Initalise bundles.
@@ -72,7 +72,7 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
      * Attempts to read the schema file from provided path.
      *
      * @param  string                $path          Path to schema file.
-     * @param  bool                  $useRepository
+     * @param  bool                  $useRepository Deprecated, will be removed in a future release. Setting this to true is recommended for an easier migration.
      * @throws FileNotFoundException if file cannot be found.
      * @throws JsonException         if file cannot be parsed as JSON.
      * @return mixed|Repository      Returns file contents parsed by json_decode or a Repository if $useRepository is true.
@@ -84,13 +84,18 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
             try {
                 $loader = new YamlFileLoader($path);
 
-                return new Repository($loader->load());
+                return new Repository($loader->load(false));
             } catch (FileNotFoundException $e) {
                 throw new FileNotFoundException('The schema file could not be found.', 0, $e);
             } catch (JsonException $e) {
                 throw new JsonException('The schema file could not be found.', 0, $e);
             }
         } else {
+            // @codeCoverageIgnoreStart
+            // This code path exists to facilitate an easier migration to v5 of this package
+            // It cannot be properly tested here without increasing technical debt substantially and such such it will be removed in the future
+            trigger_error('Usage of \'readSchema\' with repository result disabled is deprecated and will be removed in future releases.', E_USER_DEPRECATED);
+
             // Read schema without abstractions
             if (!file_exists($path)) {
                 throw new FileNotFoundException("The schema '$path' could not be found.");
@@ -107,6 +112,7 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
             }
 
             return $schema;
+            // @codeCoverageIgnoreEnd
         }
     }
 }

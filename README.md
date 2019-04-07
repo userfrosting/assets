@@ -2,11 +2,13 @@
 
 [![Latest Version](https://img.shields.io/github/release/userfrosting/assets.svg)](https://github.com/userfrosting/assets/releases)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
-[![Build Status](https://travis-ci.org/userfrosting/assets.svg?branch=master)](https://travis-ci.org/userfrosting/assets)
-[![Windows Build](https://ci.appveyor.com/api/projects/status/02gtbpena70q46q2?svg=true)](https://ci.appveyor.com/project/userfrosting/assets)
-[![codecov](https://codecov.io/gh/userfrosting/assets/branch/master/graph/badge.svg)](https://codecov.io/gh/userfrosting/assets)
 [![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support)
 [![Donate](https://img.shields.io/badge/Open%20Collective-Donate-blue.svg)](https://opencollective.com/userfrosting#backer)
+
+| Branch | Status |
+| ------ | ------ |
+| master | [![codecov](https://codecov.io/gh/userfrosting/assets/branch/master/graph/badge.svg)](https://codecov.io/gh/userfrosting/userfrosting/branch/master) [![Build Status](https://travis-ci.org/userfrosting/assets.svg?branch=master)](https://travis-ci.org/userfrosting/assets) [![Windows Build](https://ci.appveyor.com/api/projects/status/github/userfrosting/assets?branch=master&svg=true)](https://ci.appveyor.com/project/userfrosting/assets)  |
+| develop | [![codecov](https://codecov.io/gh/userfrosting/assets/branch/develop/graph/badge.svg)](https://codecov.io/gh/userfrosting/assets/branch/develop) [![Build Status](https://travis-ci.org/userfrosting/assets.svg?branch=develop)](https://travis-ci.org/userfrosting/assets) [![Windows Build](https://ci.appveyor.com/api/projects/status/github/userfrosting/assets?svg=true&branch=develop)](https://ci.appveyor.com/project/userfrosting/assets) |
 
 **Assets** is a library originally created for UserFrosting 4 to make it much easier to reference frontend assets in both production and development contexts.
 
@@ -176,6 +178,6 @@ $assetsPlugin = new AssetsTemplatePlugin($assets);
 <script src="https://assets.userfrosting.com/assets/bootstrap/js/npm.js" defer="true"></script>
 ```
 
-## [Style Guide](STYLE-GUIDE.md)
+## [Style Guide](STYLE_GUIDE.md)
 
 ## [Testing](RUNNING_TESTS.md)

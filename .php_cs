@@ -96,13 +96,11 @@ $rules = [
 
     'header_comment' => [
         'header'       => $header,
-        'separate'     => 'bottom',
-        'comment_type' => 'PHPDoc',
     ]
 ];
 
 $finder = PhpCsFixer\Finder::create()
-    ->in([__DIR__ . '/src']);
+    ->in([__DIR__ . '/src', __DIR__ . '/test']);
 
 return PhpCsFixer\Config::create()
     ->setRules($rules)

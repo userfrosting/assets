@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
@@ -25,6 +26,7 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
 {
     /**
      * {@inheritdoc}
+     *
      * @throws FileNotFoundException       if file cannot be found.
      * @throws JsonException               if file cannot be parsed as JSON.
      * @throws InvalidBundlesFileException if unexpected value encountered.
@@ -72,7 +74,8 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
     /**
      * Validates bundle data and returns standardised data.
      *
-     * @param  string|string[] $bundle
+     * @param string|string[] $bundle
+     *
      * @return string[]
      */
     protected function standardiseBundle($bundle)
@@ -82,13 +85,13 @@ class GulpBundleAssetsRawBundles extends GulpBundleAssetsBundles
         } elseif (is_array($bundle)) {
             foreach ($bundle as $asset) {
                 if (!is_string($asset)) {
-                    throw new \InvalidArgumentException('Input was array, so string expected but encountered ' . gettype($asset));
+                    throw new \InvalidArgumentException('Input was array, so string expected but encountered '.gettype($asset));
                 }
             }
 
             return $bundle;
         } else {
-            throw new \InvalidArgumentException('Expected string or string[] but input was ' . gettype($bundle));
+            throw new \InvalidArgumentException('Expected string or string[] but input was '.gettype($bundle));
         }
     }
 }

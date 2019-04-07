@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
@@ -20,8 +21,10 @@ interface AssetBundlesInterface
     /**
      * Gets assets in specified CSS bundle.
      *
-     * @param  string               $bundleName Name of bundle.
+     * @param string $bundleName Name of bundle.
+     *
      * @throws \OutOfRangeException if requested bundle does not exist.
+     *
      * @return string[]
      */
     public function getCssBundleAssets($bundleName = '');
@@ -29,8 +32,10 @@ interface AssetBundlesInterface
     /**
      * Gets assets in specified JS bundle.
      *
-     * @param  string               $bundleName Name of bundle.
+     * @param string $bundleName Name of bundle.
+     *
      * @throws \OutOfRangeException if requested bundle does not exist.
+     *
      * @return string[]
      */
     public function getJsBundleAssets($bundleName = '');

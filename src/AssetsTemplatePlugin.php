@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
@@ -23,7 +24,7 @@ class AssetsTemplatePlugin
     private $assets;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Assets $assets
      */
@@ -35,8 +36,9 @@ class AssetsTemplatePlugin
     /**
      * Returns HTML ready tags for all assets in the requested JS bundle.
      *
-     * @param  string $bundleName Bundle name.
-     * @param  array  $attributes Attributes generated tags should include.
+     * @param string $bundleName Bundle name.
+     * @param array  $attributes Attributes generated tags should include.
+     *
      * @return string
      */
     public function js($bundleName = 'js/main', $attributes = [])
@@ -54,8 +56,9 @@ class AssetsTemplatePlugin
     /**
      * Returns HTML ready tags for all assets in the requested CSS bundle.
      *
-     * @param  string $bundleName Bundle name.
-     * @param  array  $attributes Attributes generated tags should include.
+     * @param string $bundleName Bundle name.
+     * @param array  $attributes Attributes generated tags should include.
+     *
      * @return string
      */
     public function css($bundleName = 'css/main', $attributes = [])
@@ -85,7 +88,8 @@ class AssetsTemplatePlugin
     /**
      * Converts an array of attributes into a form readily usable within XML.
      *
-     * @param  mixed[] $attributes Attributes to convert.
+     * @param mixed[] $attributes Attributes to convert.
+     *
      * @return string
      */
     private function convertAttributes(array $attributes)
@@ -94,7 +98,7 @@ class AssetsTemplatePlugin
 
         foreach ($attributes as $name => $value) {
             // If $name is not set, then its a value-less attribute. (EG: 'async' and 'defer')
-            if (is_integer($name)) {
+            if (is_int($name)) {
                 $output .= "$value ";
             } else {
                 $output .= "$name=\"$value\" ";
@@ -107,19 +111,20 @@ class AssetsTemplatePlugin
     /**
      * Generates a self closing tag.
      *
-     * @param  string       $tagName      Tag name.
-     * @param  mixed[]|null $attributes   Attributes to add to tag. Optional.
+     * @param string       $tagName    Tag name.
+     * @param mixed[]|null $attributes Attributes to add to tag. Optional.
+     *
      * @return string
      */
     private function makeSelfClosingTag($tagName, array $attributes = null)
     {
         if (!is_string($tagName)) {
-            throw new \InvalidArgumentException('Expected $tagName to be type string but was ' . gettype($tagName) . '.'); // @codeCoverageIgnore
+            throw new \InvalidArgumentException('Expected $tagName to be type string but was '.gettype($tagName).'.'); // @codeCoverageIgnore
         }
 
         $output = "<$tagName";
         if ($attributes !== null) {
-            $output .= ' ' . $this->convertAttributes($attributes);
+            $output .= ' '.$this->convertAttributes($attributes);
         }
 
         $output .= ' />';
@@ -130,16 +135,17 @@ class AssetsTemplatePlugin
     /**
      * Generates a tag pair.
      *
-     * @param  string       $tagName    Tag name.
-     * @param  mixed[]|null $attributes Attributes to add to tag. Optional.
-     * @param  string       $content    Content generated tags will wrap around.
+     * @param string       $tagName    Tag name.
+     * @param mixed[]|null $attributes Attributes to add to tag. Optional.
+     * @param string       $content    Content generated tags will wrap around.
+     *
      * @return string
      */
     private function makeRegularTag($tagName, array $attributes = null, $content = '')
     {
         $output = "<$tagName";
         if ($attributes !== null) {
-            $output .= ' ' . $this->convertAttributes($attributes);
+            $output .= ' '.$this->convertAttributes($attributes);
         }
         $output .= ">$content</$tagName>";
 

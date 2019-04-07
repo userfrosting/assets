@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
@@ -38,7 +39,7 @@ class Assets
     protected $assetBundles = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param ResourceLocatorInterface $locator       Resource locator used to find assets.
      * @param string                   $locatorScheme Scheme to use in locator.
@@ -67,7 +68,7 @@ class Assets
     }
 
     /**
-     * Reset asset bundles, removing all registered assetBundles
+     * Reset asset bundles, removing all registered assetBundles.
      */
     public function resetAssetBundles()
     {
@@ -75,7 +76,7 @@ class Assets
     }
 
     /**
-     * Returns the list of assetBundles
+     * Returns the list of assetBundles.
      *
      * @return AssetBundlesInterface[]
      */
@@ -87,8 +88,10 @@ class Assets
     /**
      * Get asset paths within specified JS bundle.
      *
-     * @param  string               $bundleName Bundle name.
+     * @param string $bundleName Bundle name.
+     *
      * @throws \OutOfRangeException if specified JS asset bundle is not found.
+     *
      * @return string[]
      */
     public function getJsBundleAssets($bundleName)
@@ -108,7 +111,7 @@ class Assets
 
         // Resolve to url
         foreach ($assets as &$asset) {
-            $asset = $this->getAbsoluteUrl($this->getLocatorScheme() . $asset);
+            $asset = $this->getAbsoluteUrl($this->getLocatorScheme().$asset);
         }
 
         return $assets;
@@ -117,8 +120,10 @@ class Assets
     /**
      * Get asset paths within specified CSS bundle.
      *
-     * @param  string               $bundleName Bundle name.
+     * @param string $bundleName Bundle name.
+     *
      * @throws \OutOfRangeException if specified CSS asset bundle is not found.
+     *
      * @return string[]
      */
     public function getCssBundleAssets($bundleName)
@@ -138,7 +143,7 @@ class Assets
 
         // Resolve to url
         foreach ($assets as &$asset) {
-            $asset = $this->getAbsoluteUrl($this->getLocatorScheme() . $asset);
+            $asset = $this->getAbsoluteUrl($this->getLocatorScheme().$asset);
         }
 
         return $assets;
@@ -149,9 +154,10 @@ class Assets
      * Transform a locator uri to a url accessible to a browser
      * In other words, transform `assets://vendor/bootstrap/js/bootstrap.js` to
      * `http://example.com/vendor/bootstrap/js/bootstrap.js`, replacing the `://` with the base url
-     * Make sure the ressource exist in the process
+     * Make sure the ressource exist in the process.
      *
-     * @param  string|array            $streamPath The asset uri
+     * @param string|array $streamPath The asset uri
+     *
      * @throws \BadMethodCallException
      * @throws FileNotFoundException
      */
@@ -175,14 +181,15 @@ class Assets
         // Need to dissociate the scheme from the search query in the stream path
         $streamPathQuery = Util::stripPrefix($streamPath, $this->getLocatorScheme());
 
-        return $this->baseUrl . $streamPathQuery;
+        return $this->baseUrl.$streamPathQuery;
     }
 
     /**
      * Processes a relative path from a URL to an absolute path. Returns null if no file exists at the generated path.
      * Applies protections against attempts to access restricted files.
      *
-     * @param  string      $uncleanRelativePath Potentially dangerous relative path.
+     * @param string $uncleanRelativePath Potentially dangerous relative path.
+     *
      * @return null|string
      */
     public function urlPathToAbsolutePath($uncleanRelativePath)
@@ -195,13 +202,13 @@ class Assets
         $resource = $this->locator->getResource($uri);
 
         // Make path absolute (and normalise)
-        $absolutePath = realPath($resource->getAbsolutePath());
+        $absolutePath = realpath($resource->getAbsolutePath());
 
         // Return path or null depending on existence.
         if ($absolutePath && is_file($absolutePath)) {
             return $absolutePath;
         } else {
-            return null;
+            return;
         }
     }
 
@@ -209,7 +216,8 @@ class Assets
      * Processes a relative path from a URL to a locator stream uri. Returns null if no file exists at the generated path.
      * Applies protections against attempts to access restricted files.
      *
-     * @param  string $urlPath
+     * @param string $urlPath
+     *
      * @return string
      */
     public function urlPathToStreamUri($urlPath)
@@ -224,7 +232,7 @@ class Assets
         $urlPath = Util::stripPrefix($urlPath, $this->baseUrl);
 
         // Add back the stream scheme
-        $uri = $this->getLocatorScheme() . $urlPath;
+        $uri = $this->getLocatorScheme().$urlPath;
 
         // Make sure ressource path exist
         if (!$this->locator->getResource($uri)) {
@@ -235,7 +243,7 @@ class Assets
     }
 
     /**
-     * Returns base Assets base Url
+     * Returns base Assets base Url.
      *
      * @return string
      */
@@ -245,48 +253,52 @@ class Assets
     }
 
     /**
-     * Set Asset base Url
+     * Set Asset base Url.
      *
-     * @param  string                    $baseUrl
+     * @param string $baseUrl
+     *
      * @throws \InvalidArgumentException
+     *
      * @return $this
      */
     public function setBaseUrl($baseUrl)
     {
         // Make sure it's a string, until php 7.1
         if (!is_string($baseUrl)) {
-            throw new \InvalidArgumentException('$baseUrl must be of type string but was ' . gettype($baseUrl));// @codeCoverageIgnore
+            throw new \InvalidArgumentException('$baseUrl must be of type string but was '.gettype($baseUrl)); // @codeCoverageIgnore
         }
 
         // Make sure url ends with a slash
-        $baseUrl = rtrim($baseUrl, '/') . '/';
+        $baseUrl = rtrim($baseUrl, '/').'/';
         $this->baseUrl = $baseUrl;
 
         return $this;
     }
 
     /**
-     * Get Asset Locator Scheme
+     * Get Asset Locator Scheme.
      *
      * @return string
      */
     public function getLocatorScheme()
     {
-        return $this->locatorScheme . '://';
+        return $this->locatorScheme.'://';
     }
 
     /**
-     * Set Asset locator scheme
+     * Set Asset locator scheme.
      *
-     * @param  string                    $locatorScheme
+     * @param string $locatorScheme
+     *
      * @throws \InvalidArgumentException
+     *
      * @return $this
      */
     public function setLocatorScheme($locatorScheme)
     {
         // Make sure it's a string, until php 7.1
         if (!is_string($locatorScheme)) {
-            throw new \InvalidArgumentException('$locateScheme must be of type string but was ' . gettype($locatorScheme));// @codeCoverageIgnore
+            throw new \InvalidArgumentException('$locateScheme must be of type string but was '.gettype($locatorScheme)); // @codeCoverageIgnore
         } elseif ($locatorScheme == '') {
             throw new \InvalidArgumentException('$locatorScheme must not be an empty string.');
         }

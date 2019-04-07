@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
@@ -29,14 +30,14 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
     protected $jsBundles;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $filePath Path to gulp-bundle-assets file.
      */
     public function __construct($filePath)
     {
         if (!is_string($filePath)) {
-            throw new \InvalidArgumentException('$filePath must of type string but was ' . gettype($filePath));// @codeCoverageIgnore
+            throw new \InvalidArgumentException('$filePath must of type string but was '.gettype($filePath)); // @codeCoverageIgnore
         }
 
         // Initalise bundles.
@@ -71,11 +72,13 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
     /**
      * Attempts to read the schema file from provided path.
      *
-     * @param  string                $path          Path to schema file.
-     * @param  bool                  $useRepository Deprecated, will be removed in a future release. Setting this to true is recommended for an easier migration.
+     * @param string $path          Path to schema file.
+     * @param bool   $useRepository Deprecated, will be removed in a future release. Setting this to true is recommended for an easier migration.
+     *
      * @throws FileNotFoundException if file cannot be found.
      * @throws JsonException         if file cannot be parsed as JSON.
-     * @return mixed|Repository      Returns file contents parsed by json_decode or a Repository if $useRepository is true.
+     *
+     * @return mixed|Repository Returns file contents parsed by json_decode or a Repository if $useRepository is true.
      */
     protected function readSchema($path, $useRepository = false)
     {
@@ -108,7 +111,7 @@ abstract class GulpBundleAssetsBundles implements AssetBundlesInterface
 
             $schema = json_decode($doc);
             if ($schema === null) {
-                throw new JsonException("The schema '$path' does not contain a valid JSON document.  JSON error: " . json_last_error());
+                throw new JsonException("The schema '$path' does not contain a valid JSON document.  JSON error: ".json_last_error());
             }
 
             return $schema;

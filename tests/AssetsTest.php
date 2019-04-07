@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * UserFrosting Assets (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/assets
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman, Jordan Mele
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
+ */
+
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsRawBundles;
 use UserFrosting\Assets\Assets;
@@ -28,9 +36,9 @@ class AssetsTest extends TestCase
      */
     public function setUp()
     {
-        $this->basePath = __DIR__ . '/data';
+        $this->basePath = __DIR__.'/data';
         $this->baseUrl = 'https://assets.userfrosting.com/';
-        $this->locatorScheme = "assets";
+        $this->locatorScheme = 'assets';
         $this->locator = new ResourceLocator($this->basePath);
         $this->locator->registerStream($this->locatorScheme, '', 'assets');
         $this->locator->registerStream($this->locatorScheme, 'vendor', 'assets', true);
@@ -48,13 +56,15 @@ class AssetsTest extends TestCase
     {
         $assets = new Assets($this->locator, $this->locatorScheme, $this->baseUrl);
         $this->assertInstanceOf(Assets::class, $assets);
+
         return $assets;
     }
 
     /**
-     * Test string parameter for getAbsoluteUrl
+     * Test string parameter for getAbsoluteUrl.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testConstructAssets
@@ -64,19 +74,20 @@ class AssetsTest extends TestCase
         $url = $assets->getAbsoluteUrl('assets://vendor/bootstrap/js/bootstrap.js');
 
         // URL
-        $this->assertEquals($this->baseUrl . 'vendor/bootstrap/js/bootstrap.js', $url);
+        $this->assertEquals($this->baseUrl.'vendor/bootstrap/js/bootstrap.js', $url);
 
         // Stream URI
         $this->assertEquals('assets://vendor/bootstrap/js/bootstrap.js', $assets->urlPathToStreamUri($url));
 
         // Absolute path
-        $this->assertEquals(realpath(__DIR__ . '/data/assets/bootstrap/js/bootstrap.js'), $assets->urlPathToAbsolutePath($url));
+        $this->assertEquals(realpath(__DIR__.'/data/assets/bootstrap/js/bootstrap.js'), $assets->urlPathToAbsolutePath($url));
     }
 
     /**
-     * Test string[] parameter for getAbsoluteUrl
+     * Test string[] parameter for getAbsoluteUrl.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testConstructAssets
@@ -85,14 +96,15 @@ class AssetsTest extends TestCase
     {
         $this->assertEquals($assets->getAbsoluteUrl([
             'assets',
-            'vendor/bootstrap/js/bootstrap.js'
-        ]), $this->baseUrl . 'vendor/bootstrap/js/bootstrap.js');
+            'vendor/bootstrap/js/bootstrap.js',
+        ]), $this->baseUrl.'vendor/bootstrap/js/bootstrap.js');
     }
 
     /**
-     * Test invalid string[] parameter for getAbsoluteUrl
+     * Test invalid string[] parameter for getAbsoluteUrl.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testConstructAssets
@@ -103,14 +115,15 @@ class AssetsTest extends TestCase
         $assets->getAbsoluteUrl([
             'assets',
             'vendor/bootstrap/js/bootstrap.js',
-            'extra-invalid-entry'
+            'extra-invalid-entry',
         ]);
     }
 
     /**
-     * Test non-existent asset getAbsoluteUrl
+     * Test non-existent asset getAbsoluteUrl.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testConstructAssets
@@ -125,30 +138,33 @@ class AssetsTest extends TestCase
      * Tests addition of bundles to Assets instance.
      *
      * @param Assets $assets
+     *
      * @return Assets
      *
      * @depends testConstructAssets
      */
     public function testAddAssetBundles(Assets $assets)
     {
-        $assets->addAssetBundles(new GulpBundleAssetsRawBundles(__DIR__ . "/data/bundle.config.json"));
+        $assets->addAssetBundles(new GulpBundleAssetsRawBundles(__DIR__.'/data/bundle.config.json'));
         $this->assertInternalType('array', $assets->getAssetBundles());
+
         return $assets;
     }
 
     /**
-     * Tests getJsBundleAssets
+     * Tests getJsBundleAssets.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testAddAssetBundles
      */
     public function testGetJsBundleAssets(Assets $assets)
     {
-        $this->assertEquals($assets->getJsBundleAssets("test"), [
-            $this->baseUrl . 'vendor/bootstrap/js/bootstrap.js',
-            $this->baseUrl . 'vendor/bootstrap/js/npm.js'
+        $this->assertEquals($assets->getJsBundleAssets('test'), [
+            $this->baseUrl.'vendor/bootstrap/js/bootstrap.js',
+            $this->baseUrl.'vendor/bootstrap/js/npm.js',
         ]);
     }
 
@@ -156,6 +172,7 @@ class AssetsTest extends TestCase
      * Tests getJsBundleAssets with a non-existant bundle index.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testAddAssetBundles
@@ -167,17 +184,18 @@ class AssetsTest extends TestCase
     }
 
     /**
-     * Tests getCssBundleAssets
+     * Tests getCssBundleAssets.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testAddAssetBundles
      */
     public function testGetCssBundleAssets(Assets $assets)
     {
-        $this->assertEquals($assets->getCssBundleAssets("test"), [
-            $this->baseUrl . 'vendor/bootstrap/css/bootstrap.css'
+        $this->assertEquals($assets->getCssBundleAssets('test'), [
+            $this->baseUrl.'vendor/bootstrap/css/bootstrap.css',
         ]);
     }
 
@@ -185,6 +203,7 @@ class AssetsTest extends TestCase
      * Tests getCssBundleAssets with a non-existant bundle index.
      *
      * @param Assets $assets
+     *
      * @return void
      *
      * @depends testAddAssetBundles
@@ -196,11 +215,12 @@ class AssetsTest extends TestCase
     }
 
     /**
-     * Tests resetAssetBundles
+     * Tests resetAssetBundles.
      *
      * @param Assets $assets
+     *
      * @return void
-     * 
+     *
      * @depends testAddAssetBundles
      */
     public function testResetAssetBundles(Assets $assets)
@@ -208,15 +228,15 @@ class AssetsTest extends TestCase
         $this->assertNotEquals($assets->getAssetBundles(), []);
         $assets->resetAssetBundles();
         $this->assertEquals($assets->getAssetBundles(), []);
-        
     }
 
     /**
-     * Tests urlPathToAbsolutePath
+     * Tests urlPathToAbsolutePath.
      *
      * @param Assets $assets
+     *
      * @return void
-     * 
+     *
      * @depends testAddAssetBundles
      */
     public function testUrlPathToAbsolutePath(Assets $assets)
@@ -225,11 +245,12 @@ class AssetsTest extends TestCase
     }
 
     /**
-     * Tests getBaseUri
+     * Tests getBaseUri.
      *
      * @param Assets $assets
+     *
      * @return void
-     * 
+     *
      * @depends testAddAssetBundles
      */
     public function testGetBaseUri(Assets $assets)
@@ -238,11 +259,12 @@ class AssetsTest extends TestCase
     }
 
     /**
-     * Tests setLocatorScheme
+     * Tests setLocatorScheme.
      *
      * @param Assets $assets
+     *
      * @return void
-     * 
+     *
      * @depends testAddAssetBundles
      */
     public function testSetLocatorScheme(Assets $assets)

@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
@@ -15,6 +16,7 @@ use UserFrosting\Assets\Util\MimeType;
  * Asset loader class.
  *
  * Loads an asset from the filesystem.
+ *
  * @author Alex Weissman (https://alexanderweissman.com)
  */
 class AssetLoader
@@ -43,8 +45,10 @@ class AssetLoader
      * Compute the full filesystem path for the specified relative path (usually extracted from a URL).
      *
      * Also checks to make sure that the file actually exists.
-     * @param  string $relativePath
-     * @return bool   True if the file exists, false otherwise
+     *
+     * @param string $relativePath
+     *
+     * @return bool True if the file exists, false otherwise
      */
     public function loadAsset($relativePath)
     {

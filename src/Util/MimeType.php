@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * UserFrosting Assets (http://www.userfrosting.com)
  *
  * @link      https://github.com/userfrosting/assets
@@ -10,10 +11,11 @@
 namespace UserFrosting\Assets\Util;
 
 /**
- * Maps file extensions to MIME types.  Adapted from thephpleague/flysystem
+ * Maps file extensions to MIME types.  Adapted from thephpleague/flysystem.
  *
  * @author The PHP League (http://thephpleague.com/)
  * @author Alex Weissman (https://alexanderweissman.com)
+ *
  * @see https://github.com/thephpleague/flysystem
  */
 class MimeType
@@ -199,7 +201,7 @@ class MimeType
             'woff'  => 'font/woff',
             'woff2' => 'font/woff2',
             'ttf'   => 'font/ttf',
-            'ico'   => 'image/x-icon'
+            'ico'   => 'image/x-icon',
         ];
     }
 }

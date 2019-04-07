@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * UserFrosting Assets (http://www.userfrosting.com)
+ *
+ * @link      https://github.com/userfrosting/assets
+ * @copyright Copyright (c) 2013-2019 Alexander Weissman, Jordan Mele
+ * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
+ */
+
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsRawBundles;
 use UserFrosting\Assets\Assets;
@@ -20,8 +28,9 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      */
     public function testConstruct()
     {
-        $bundles = new GulpBundleAssetsRawBundles(__DIR__ . "/../data/bundle.config.json");
+        $bundles = new GulpBundleAssetsRawBundles(__DIR__.'/../data/bundle.config.json');
         $this->assertInstanceOf(GulpBundleAssetsRawBundles::class, $bundles);
+
         return $bundles;
     }
 
@@ -30,7 +39,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      */
     public function testConstructStubConfig()
     {
-        $bundles = new GulpBundleAssetsRawBundles(__DIR__ . "/../data/bundle.config.stub.json");
+        $bundles = new GulpBundleAssetsRawBundles(__DIR__.'/../data/bundle.config.stub.json');
         $this->assertInstanceOf(GulpBundleAssetsRawBundles::class, $bundles);
     }
 
@@ -40,7 +49,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
     public function testConstructInvalidSyntax()
     {
         $this->expectException(JsonException::class);
-        new GulpBundleAssetsRawBundles(__DIR__ . "/../data/bundle.config.invalid-syntax.json");
+        new GulpBundleAssetsRawBundles(__DIR__.'/../data/bundle.config.invalid-syntax.json');
     }
 
     /**
@@ -49,7 +58,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
     public function testConstructNotFound()
     {
         $this->expectException(FileNotFoundException::class);
-        new GulpBundleAssetsRawBundles(__DIR__ . "/../data/bundle.config.not-here.json");
+        new GulpBundleAssetsRawBundles(__DIR__.'/../data/bundle.config.not-here.json');
     }
 
     /**
@@ -58,7 +67,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
     public function testConstructInvalidBundlesPropertyType()
     {
         $this->expectException(InvalidBundlesFileException::class);
-        new GulpBundleAssetsRawBundles(__DIR__ . "/../data/bundle.config.bad-bundle.json");
+        new GulpBundleAssetsRawBundles(__DIR__.'/../data/bundle.config.bad-bundle.json');
     }
 
     /**
@@ -67,7 +76,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
     public function testConstructInvalidStylesBundle()
     {
         $this->expectException(InvalidBundlesFileException::class);
-        new GulpBundleAssetsRawBundles(__DIR__ . "/../data/bundle.config.bad-styles.json");
+        new GulpBundleAssetsRawBundles(__DIR__.'/../data/bundle.config.bad-styles.json');
     }
 
     /**
@@ -76,13 +85,14 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
     public function testConstructInvalidJsBundle()
     {
         $this->expectException(InvalidBundlesFileException::class);
-        new GulpBundleAssetsRawBundles(__DIR__ . "/../data/bundle.config.bad-scripts.json");
+        new GulpBundleAssetsRawBundles(__DIR__.'/../data/bundle.config.bad-scripts.json');
     }
 
     /**
      * Tests getCssBundleAssets method.
      *
      * @param GulpBundleAssetsRawBundles $bundles
+     *
      * @return void
      *
      * @depends testConstruct
@@ -90,7 +100,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
     public function testGetCssBundleAssets(GulpBundleAssetsRawBundles $bundles)
     {
         $this->assertEquals($bundles->getCssBundleAssets('test'), [
-            'vendor/bootstrap/css/bootstrap.css'
+            'vendor/bootstrap/css/bootstrap.css',
         ]);
     }
 
@@ -98,6 +108,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      * Tests that getCssBundleAssets method throws an exception when requested bundle doesn't exist.
      *
      * @param GulpBundleAssetsRawBundles $bundles
+     *
      * @return void
      *
      * @depends testConstruct
@@ -112,6 +123,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      * Tests getJsBundleAssets method.
      *
      * @param GulpBundleAssetsRawBundles $bundles
+     *
      * @return void
      *
      * @depends testConstruct
@@ -120,7 +132,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
     {
         $this->assertEquals($bundles->getJsBundleAssets('test'), [
             'vendor/bootstrap/js/bootstrap.js',
-            'vendor/bootstrap/js/npm.js'
+            'vendor/bootstrap/js/npm.js',
         ]);
     }
 
@@ -128,6 +140,7 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      * Tests that getJsBundleAssets method throws an exception when requested bundle doesn't exist.
      *
      * @param GulpBundleAssetsRawBundles $bundles
+     *
      * @return void
      *
      * @depends testConstruct

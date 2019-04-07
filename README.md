@@ -5,8 +5,8 @@
 [![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support)
 [![Donate](https://img.shields.io/badge/Open%20Collective-Donate-blue.svg)](https://opencollective.com/userfrosting#backer)
 
-| Branch | Status | Coverage | Style |
-| ------ | ------ | -------- | ----- |
+| Branch | Build | Coverage | Style |
+| ------ | ----- | -------- | ----- |
 | [master][master] | [![Build Status][master-build-travis-badge]][travis] [![Windows Build][master-build-appveyor-badge]][appveyor] | [![codecov][master-codecov-badge]][codecov] | [![][master-styleci-badge]][styleci] |
 | [develop][develop] | [![Build Status][develop-build-travis-badge]][travis] [![Windows Build][develop-build-appveyor-badge]][appveyor] | [![codecov][develop-codecov-badge]][codecov] | [![][develop-styleci-badge]][styleci] |
 

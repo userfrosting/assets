@@ -1,21 +1,39 @@
 # UserFrosting/Assets
 
-[![Latest Version](https://img.shields.io/github/release/userfrosting/assets.svg)](https://github.com/userfrosting/assets/releases)
+[![Latest Version][version-badge]][releases]
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 [![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support)
 [![Donate](https://img.shields.io/badge/Open%20Collective-Donate-blue.svg)](https://opencollective.com/userfrosting#backer)
 
-| Branch | Status |
-| ------ | ------ |
-| master | [![codecov](https://codecov.io/gh/userfrosting/assets/branch/master/graph/badge.svg)](https://codecov.io/gh/userfrosting/userfrosting/branch/master) [![Build Status](https://travis-ci.org/userfrosting/assets.svg?branch=master)](https://travis-ci.org/userfrosting/assets) [![Windows Build](https://ci.appveyor.com/api/projects/status/github/userfrosting/assets?branch=master&svg=true)](https://ci.appveyor.com/project/userfrosting/assets)  |
-| develop | [![codecov](https://codecov.io/gh/userfrosting/assets/branch/develop/graph/badge.svg)](https://codecov.io/gh/userfrosting/assets/branch/develop) [![Build Status](https://travis-ci.org/userfrosting/assets.svg?branch=develop)](https://travis-ci.org/userfrosting/assets) [![Windows Build](https://ci.appveyor.com/api/projects/status/github/userfrosting/assets?svg=true&branch=develop)](https://ci.appveyor.com/project/userfrosting/assets) |
+| Branch | Status | Coverage | Style |
+| ------ | ------ | -------- | ----- |
+| [master][master] | [![Build Status][master-build-travis-badge]][travis] [![Windows Build][master-build-appveyor-badge]][appveyor] | [![codecov][master-codecov-badge]][codecov] | [![][master-styleci-badge]][styleci] |
+| [develop][develop] | [![Build Status][develop-build-travis-badge]][travis] [![Windows Build][develop-build-appveyor-badge]][appveyor] | [![codecov][develop-codecov-badge]][codecov] | [![][develop-styleci-badge]][styleci] |
+
+<!-- Links -->
+[codecov]: https://codecov.io/gh/userfrosting/assets
+[releases]: https://github.com/userfrosting/assets/releases
+[styleci]: https://github.styleci.io/repos/30551954
+[travis]: https://travis-ci.org/userfrosting/assets
+[appveyor]: https://ci.appveyor.com/project/userfrosting/assets
+[version-badge]: https://img.shields.io/github/release/userfrosting/assets.svg
+[master]: https://github.com/userfrosting/assets/tree/master
+[master-styleci-badge]: https://github.styleci.io/repos/55460230/shield?branch=master&style=flat
+[master-codecov-badge]: https://codecov.io/gh/userfrosting/assets/branch/master/graph/badge.svg
+[master-build-travis-badge]: https://travis-ci.org/userfrosting/assets.svg?branch=master
+[master-build-appveyor-badge]: https://ci.appveyor.com/api/projects/status/github/userfrosting/assets?branch=master&svg=true
+[develop]: https://github.com/userfrosting/assets/tree/develop
+[develop-styleci-badge]: https://github.styleci.io/repos/55460230/shield?branch=develop&style=flat
+[develop-codecov-badge]: https://codecov.io/gh/userfrosting/assets/branch/develop/graph/badge.svg
+[develop-build-travis-badge]: https://travis-ci.org/userfrosting/assets.svg?branch=develop
+[develop-build-appveyor-badge]: https://ci.appveyor.com/api/projects/status/github/userfrosting/assets?branch=develop&svg=true
 
 **Assets** is a library originally created for UserFrosting 4 to make it much easier to reference frontend assets in both production and development contexts.
 
 Out of the box it can:
 
 - Provide an easy way to generate an absolute url to an asset via a locator.
-- Provide a basic level of integration with *gulp-bundle-assets*, making it easy to reference asset bundles.
+- Provide a basic level of integration with [`gulp-bundle-assets`](https://github.com/dowjones/gulp-bundle-assets) and complete integration with [`@userfrosting/gulp-bundle-assets`](https://www.npmjs.com/package/@userfrosting/gulp-bundle-assets), making it easy to reference asset bundles.
 - Integrate via a common interface with virtually any bundling system.
 - Integrate with Slim to serve assets that are inaccessible from the public folder, in the development context.
 - Perform url-to-path transformations. Useful for making debuggable URLs that can be reverted back to the path to be used by the Slim asset server.
@@ -53,13 +71,13 @@ $locator->registerStream('assets', '', [
 $assets = new Assets($locator, 'assets', $baseUrl);
 ```
 
-> Optionally 1 more argument can be passed into the `Assets` constructor.
-> - An instance of `PrefixTransformer`.
+> Optionally 1 more argument can be passed into the `Assets` constructor, an instance of `PrefixTransformer`.
+>
 > Have a look at UserFrosting in dev mode to see this in action!
 
 ### Asset Bundles
 
-To access asset bundles from an `Assets` instance, it must first be passed an instance of `AssetBundlesInterface` via `addAssetBundles`. An example of this follows:
+To access asset bundles from an `Assets` instance, it must first be passed an instance of `AssetBundlesInterface` via `addAssetBundles`. The following example demonstates how to integrate with `@userfrosting/gulp-bundle-assets` (and by extension `gulp-bundle-assets`). Note that raw bundles are only supported when their configuration is defined as JSON.
 
 *Directory Tree*
 
@@ -78,44 +96,20 @@ To access asset bundles from an `Assets` instance, it must first be passed an in
 {
   "bundle": {
     "js/main": {
-        "scripts": [
-            "js/bootstrap-3.3.1.js",
-            "js/crud.js"
-        ],
-        "options": {
-            "result": {
-                "type": {
-                  "scripts": "plain"
-                }
-            }
-        }
+      "scripts": [
+        "js/bootstrap-3.3.1.js",
+        "js/crud.js"
+      ]
     },
     "css/main": {
-        "styles": [
-            "vendor/font-awesome-4.5.0/css/font-awesome.css",
-            "css/bootstrap-3.3.1.css",
-            "css/bootstrap-custom.css",
-            "css/paper.css"
-        ],
-        "options": {
-            "result": {
-                "type": {
-                  "styles": "plain"
-                }
-            }
-        }
+      "styles": [
+        "vendor/font-awesome-4.5.0/css/font-awesome.css",
+        "css/bootstrap-3.3.1.css",
+        "css/bootstrap-custom.css",
+        "css/paper.css"
+      ]
     }
-  },
-  "copy": [
-    {
-        "src": "images/**/*",
-        "base": "."
-    },
-    {
-        "src": "vendor/font-awesome-4.5.0/fonts/**/*",
-        "base": "vendor/font-awesome-4.5.0/"
-    }
-  ]
+  }
 }
 ```
 
@@ -125,36 +119,19 @@ To access asset bundles from an `Assets` instance, it must first be passed an in
 use UserFrosting\Assets\GulpBundleAssetsRawBundles;
 
 // Load asset bundles.
-$assetBundles = new GulpBundleAssetsRawBundles("../build/asset-bundles.json");
+$assetBundles = new GulpBundleAssetsRawBundles('../build/asset-bundles.json');
 
 // Send loaded asset bundles to Assets instance.
 $assets->addAssetBundles($assetBundles);
 
 // Grab an asset bundle.
-$assets->getJsBundleAssets("js/main");
+$assets->getJsBundleAssets('js/main');
 // Outputs ["js/bootstrap-3.3.1.js", "js/crud.js"]
 ```
 
-See [gulp-bundle-assets](https://github.com/dowjones/gulp-bundle-assets) for how to use the bundler this example demonstrates integration with.
+Compiled bundles can be used in much the same way, except using `GulpBundleAssetsCompiledBundles` and the bundlers result file.
 
-Just keep in mind that this integration can only work when the gulp-bundle-assets configuration is stored in a separate JSON file, not a JavaScript file.
-
-Also note the setting of `options -> result -> type -> styles/scripts` for each bundle to `plain`.  This is important to do, so that `Assets` can parse the output of `gulp-bundle-assets` and correctly render tags for compiled assets.  The output of your Gulp task should look something like:
-
-*bundle.result.json*
-
-```json
-{
-  "js/main": {
-    "scripts": "js/main-8881456f8e.js"
-  },
-  "css/main": {
-    "styles": "css/main-c72ce38fba.css"
-  }
-}
-```
-
-Using this results file would be done with the `GulpBundleAssetsCompiledBundles` class.
+If using the original `gulp-bundle-assets` you'll need to include an additional setting `options->result->type->styles/scripts="plain"` in each bundle.
 
 ### The Template Plugin
 
@@ -170,7 +147,7 @@ $assetsPlugin = new AssetsTemplatePlugin($assets);
 
 ```twig
 {# Gets replaced at runtime with the following. Additional argument is optional. #}
-{{assets.js("js/main", { defer: true })}}
+{{ assets.js("js/main", { defer: true }) }}
 ```
 
 ```html

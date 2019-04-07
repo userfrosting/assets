@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 ## [Unknown]
 
+## [5.0.2] - 2019-04-07
+
 ### Added
 - Test coverage for remaining untested source.
 

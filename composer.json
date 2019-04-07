@@ -12,7 +12,8 @@
         },
         {
             "name": "Jordan Mele",
-            "email": "SiliconSolder@outlook.com.au"
+            "email": "SiliconSolder@outlook.com.au",
+            "homepage": "https://blog.djmm.me"
         }
     ],
     "require": {

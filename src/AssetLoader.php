@@ -91,4 +91,14 @@ class AssetLoader
     {
         return MimeType::detectByFilename($this->fullPath);
     }
+
+    /**
+     * Get the last modified date and time.
+     *
+     * @return \DateTime
+     */
+    public function getLastModified(): \DateTime
+    {
+        return new \DateTime('@'.filemtime($this->fullPath));
+    }
 }

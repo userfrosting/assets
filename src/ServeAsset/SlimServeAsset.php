@@ -58,9 +58,24 @@ class SlimServeAsset
             return $response->withStatus(404);
         }
 
-        return $response
-            ->withHeader('Content-Type', $assetLoader->getType())
+        // Generate file last modified
+        $lastModified = $assetLoader->getLastModified()->format('D, d M Y H:i:s \G\M\T');
+
+        // Return 304 if asset not modified
+        try {
+            $clientLastModified = $request->getHeader('If-Modified-Since')[0] ?? false;
+            if ($lastModified === $clientLastModified) {
+                return $response->withStatus(304);
+            }
+        } catch (\Exception $e) {
+            // Fallback to regular response
+        }
+
+        $response->getBody()->write($assetLoader->getContent());
+
+        return $response->withHeader('Content-Type', $assetLoader->getType())
             ->withHeader('Content-Length', $assetLoader->getLength())
-            ->write($assetLoader->getContent());
+            ->withHeader('Cache-Control', 'no-cache')
+            ->withHeader('Last-Modified', $lastModified);
     }
 }

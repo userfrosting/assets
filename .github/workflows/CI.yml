@@ -19,6 +19,7 @@ jobs:
           with:
             php-version: ${{ matrix.php-version }}
             coverage: xdebug
+            extensions: mbstring
         - run: composer install
         - run: vendor/bin/phpunit --coverage-clover=coverage.xml
 #        - uses: codecov/codecov-action@v1

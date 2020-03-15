@@ -110,9 +110,7 @@ class SlimServeAssetTest extends TestCase
         $response = new Response();
 
         // Invoke controller method.
-        $response = $controller->serveAsset($request, $response, [
-            'url' => 'allowed.txt',
-        ]);
+        $response = $controller->serveAsset($request, $response, [ 'url' => 'allowed.txt' ]);
 
         // Assert 200 response
         $this->assertSame($response->getStatusCode(), 200);
@@ -122,10 +120,22 @@ class SlimServeAssetTest extends TestCase
 
         // Assert correct MIME
         $this->assertSame($response->getHeader('Content-Type'), ['text/plain']);
+
+        // Asset last-modified set
+        $this->assertStringEndsWith('GMT', $response->getHeader('Last-Modified')[0] ?? false);
+
+        // Last modified support
+        $request = Request::createFromEnvironment($environment)
+            ->withHeader('If-Modified-Since', $response->getHeader('Last-Modified')[0]);
+        $response = new Response();
+        $response = $controller->serveAsset($request, $response, [ 'url' => 'allowed.txt' ]);
+
+        // Assert 304 response
+        $this->assertSame($response->getStatusCode(), 304);
     }
 
     /**
-     * Test with existent asset.
+     * Test with existent asset of unknown type.
      *
      * @param SlimServeAsset $controller
      *

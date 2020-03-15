@@ -99,6 +99,6 @@ class AssetLoader
      */
     public function getLastModified(): \DateTime
     {
-        return new \DateTime('@' . filemtime($this->fullPath));
+        return new \DateTime('@'.filemtime($this->fullPath));
     }
 }

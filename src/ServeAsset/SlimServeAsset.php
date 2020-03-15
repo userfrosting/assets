@@ -72,6 +72,7 @@ class SlimServeAsset
         }
 
         $response->getBody()->write($assetLoader->getContent());
+
         return $response->withHeader('Content-Type', $assetLoader->getType())
             ->withHeader('Content-Length', $assetLoader->getLength())
             ->withHeader('Cache-Control', 'no-cache')

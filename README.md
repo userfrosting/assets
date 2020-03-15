@@ -7,26 +7,24 @@
 
 | Branch | Build | Coverage | Style |
 | ------ | ----- | -------- | ----- |
-| [master][master] | [![Build Status][master-build-travis-badge]][travis] [![Windows Build][master-build-appveyor-badge]][appveyor] | [![codecov][master-codecov-badge]][codecov] | [![][master-styleci-badge]][styleci] |
-| [develop][develop] | [![Build Status][develop-build-travis-badge]][travis] [![Windows Build][develop-build-appveyor-badge]][appveyor] | [![codecov][develop-codecov-badge]][codecov] | [![][develop-styleci-badge]][styleci] |
+| [master][master] | [![Continuous Integration](master-gh-ci-badge)](master-gh-ci) | [![codecov][master-codecov-badge]][codecov] | [![][master-styleci-badge]][styleci] |
+| [develop][develop] | [![Continuous Integration](develop-gh-ci-badge)](develop-gh-ci) | [![codecov][develop-codecov-badge]][codecov] | [![][develop-styleci-badge]][styleci] |
 
 <!-- Links -->
 [codecov]: https://codecov.io/gh/userfrosting/assets
 [releases]: https://github.com/userfrosting/assets/releases
 [styleci]: https://github.styleci.io/repos/55460230
-[travis]: https://travis-ci.org/userfrosting/assets
-[appveyor]: https://ci.appveyor.com/project/userfrosting/assets
 [version-badge]: https://img.shields.io/github/release/userfrosting/assets.svg
 [master]: https://github.com/userfrosting/assets/tree/master
+[master-gh-ci]: https://github.com/userfrosting/assets/actions?query=branch:master+workflow:"Continuous+Integration"
+[master-gh-ci-badge]: https://github.com/userfrosting/assets/workflows/Continuous%20Integration/badge.svg?branch=master
 [master-styleci-badge]: https://github.styleci.io/repos/55460230/shield?branch=master&style=flat
 [master-codecov-badge]: https://codecov.io/gh/userfrosting/assets/branch/master/graph/badge.svg
-[master-build-travis-badge]: https://travis-ci.org/userfrosting/assets.svg?branch=master
-[master-build-appveyor-badge]: https://ci.appveyor.com/api/projects/status/github/userfrosting/assets?branch=master&svg=true
 [develop]: https://github.com/userfrosting/assets/tree/develop
+[develop-gh-ci]: https://github.com/userfrosting/assets/actions?query=branch:develop+workflow:"Continuous+Integration"
+[develop-gh-ci-badge]: https://github.com/userfrosting/assets/workflows/Continuous%20Integration/badge.svg?branch=develop
 [develop-styleci-badge]: https://github.styleci.io/repos/55460230/shield?branch=develop&style=flat
 [develop-codecov-badge]: https://codecov.io/gh/userfrosting/assets/branch/develop/graph/badge.svg
-[develop-build-travis-badge]: https://travis-ci.org/userfrosting/assets.svg?branch=develop
-[develop-build-appveyor-badge]: https://ci.appveyor.com/api/projects/status/github/userfrosting/assets?branch=develop&svg=true
 
 **Assets** is a library originally created for UserFrosting 4 to make it much easier to reference frontend assets in both production and development contexts.
 

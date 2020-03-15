@@ -7,8 +7,8 @@
 
 | Branch | Build | Coverage | Style |
 | ------ | ----- | -------- | ----- |
-| [master][master] | [![Continuous Integration](master-gh-ci-badge)](master-gh-ci) | [![codecov][master-codecov-badge]][codecov] | [![][master-styleci-badge]][styleci] |
-| [develop][develop] | [![Continuous Integration](develop-gh-ci-badge)](develop-gh-ci) | [![codecov][develop-codecov-badge]][codecov] | [![][develop-styleci-badge]][styleci] |
+| [master][master] | [![Continuous Integration][master-gh-ci-badge]](master-gh-ci) | [![codecov][master-codecov-badge]][codecov] | [![][master-styleci-badge]][styleci] |
+| [develop][develop] | [![Continuous Integration][develop-gh-ci-badge]](develop-gh-ci) | [![codecov][develop-codecov-badge]][codecov] | [![][develop-styleci-badge]][styleci] |
 
 <!-- Links -->
 [codecov]: https://codecov.io/gh/userfrosting/assets

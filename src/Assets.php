@@ -29,7 +29,7 @@ class Assets
     /** @var ResourceLocatorInterface Resource locator used to find assets. */
     protected $locator;
 
-    /** @var string Scheme used when finding assets via $locator. */
+    /** @var string Scheme used when finding assets via. */
     protected $locatorScheme;
 
     /** @var string Sites base URL and optionally assets directory. */

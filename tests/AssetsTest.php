@@ -146,7 +146,7 @@ class AssetsTest extends TestCase
     public function testAddAssetBundles(Assets $assets)
     {
         $assets->addAssetBundles(new GulpBundleAssetsRawBundles(__DIR__.'/data/bundle.config.json'));
-        $this->assertInternalType('array', $assets->getAssetBundles());
+        $this->assertIsArray($assets->getAssetBundles());
 
         return $assets;
     }

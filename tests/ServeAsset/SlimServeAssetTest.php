@@ -27,8 +27,6 @@ class SlimServeAssetTest extends TestCase
 
     /**
      * Initializes test environment.
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -66,7 +64,6 @@ class SlimServeAssetTest extends TestCase
      *
      * @param SlimServeAsset $controller
      *
-     * @return void
      *
      * @depends testConstructor
      */
@@ -96,7 +93,6 @@ class SlimServeAssetTest extends TestCase
      *
      * @param SlimServeAsset $controller
      *
-     * @return void
      *
      * @depends testConstructor
      */
@@ -129,7 +125,6 @@ class SlimServeAssetTest extends TestCase
      *
      * @param SlimServeAsset $controller
      *
-     * @return void
      *
      * @depends testConstructor
      */

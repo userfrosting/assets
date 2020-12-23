@@ -31,8 +31,6 @@ class AssetsTemplatePluginTest extends TestCase
 
     /**
      * Initializes test environment.
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -67,7 +65,6 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      *
-     * @return void
      *
      * @depends testConstructAssetsTemplatePlugin
      */
@@ -81,7 +78,6 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      *
-     * @return void
      *
      * @depends testConstructAssetsTemplatePlugin
      */
@@ -95,7 +91,6 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      *
-     * @return void
      *
      * @depends testConstructAssetsTemplatePlugin
      */
@@ -109,7 +104,6 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      *
-     * @return void
      *
      * @depends testConstructAssetsTemplatePlugin
      */
@@ -123,7 +117,6 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      *
-     * @return void
      *
      * @depends testConstructAssetsTemplatePlugin
      */

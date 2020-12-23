@@ -31,8 +31,6 @@ class AssetsTest extends TestCase
 
     /**
      * Initializes test environment.
-     *
-     * @return void
      */
     public function setUp(): void
     {
@@ -65,7 +63,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testConstructAssets
      */
@@ -88,7 +85,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testConstructAssets
      */
@@ -105,7 +101,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testConstructAssets
      */
@@ -124,7 +119,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testConstructAssets
      */
@@ -156,7 +150,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -173,7 +166,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -188,7 +180,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -204,7 +195,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -219,7 +209,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -235,7 +224,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -249,7 +237,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -263,7 +250,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */

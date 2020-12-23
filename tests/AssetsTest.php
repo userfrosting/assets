@@ -34,7 +34,7 @@ class AssetsTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->basePath = __DIR__.'/data';
         $this->baseUrl = 'https://assets.userfrosting.com/';

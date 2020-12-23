@@ -30,7 +30,7 @@ class SlimServeAssetTest extends TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $basePath = __DIR__.'/../data';
         $baseUrl = 'https://assets.userfrosting.com/assets/';

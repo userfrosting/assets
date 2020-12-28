@@ -55,7 +55,6 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
      *
-     * @return void
      *
      * @depends testConstruct
      */
@@ -71,7 +70,6 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
      *
-     * @return void
      *
      * @depends testConstruct
      */
@@ -86,7 +84,6 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
      *
-     * @return void
      *
      * @depends testConstruct
      */
@@ -102,7 +99,6 @@ class GulpBundleAssetsCompiledBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsCompiledBundles $bundles
      *
-     * @return void
      *
      * @depends testConstruct
      */

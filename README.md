@@ -1,32 +1,29 @@
 # UserFrosting/Assets
 
-[![Latest Version][version-badge]][releases]
+[![Latest Version][assets-version]][Assets]
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
-[![Join the chat at https://chat.userfrosting.com/channel/support](https://demo.rocket.chat/images/join-chat.svg)](https://chat.userfrosting.com/channel/support)
+[![Join the chat at https://chat.userfrosting.com/channel/support](https://chat.userfrosting.com/api/v1/shield.svg?name=UserFrosting)](https://chat.userfrosting.com/channel/support)
 [![Donate](https://img.shields.io/badge/Open%20Collective-Donate-blue.svg)](https://opencollective.com/userfrosting#backer)
 
 | Branch | Build | Coverage | Style |
-| ------ | ----- | -------- | ----- |
-| [master][master] | [![Build Status][master-build-travis-badge]][travis] [![Windows Build][master-build-appveyor-badge]][appveyor] | [![codecov][master-codecov-badge]][codecov] | [![][master-styleci-badge]][styleci] |
-| [develop][develop] | [![Build Status][develop-build-travis-badge]][travis] [![Windows Build][develop-build-appveyor-badge]][appveyor] | [![codecov][develop-codecov-badge]][codecov] | [![][develop-styleci-badge]][styleci] |
+| ------ |:-----:|:--------:|:-----:|
+| [master][Assets]  | [![][assets-master-build]][assets-travis] | [![][assets-master-codecov]][assets-codecov] | [![][assets-style-develop]][assets-style] |
+| [develop][Assets-develop] | [![][assets-develop-build]][assets-travis] | [![][assets-develop-codecov]][assets-codecov] | [![][assets-style-develop]][assets-style] |
 
 <!-- Links -->
-[codecov]: https://codecov.io/gh/userfrosting/assets
-[releases]: https://github.com/userfrosting/assets/releases
-[styleci]: https://github.styleci.io/repos/55460230
-[travis]: https://travis-ci.org/userfrosting/assets
-[appveyor]: https://ci.appveyor.com/project/userfrosting/assets
-[version-badge]: https://img.shields.io/github/release/userfrosting/assets.svg
-[master]: https://github.com/userfrosting/assets/tree/master
-[master-styleci-badge]: https://github.styleci.io/repos/55460230/shield?branch=master&style=flat
-[master-codecov-badge]: https://codecov.io/gh/userfrosting/assets/branch/master/graph/badge.svg
-[master-build-travis-badge]: https://travis-ci.org/userfrosting/assets.svg?branch=master
-[master-build-appveyor-badge]: https://ci.appveyor.com/api/projects/status/github/userfrosting/assets?branch=master&svg=true
-[develop]: https://github.com/userfrosting/assets/tree/develop
-[develop-styleci-badge]: https://github.styleci.io/repos/55460230/shield?branch=develop&style=flat
-[develop-codecov-badge]: https://codecov.io/gh/userfrosting/assets/branch/develop/graph/badge.svg
-[develop-build-travis-badge]: https://travis-ci.org/userfrosting/assets.svg?branch=develop
-[develop-build-appveyor-badge]: https://ci.appveyor.com/api/projects/status/github/userfrosting/assets?branch=develop&svg=true
+[Assets]: https://github.com/userfrosting/assets
+[Assets-develop]: https://github.com/userfrosting/assets/tree/develop
+[assets-version]: https://img.shields.io/github/release/userfrosting/assets.svg
+[assets-master-build]: https://github.com/userfrosting/assets/workflows/Build/badge.svg?branch=master
+[assets-master-codecov]: https://codecov.io/gh/userfrosting/assets/branch/master/graph/badge.svg
+[assets-develop-build]: https://github.com/userfrosting/assets/workflows/Build/badge.svg?branch=develop
+[assets-develop-codecov]: https://codecov.io/gh/userfrosting/assets/branch/develop/graph/badge.svg
+[assets-releases]: https://github.com/userfrosting/assets/releases
+[assets-travis]: https://github.com/userfrosting/assets/actions?query=workflow%3ABuild
+[assets-codecov]: https://codecov.io/gh/userfrosting/assets
+[assets-style-master]: https://github.styleci.io/repos/55460230/shield?branch=master&style=flat
+[assets-style-develop]: https://github.styleci.io/repos/55460230/shield?branch=develop&style=flat
+[assets-style]: https://github.styleci.io/repos/55460230
 
 **Assets** is a library originally created for UserFrosting 4 to make it much easier to reference frontend assets in both production and development contexts.
 

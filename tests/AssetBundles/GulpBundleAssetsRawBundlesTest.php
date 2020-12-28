@@ -93,7 +93,6 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsRawBundles $bundles
      *
-     * @return void
      *
      * @depends testConstruct
      */
@@ -109,7 +108,6 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsRawBundles $bundles
      *
-     * @return void
      *
      * @depends testConstruct
      */
@@ -124,7 +122,6 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsRawBundles $bundles
      *
-     * @return void
      *
      * @depends testConstruct
      */
@@ -141,7 +138,6 @@ class GulpBundleAssetsRawBundlesTest extends TestCase
      *
      * @param GulpBundleAssetsRawBundles $bundles
      *
-     * @return void
      *
      * @depends testConstruct
      */

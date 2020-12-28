@@ -31,10 +31,8 @@ class AssetsTemplatePluginTest extends TestCase
 
     /**
      * Initializes test environment.
-     *
-     * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->basePath = __DIR__.'/data';
         $this->baseUrl = 'https://assets.userfrosting.com/assets/';
@@ -67,7 +65,6 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      *
-     * @return void
      *
      * @depends testConstructAssetsTemplatePlugin
      */
@@ -81,7 +78,6 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      *
-     * @return void
      *
      * @depends testConstructAssetsTemplatePlugin
      */
@@ -95,7 +91,6 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      *
-     * @return void
      *
      * @depends testConstructAssetsTemplatePlugin
      */
@@ -109,7 +104,6 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      *
-     * @return void
      *
      * @depends testConstructAssetsTemplatePlugin
      */
@@ -123,7 +117,6 @@ class AssetsTemplatePluginTest extends TestCase
      *
      * @param AssetsTemplatePlugin $plugin
      *
-     * @return void
      *
      * @depends testConstructAssetsTemplatePlugin
      */

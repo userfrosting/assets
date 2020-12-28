@@ -31,10 +31,8 @@ class AssetsTest extends TestCase
 
     /**
      * Initializes test environment.
-     *
-     * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->basePath = __DIR__.'/data';
         $this->baseUrl = 'https://assets.userfrosting.com/';
@@ -65,7 +63,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testConstructAssets
      */
@@ -88,7 +85,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testConstructAssets
      */
@@ -105,7 +101,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testConstructAssets
      */
@@ -124,7 +119,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testConstructAssets
      */
@@ -146,7 +140,7 @@ class AssetsTest extends TestCase
     public function testAddAssetBundles(Assets $assets)
     {
         $assets->addAssetBundles(new GulpBundleAssetsRawBundles(__DIR__.'/data/bundle.config.json'));
-        $this->assertInternalType('array', $assets->getAssetBundles());
+        $this->assertIsArray($assets->getAssetBundles());
 
         return $assets;
     }
@@ -156,7 +150,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -173,7 +166,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -188,7 +180,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -204,7 +195,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -219,7 +209,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -235,7 +224,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -249,7 +237,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */
@@ -263,7 +250,6 @@ class AssetsTest extends TestCase
      *
      * @param Assets $assets
      *
-     * @return void
      *
      * @depends testAddAssetBundles
      */

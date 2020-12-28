@@ -27,10 +27,8 @@ class SlimServeAssetTest extends TestCase
 
     /**
      * Initializes test environment.
-     *
-     * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $basePath = __DIR__.'/../data';
         $baseUrl = 'https://assets.userfrosting.com/assets/';
@@ -66,7 +64,6 @@ class SlimServeAssetTest extends TestCase
      *
      * @param SlimServeAsset $controller
      *
-     * @return void
      *
      * @depends testConstructor
      */
@@ -96,7 +93,6 @@ class SlimServeAssetTest extends TestCase
      *
      * @param SlimServeAsset $controller
      *
-     * @return void
      *
      * @depends testConstructor
      */
@@ -129,7 +125,6 @@ class SlimServeAssetTest extends TestCase
      *
      * @param SlimServeAsset $controller
      *
-     * @return void
      *
      * @depends testConstructor
      */

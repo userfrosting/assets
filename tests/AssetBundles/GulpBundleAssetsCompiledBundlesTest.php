@@ -8,6 +8,8 @@
  * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
 
+namespace UserFrosting\Tests\Assets\AssetBundles;
+
 use PHPUnit\Framework\TestCase;
 use UserFrosting\Assets\AssetBundles\GulpBundleAssetsCompiledBundles;
 use UserFrosting\Assets\Assets;

@@ -17,8 +17,8 @@
         }
     ],
     "require": {
-        "php": ">=7.1",
-        "userfrosting/support": "~4.3.0 | ~4.4.0"
+        "php": "^7.1",
+        "userfrosting/support": "~4.3.0 | ~4.4.0 | ~4.5.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.13",
@@ -31,6 +31,11 @@
     "autoload": {
         "psr-4": {
             "UserFrosting\\Assets\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "UserFrosting\\Assets\\Tests\\": "tests"
         }
     }
 }

@@ -8,6 +8,8 @@
  * @license   https://github.com/userfrosting/assets/blob/master/LICENSE.md (MIT License)
  */
 
+namespace UserFrosting\Tests\Assets\ServeAsset;
+
 use PHPUnit\Framework\TestCase;
 use Slim\Http\Environment;
 use Slim\Http\Request;

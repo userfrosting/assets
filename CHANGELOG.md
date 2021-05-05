@@ -84,6 +84,7 @@ Add custom exceptions.
 ## [1.0] - 2016-04-05
 Initial release.
 
+[6.2.0]: https://github.com/userfrosting/assets/compare/6.1.1...6.2.0
 [6.1.1]: https://github.com/userfrosting/assets/compare/6.1.0...6.1.1
 [6.1.0]: https://github.com/userfrosting/assets/compare/6.0.0...6.1.0
 [6.0.0]: https://github.com/userfrosting/assets/compare/5.0.2...6.0.0
